@@ -5,7 +5,12 @@ node_modules
 /node_modules
 /.pnp
 .pnp.js
+
+# sensitive
 .env
+
+# extra files
+/.module
 
 # testing
 /coverage

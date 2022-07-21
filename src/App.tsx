@@ -1,21 +1,24 @@
 import React from 'react';
-import styles from './styles/app/app.module.scss';
 
 import { StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
 import Cookies from 'universal-cookie';
 
-import { RoomContainer, RoomListContainer } from './components';
+import {
+	RoomContainer,
+	RoomListContainer,
+	ChatBody,
+} from './components/exporter';
 
 function App() {
 	const apiKey = process.env.API_KEY;
-	const client = StreamChat.getInstance(apiKey);
+	const client = StreamChat.getInstance(apiKey as string);
 
 	return (
-		<div className={styles.wrapper}>
+		<div>
 			<Chat client={client} theme='light'>
 				<RoomListContainer />
-				<RoomContainer />
+				<ChatBody />
 			</Chat>
 		</div>
 	);

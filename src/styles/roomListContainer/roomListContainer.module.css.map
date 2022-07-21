@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,QAAQ,CAAC;EACR,QAAQ,EAAE,KAAK;EACf,WAAW,EAAE,CAAC;EACd,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,gBAAgB,EAAE,OAAkB;CACpC",
-    "sources": [
-        "roomListContainer.module.scss"
-    ],
-    "names": [],
-    "file": "roomListContainer.module.css"
-}
