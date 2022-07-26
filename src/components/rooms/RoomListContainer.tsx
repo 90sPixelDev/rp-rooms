@@ -1,17 +1,21 @@
 import React from 'react';
 import RoomContainer from './RoomContainer';
+import RoomsSearch from './RoomsSearch';
 
-type Props = {};
+import { ChannelList, useChatContext } from 'stream-chat-react';
+
+type Props = unknown;
+type Styles = {
+	container: string;
+};
 
 const RoomListContainer = (props: Props) => {
-	const styles = {
-		sideBar: 'bg-purple-300 rounded-br-2xl rounded-tr-2xl',
-		roomsTitle: 'text-center font-bold text-lg',
+	const styles: Styles = {
+		container: 'bg-purple-200 rounded-2xl ml-4',
 	};
 
 	return (
-		<div className={styles.sideBar}>
-			<p className={styles.roomsTitle}>RP Rooms</p>
+		<div className={styles.container}>
 			<RoomContainer />
 			<RoomContainer />
 			<RoomContainer />

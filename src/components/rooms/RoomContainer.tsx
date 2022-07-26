@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 
-type Props = {};
+type Props = unknown;
+type Styles = {
+	selectedRoomBG: string;
+	unselectedRoomBG: string;
+	topPad: string;
+	roomTitle: string;
+	bottomPad: string;
+};
 
 const RoomContainer = (props: Props) => {
-	const styles = {
+	const styles: Styles = {
 		selectedRoomBG: 'bg-purple-100 w-[100%] flex flex-col transition',
 		unselectedRoomBG:
-			'bg-purple-200 w-[95%] rounded-r-full lex flex-col transition',
-		topPad: 'bg-purple-300 h-[10px] rounded-br-full transition',
+			'bg-purple-200 w-[90%] rounded-r-full flex flex-col mx-auto',
+		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
 		roomTitle: 'ml-2',
-		bottomPad: 'bg-purple-300 h-[10px] rounded-tr-full transition',
+		bottomPad: 'bg-purple-200 h-[10px] rounded-tr-full transition',
 	};
 
 	const [selectedRoom, setSelectedRoom] = useState(false);
