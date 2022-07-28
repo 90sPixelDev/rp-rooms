@@ -7,6 +7,7 @@ type Styles = {
 	topPad: string;
 	roomTitle: string;
 	bottomPad: string;
+	bottomPadSelected: string;
 };
 
 const RoomContainer = (props: Props) => {
@@ -17,9 +18,17 @@ const RoomContainer = (props: Props) => {
 		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
 		roomTitle: 'ml-2',
 		bottomPad: 'bg-purple-200 h-[10px] rounded-tr-full transition',
+		bottomPadSelected:
+			'bg-purple-200 h-[10px] rounded-tr-full border-t-[1px] border-purple-400 transition',
 	};
 
 	const [selectedRoom, setSelectedRoom] = useState(false);
+
+	const selectRoom = () => {
+		setSelectedRoom((prevState) => !prevState);
+	};
+
+	// const borderDisplay = selectedRoom ? {styles.bottomPadSelected} : {styles.bottomPad};
 
 	const roomDisplay = (
 		<div>
@@ -28,10 +37,6 @@ const RoomContainer = (props: Props) => {
 			<div className={styles.bottomPad} />
 		</div>
 	);
-
-	const selectRoom = () => {
-		setSelectedRoom((prevState) => !prevState);
-	};
 
 	return (
 		<div

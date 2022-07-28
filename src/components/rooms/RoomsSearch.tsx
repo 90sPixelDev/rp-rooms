@@ -9,7 +9,8 @@ type Styles = {
 const RoomsSearch = (props: Props) => {
 	const styles: Styles = {
 		// container: 'flex flex-col gap-2',
-		inputBox: 'flow-root m-auto p-[2px]',
+		inputBox:
+			'flow-root m-auto p-[2px] rounded-lg px-1 outline-purple-500',
 	};
 
 	return (
