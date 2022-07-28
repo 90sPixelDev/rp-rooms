@@ -13,7 +13,7 @@ const UserProfilePeek = (props: Props) => {
 	};
 	return (
 		<div>
-			<p>UserName</p>
+			<p className={styles.userName}>UserName</p>
 		</div>
 	);
 };

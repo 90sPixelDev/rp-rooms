@@ -10,15 +10,13 @@ module.exports = {
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		ecmaFeatures: {
-			jsx: true,
-		},
+		ecmaFeatures: {},
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
 	plugins: ['react', '@typescript-eslint'],
 	rules: {
-		'indent': ['error', 'tab'],
+		'indent': 'off',
 		'linebreak-style': [0],
 		'quotes': ['error', 'single'],
 		'semi': ['error', 'always'],

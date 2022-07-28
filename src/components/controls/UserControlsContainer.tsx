@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserProfilePeek } from '../exporter';
 
 type Props = unknown;
 type Styles = {
@@ -10,7 +11,11 @@ const UserControlsContainer = (props: Props) => {
 		container: 'bg-purple-300 w-[90%] h-[90%] m-auto',
 	};
 
-	return <div className={styles.container}>UserControlsContainer</div>;
+	return (
+		<div className={styles.container}>
+			<UserProfilePeek />
+		</div>
+	);
 };
 
 export default UserControlsContainer;
