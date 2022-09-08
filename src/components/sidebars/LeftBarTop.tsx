@@ -8,10 +8,10 @@ type Styles = {
 	roomsTitle: string;
 };
 
-const SideBarTop = (props: Props) => {
+const LeftBarTop = (props: Props) => {
 	const styles: Styles = {
-		container: 'flex flex-col gap-4',
-		roomsTitle: 'text-center font-bold text-lg',
+		container: 'flex flex-col gap-4 border-b-8 border-purple-100',
+		roomsTitle: 'text-center font-bold text-lg mt-3',
 	};
 
 	return (
@@ -22,4 +22,4 @@ const SideBarTop = (props: Props) => {
 	);
 };
 
-export default SideBarTop;
+export default LeftBarTop;

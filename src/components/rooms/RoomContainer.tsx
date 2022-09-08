@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-type Props = unknown;
 type Styles = {
 	selectedRoomBG: string;
 	unselectedRoomBG: string;
@@ -10,14 +9,15 @@ type Styles = {
 	bottomPadSelected: string;
 };
 
-const RoomContainer = (props: Props) => {
+const RoomContainer = () => {
 	const styles: Styles = {
 		selectedRoomBG: 'bg-purple-100 w-[100%] flex flex-col transition',
 		unselectedRoomBG:
 			'bg-purple-200 w-[90%] rounded-r-full flex flex-col mx-auto',
 		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
 		roomTitle: 'ml-2',
-		bottomPad: 'bg-purple-200 h-[10px] rounded-tr-full transition',
+		bottomPad:
+			'bg-purple-200 h-[10px] rounded-tr-full transition border-t-2 border-purple-400',
 		bottomPadSelected:
 			'bg-purple-200 h-[10px] rounded-tr-full border-t-[1px] border-purple-400 transition',
 	};

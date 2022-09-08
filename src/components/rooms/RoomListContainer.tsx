@@ -2,7 +2,7 @@ import React from 'react';
 import RoomContainer from './RoomContainer';
 import RoomsSearch from './RoomsSearch';
 
-import { ChannelList, useChatContext } from 'stream-chat-react';
+import { UserRoomsList } from '../exporter';
 
 type Props = unknown;
 type Styles = {

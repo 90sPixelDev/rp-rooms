@@ -9,7 +9,7 @@ type Styles = {
 
 const OptionsControl = (props: Props) => {
 	const styles: Styles = {
-		body: '',
+		body: 'mr-[7%]',
 	};
 
 	const optionsIcon = <FontAwesomeIcon icon={solid('gear')} size='lg' />;

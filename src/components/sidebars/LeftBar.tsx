@@ -1,23 +1,23 @@
 import React from 'react';
 
-import { SideBarTop, RoomListContainer } from '../exporter';
+import { LeftBarTop, RoomListContainer } from '../exporter';
 
 type Props = unknown;
 type Styles = {
 	container: string;
 };
 
-const SideBar = (props: Props) => {
+const LeftBar = (props: Props) => {
 	const styles: Styles = {
 		container: 'flex flex-col gap-4',
 	};
 
 	return (
 		<section className={styles.container}>
-			<SideBarTop />
+			<LeftBarTop />
 			<RoomListContainer />
 		</section>
 	);
 };
 
-export default SideBar;
+export default LeftBar;

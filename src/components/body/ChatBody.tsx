@@ -9,7 +9,7 @@ type Styles = {
 
 const ChatBody = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-100 rounded-bl-2xl rounded-tl-2xl',
+		body: 'bg-purple-100 rounded-2xl',
 		chatBoxContainer: 'flex flex-col gap-2',
 	};
 
