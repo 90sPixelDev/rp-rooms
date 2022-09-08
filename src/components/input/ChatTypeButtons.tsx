@@ -16,6 +16,8 @@ const ChatTypeButtons = (props: Props) => {
 	return (
 		<div>
 			<button className={styles.narratorBtn}>Narrator</button>
+			<button className={styles.narratorBtn}>New Chapter</button>
+			<button className={styles.narratorBtn}>New Event</button>
 			<button className={styles.skipBtn}>Skip Turn ⇥</button>
 		</div>
 	);

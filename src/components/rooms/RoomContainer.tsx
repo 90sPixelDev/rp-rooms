@@ -15,7 +15,7 @@ const RoomContainer = () => {
 		unselectedRoomBG:
 			'bg-purple-200 w-[90%] rounded-r-full flex flex-col mx-auto',
 		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
-		roomTitle: 'ml-2',
+		roomTitle: 'ml-2 w-full text-left hover:text-purple-600',
 		bottomPad:
 			'bg-purple-200 h-[10px] rounded-tr-full transition border-t-2 border-purple-400',
 		bottomPadSelected:
@@ -33,7 +33,7 @@ const RoomContainer = () => {
 	const roomDisplay = (
 		<div>
 			<div className={styles.topPad} />
-			<p className={styles.roomTitle}>Room Title</p>
+			<button className={styles.roomTitle}>Room Title</button>
 			<div className={styles.bottomPad} />
 		</div>
 	);

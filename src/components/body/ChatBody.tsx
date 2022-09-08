@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChatBoxContainer } from '../exporter';
+import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
 type Props = unknown;
 type Styles = {
@@ -15,6 +15,7 @@ const ChatBody = (props: Props) => {
 
 	return (
 		<div className={styles.body}>
+			<RoomTopTitle />
 			<ChatBoxContainer />
 		</div>
 	);

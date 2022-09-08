@@ -5,10 +5,14 @@ export { default as UserRoomsList } from './rooms/UserRoomsList';
 
 export { default as LeftBar } from './sidebars/LeftBar';
 export { default as LeftBarTop } from './sidebars/LeftBarTop';
+
 export { default as RightBar } from './sidebars/RightBar';
+export { default as EventsList } from './sidebars/EventsList';
+export { default as StoryEvent } from './sidebars/StoryEvent';
 
 export { default as ChatBody } from './body/ChatBody';
 export { default as ChatBoxContainer } from './body/ChatBoxContainer';
+export { default as RoomTopTitle } from './body/RoomTopTitle';
 export { default as ChatBox } from './chat/ChatBox';
 
 export { default as ChatInput } from './input/ChatInput';
