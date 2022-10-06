@@ -17,6 +17,7 @@ export { default as ChatBox } from './chat/ChatBox';
 
 export { default as ChatInput } from './input/ChatInput';
 export { default as ChatTypeButton } from './input/ChatTypeButtons';
+export { default as ChatSend } from './input/ChatSend';
 
 export { default as UserControlsContainer } from './controls/UserControlsContainer';
 export { default as UserProfilePeek } from './controls/UserProfilePeek';

@@ -11,7 +11,8 @@ type Styles = {
 
 const LogOutControl = (props: Props) => {
 	const styles: Styles = {
-		container: 'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2',
+		container:
+			'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2 hover:text-purple-200 w-[100%]',
 		text: 'm-auto',
 		icon: 'bg-purple-500 p-2 rounded-l-xl',
 	};
