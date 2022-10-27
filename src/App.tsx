@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { StreamChat } from 'stream-chat';
-import { Chat } from 'stream-chat-react';
-import Cookies from 'universal-cookie';
+import { ChatEngine } from 'react-chat-engine';
 
 import {
 	// RoomContainer,
@@ -24,18 +22,17 @@ function App() {
 	};
 
 	const apiKey = process.env.API_KEY;
-	const client = StreamChat.getInstance(apiKey as string);
 
 	return (
+		// <ChatEngine client={client} theme='light'>
 		<div className={styles.wrapper}>
-			<Chat client={client} theme='light'>
-				<LeftBar />
-				<ChatBody />
-				<RightBar />
-				<UserControlsContainer />
-				<ChatInput />
-			</Chat>
+			<LeftBar />
+			<ChatBody />
+			<RightBar />
+			<UserControlsContainer />
+			<ChatInput />
 		</div>
+		// </ChatEngine>
 	);
 }
 
