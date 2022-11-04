@@ -3,6 +3,8 @@ export { default as RoomListContainer } from './rooms/RoomListContainer';
 export { default as RoomsSearch } from './rooms/RoomsSearch';
 export { default as UserRoomsList } from './rooms/UserRoomsList';
 
+export { default as ChatListTest } from './sidebars/ChatListTest';
+
 export { default as LeftBar } from './sidebars/LeftBar';
 export { default as LeftBarTop } from './sidebars/LeftBarTop';
 
