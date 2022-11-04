@@ -1,16 +1,18 @@
-import React from 'react';
-
-import { ChatEngine } from 'react-chat-engine';
+import { useState, useEffect } from 'react';
+import { StreamChat } from 'stream-chat';
 
 import {
 	// RoomContainer,
 	// RoomListContainer,
+	RoomTopTitle,
 	ChatBody,
+	ChatBox,
 	ChatInput,
 	UserControlsContainer,
 	LeftBar,
 	RightBar,
 	ChatListTest,
+	WelcomeBG,
 } from './components/exporter';
 
 // type Styles = {
@@ -26,20 +28,14 @@ function App() {
 	const userSecret = process.env.REACT_APP_CHAT_ENGINE_USER_SECRET;
 
 	return (
-		<ChatEngine
-			height='100vh'
-			userName='jsadmin'
-			userSecret={userSecret}
-			projectID={projectID}
-		>
-			{/* <div className={styles.wrapper}>
-				<LeftBar />
-				<ChatBody />
-				<RightBar />
-				<UserControlsContainer />
-				<ChatInput />
-			</div> */}
-		</ChatEngine>
+		<WelcomeBG />
+		// <div className={styles.wrapper}>
+		// 	<LeftBar />
+		// 	<ChatBody />
+		// 	<RightBar />
+		// 	<UserControlsContainer />
+		// 	<ChatInput />
+		// </div>
 	);
 }
 

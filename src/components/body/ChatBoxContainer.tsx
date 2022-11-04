@@ -15,26 +15,6 @@ const ChatBoxContainer = (props: Props) => {
 	return (
 		<div className={styles.chatBoxContainer}>
 			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
-			<ChatBox />
 		</div>
 	);
 };

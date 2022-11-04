@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChatBoxContainer, RoomTopTitle } from '../exporter';
+import { ChatBoxContainer, RoomTopTitle, ChatInput } from '../exporter';
 
 type Props = unknown;
 type Styles = {
