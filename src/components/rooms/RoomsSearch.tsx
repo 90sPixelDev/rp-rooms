@@ -4,7 +4,7 @@ type Props = unknown;
 type Styles = {
 	inputBox: string;
 };
-type Text = string;
+type Query = string;
 
 const RoomsSearch = (props: Props) => {
 	const styles: Styles = {
@@ -13,10 +13,12 @@ const RoomsSearch = (props: Props) => {
 			'flow-root m-auto p-[2px] rounded-lg px-1 outline-purple-500 mb-4',
 	};
 
+	const [user, setUser] = useState(null);
 	const [query, setQuery] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [err, setErr] = useState(false);
 
-	const getRooms = async (text: Text) => {
+	const getRooms = async (text: Query) => {
 		try {
 			// TODO: fetch rooms
 		} catch (err) {
@@ -24,12 +26,13 @@ const RoomsSearch = (props: Props) => {
 		}
 	};
 
-	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 
 		setLoading(true);
 		setQuery(e.target.value);
-		getRooms(e.target.value);
+		await getRooms(e.target.value);
+		console.log(query);
 	};
 
 	return (
