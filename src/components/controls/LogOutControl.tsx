@@ -1,6 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase.config';
 
 type Props = unknown;
 type Styles = {
@@ -25,7 +27,7 @@ const LogOutControl = (props: Props) => {
 	);
 
 	return (
-		<button className={styles.container}>
+		<button className={styles.container} onClick={() => signOut(auth)}>
 			{logOutIcon}
 			<p className={styles.text}>Log Out</p>
 		</button>

@@ -1,6 +1,9 @@
 export { default as WelcomeBG } from './welcome/WelcomeBG';
 export { default as LogInForm } from './welcome/LogInForm';
+export { default as SignUpForm } from './welcome/SignUpForm';
 export { default as LogInBtn } from './welcome/LogInBtn';
+export { default as SignUpBtn } from './welcome/SignUpBtn';
+export { default as ChatRooms } from './welcome/ChatRooms';
 
 export { default as RoomContainer } from './rooms/RoomContainer';
 export { default as RoomListContainer } from './rooms/RoomListContainer';

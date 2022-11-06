@@ -1,20 +1,43 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
-import { LogInForm } from '../exporter';
+import { LogInForm, SignUpForm } from '../exporter';
 
-type Props = unknown;
+interface WelcomeBG {
+	formBtnClicked: (params: any) => void;
+}
+type Props = any;
 type Styles = {
 	body: string;
 };
 
 const WelcomeBG = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-100 h-[100vh] w-[100vw] flex place-content-center place-items-center',
+		body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
+	};
+
+	const [isNewUser, setIsNewUser] = useState<boolean>(true);
+
+	const SignedIn = (user: any) => {
+		props.setUser(user);
+	};
+
+	const ChangeFormHandler = () => {
+		setIsNewUser(!isNewUser);
 	};
 
 	return (
 		<div className={styles.body}>
-			<LogInForm />
+			{isNewUser ? (
+				<SignUpForm
+					formBtnClicked={ChangeFormHandler}
+					userSignedUp={SignedIn}
+				/>
+			) : (
+				<LogInForm
+					formBtnClicked={ChangeFormHandler}
+					userSignedIn={SignedIn}
+				/>
+			)}
 		</div>
 	);
 };
