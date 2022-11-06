@@ -54,7 +54,7 @@ const SignUpForm = (props: Props) => {
 		)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				setUSerInfo(user);
+				setUserInfo(user);
 			})
 			.catch((err) => {
 				const errorCode = err.code;
@@ -63,11 +63,14 @@ const SignUpForm = (props: Props) => {
 			});
 	};
 
-	const setUSerInfo = async (user: any) => {
+	const setUserInfo = async (user: any) => {
+		await updateProfile(user, {
+			displayName: 'SetNickname',
+		});
 		await setDoc(doc(db, 'users', user.uid), {
 			uid: user.uid,
-			displayName: user.displayName,
 			email: user.email,
+			displayName: 'SetNickname',
 		});
 
 		const newUserDoc = doc(db, 'userRooms', user.uid);

@@ -40,15 +40,15 @@ function App() {
 		} else return children;
 	};
 
-	const saveElem = (
-		<div className={styles.wrapper}>
-			<LeftBar />
-			<ChatBody />
-			<RightBar />
-			<UserControlsContainer />
-			<ChatInput />
-		</div>
-	);
+	// const saveElem = (
+	// 	<div className={styles.wrapper}>
+	// 		<LeftBar />
+	// 		<ChatBody />
+	// 		<RightBar />
+	// 		<UserControlsContainer />
+	// 		<ChatInput />
+	// 	</div>
+	// );
 
 	return (
 		<BrowserRouter>
