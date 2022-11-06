@@ -69,7 +69,12 @@ const SignUpForm = (props: Props) => {
 			displayName: user.displayName,
 			email: user.email,
 		});
-		await setDoc(doc(db, 'userRooms', user.uid), {});
+
+		const newUserDoc = doc(db, 'userRooms', user.uid);
+		await setDoc(newUserDoc, {
+			roomTitle: 'RP Rooms Community',
+			messages: {},
+		});
 		navigate('/');
 	};
 

@@ -18,15 +18,6 @@ const RoomListContainer = (props: Props) => {
 	return (
 		<div className={styles.container}>
 			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
-			<RoomContainer />
 		</div>
 	);
 };

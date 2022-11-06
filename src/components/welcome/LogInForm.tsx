@@ -50,6 +50,7 @@ const LogInForm = (props: Props) => {
 		)
 			.then((userCredential) => {
 				const user = userCredential.user;
+				console.log(user.email);
 				navigate('/');
 			})
 			.catch((err) => {
@@ -64,7 +65,7 @@ const LogInForm = (props: Props) => {
 				<h1 className={styles.title}>Log In</h1>
 				<form
 					className={styles.formContainer}
-					onClick={handleLogIn}
+					onSubmit={handleLogIn}
 				>
 					<input
 						type='email'

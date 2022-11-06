@@ -9,6 +9,7 @@ export { default as RoomContainer } from './rooms/RoomContainer';
 export { default as RoomListContainer } from './rooms/RoomListContainer';
 export { default as RoomsSearch } from './rooms/RoomsSearch';
 export { default as UserRoomsList } from './rooms/UserRoomsList';
+export { default as CreateRoomBtn } from './rooms/CreateRoomBtn';
 
 export { default as ChatListTest } from './sidebars/ChatListTest';
 

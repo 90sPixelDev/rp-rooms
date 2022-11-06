@@ -1,28 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
+import { UserContext } from '../../context/AuthContext';
+
+import { CreateRoomBtn } from '../exporter';
 
 type Props = unknown;
 type Styles = {
+	section: string;
 	inputBox: string;
 };
 type Query = string;
 
 const RoomsSearch = (props: Props) => {
 	const styles: Styles = {
-		// container: 'flex flex-col gap-2',
-		inputBox:
-			'flow-root m-auto p-[2px] rounded-lg px-1 outline-purple-500 mb-4',
+		section: 'flex m-auto',
+		inputBox: 'flow-root p-[2px] rounded-l-lg outline-purple-500 mb-4',
 	};
 
-	const [user, setUser] = useState(null);
-	const [query, setQuery] = useState('');
+	const [room, setRoom] = useState(null as any);
+	const [inputText, setInputText] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [err, setErr] = useState(false);
 
-	const getRooms = async (text: Query) => {
+	const userContext = useContext(UserContext);
+
+	const getRooms = async (inputText: Query) => {
 		try {
-			// TODO: fetch rooms
+			console.log('Searching: ' + inputText);
+			const userRoomsRef = collection(
+				db,
+				'userRooms',
+				userContext.user.uid
+			);
+			const q = query(
+				userRoomsRef,
+				where('roomTitle', '==', { inputText })
+			);
+			const querySnapshot = await getDocs(q);
+			if (querySnapshot) {
+				querySnapshot.forEach((doc) => {
+					console.log(doc.id, ' => ', doc.data());
+					setRoom(doc.data());
+				});
+			}
+			setInputText('');
 		} catch (err) {
-			setQuery('');
+			setErr(true);
+			console.log('SOMETHING WENT WRONG!');
+			setInputText('');
 		}
 	};
 
@@ -30,22 +57,24 @@ const RoomsSearch = (props: Props) => {
 		e.preventDefault();
 
 		setLoading(true);
-		setQuery(e.target.value);
-		await getRooms(e.target.value);
-		console.log(query);
+		setInputText((prevstate) => (prevstate = e.target.value));
 	};
 
 	return (
-		<section>
+		<section className={styles.section}>
 			<input
 				className={styles.inputBox}
 				type='text'
-				value={query}
+				value={inputText}
+				onKeyDown={(e) => {
+					if (e.code === 'Enter') getRooms(inputText);
+				}}
 				onChange={onSearch}
 				name=''
 				id=''
 				placeholder='Search Rooms...'
 			/>
+			<CreateRoomBtn onBtnClicked={() => getRooms(inputText)} />
 		</section>
 	);
 };
