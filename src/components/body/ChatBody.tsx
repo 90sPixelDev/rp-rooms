@@ -1,7 +1,19 @@
-import React from 'react';
-import { ChatBoxContainer, RoomTopTitle, ChatInput } from '../exporter';
+import React, { useState, useEffect } from 'react';
+import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
-type Props = unknown;
+interface MessageInfo {
+	userName: string;
+	message: string;
+	uid: string;
+	timeSent: string;
+}
+type InitialMssgInfo = {
+	message: string;
+};
+interface Props {
+	roomTitle: string;
+	messages: MessageInfo[];
+}
 type Styles = {
 	body: string;
 	chatBoxContainer: string;
@@ -13,10 +25,22 @@ const ChatBody = (props: Props) => {
 		chatBoxContainer: 'flex flex-col gap-2',
 	};
 
+	const [users, setUsers] = useState({});
+
+	const getRoomInfo = () => {
+		// TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters, as well as Room messages of course and then conver to need state formate and pass down as prop to children
+	};
+
+	// useEffect(() => {
+	// 	const unsub = () => console.log(props.messages);
+
+	// 	return unsub;
+	// }, [, props.messages]);
+
 	return (
 		<div className={styles.body}>
 			<RoomTopTitle />
-			<ChatBoxContainer />
+			<ChatBoxContainer messages={props.messages} />
 		</div>
 	);
 };

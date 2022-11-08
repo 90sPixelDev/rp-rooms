@@ -8,8 +8,9 @@ type Styles = {
 	bottomPad: string;
 	bottomPadSelected: string;
 };
+type Props = any;
 
-const RoomContainer = () => {
+const RoomContainer = (props: Props) => {
 	const styles: Styles = {
 		selectedRoomBG: 'bg-purple-100 w-[100%] flex flex-col transition',
 		unselectedRoomBG:
@@ -23,20 +24,23 @@ const RoomContainer = () => {
 	};
 
 	const [selectedRoom, setSelectedRoom] = useState(false);
+	// const [roomTitle, setRoomTitle] = useState();
 
 	const selectRoom = () => {
 		setSelectedRoom((prevState) => !prevState);
 	};
 
-	// const borderDisplay = selectedRoom ? {styles.bottomPadSelected} : {styles.bottomPad};
-
 	const roomDisplay = (
 		<div>
 			<div className={styles.topPad} />
-			<button className={styles.roomTitle}>Room Title</button>
+			<button className={styles.roomTitle}>{props.title}</button>
 			<div className={styles.bottomPad} />
 		</div>
 	);
+
+	if (selectedRoom) {
+		props.roomIsSelected(props.title);
+	}
 
 	return (
 		<div

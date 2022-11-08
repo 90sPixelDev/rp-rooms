@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { Link } from 'react-router-dom';
 
 import { RoomsSearch } from '../exporter';
 
@@ -31,10 +32,10 @@ const LeftBarTop = (props: Props) => {
 
 	return (
 		<section className={styles.container}>
-			<button className={styles.top}>
+			<Link className={styles.top} to='/'>
 				{homeIcon}
 				<p className={styles.roomsTitle}>RP Rooms</p>
-			</button>
+			</Link>
 			<RoomsSearch />
 		</section>
 	);

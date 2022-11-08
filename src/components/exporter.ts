@@ -34,3 +34,5 @@ export { default as UserProfilePeek } from './controls/UserProfilePeek';
 export { default as LogOutControl } from './controls/LogOutControl';
 export { default as OptionsControl } from './controls/OptionsControl';
 export { default as TurnManager } from './controls/TurnManager';
+
+export { default as useRandomIDGenerator } from '../hooks/useRandomIDGenerator';

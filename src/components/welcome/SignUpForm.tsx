@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
+import { UserContext } from '../../context/AuthContext';
+import { doc, setDoc, arrayUnion } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase.config';
 import { SignUpBtn } from '../exporter';
@@ -73,11 +74,23 @@ const SignUpForm = (props: Props) => {
 			displayName: 'SetNickname',
 		});
 
-		const newUserDoc = doc(db, 'userRooms', user.uid);
-		await setDoc(newUserDoc, {
-			roomTitle: 'RP Rooms Community',
-			messages: {},
-		});
+		const newUserDoc = doc(db, 'Rooms', 'Rp Rooms Community');
+		// const newUserDoc2 = doc(db, 'Rooms', 'Test Room');
+		await setDoc(
+			newUserDoc,
+			{
+				users: arrayUnion(user.uid),
+			},
+
+			{ merge: true }
+		);
+		// await setDoc(
+		// 	newUserDoc2,
+		// 	{
+		// 		users: arrayUnion(user.uid),
+		// 	},
+		// 	{ merge: true }
+		// );
 		navigate('/');
 	};
 

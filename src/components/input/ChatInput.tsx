@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { db } from '../../firebase.config';
+import { UserContext } from '../../context/AuthContext';
+import {
+	doc,
+	setDoc,
+	addDoc,
+	Timestamp,
+	arrayUnion,
+	query,
+	where,
+	collection,
+	updateDoc,
+} from 'firebase/firestore';
+
 import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
 
-type Props = unknown;
+type Props = any;
 type Styles = {
 	container: string;
 	textArea: string;
@@ -22,6 +36,39 @@ const ChatInput = (props: Props) => {
 			'flex flex-row h-fit bg-purple-300 rounded-tr-lg rounded-tl-lg h-[45%] border-2 border-purple-400',
 	};
 
+	const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
+	const { currentUser } = useContext(UserContext);
+
+	const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		const typedText = e.target.value;
+		setTempTypedMssg(typedText);
+	};
+
+	const validateKeyPress = async (
+		e: React.KeyboardEvent<HTMLTextAreaElement>
+	) => {
+		if (e.code === 'Enter') {
+			const uid = currentUser.uid;
+			const mssgFormat = {
+				message: tempTypedMssg,
+				email: currentUser.email,
+				userName: currentUser.displayName,
+				uid: uid,
+				timeSent: Timestamp.now(),
+			};
+
+			const roomRef = doc(db, 'Rooms', props.roomSelectedInfo);
+			await setDoc(
+				roomRef,
+				{
+					messages: arrayUnion(mssgFormat),
+				},
+				{ merge: true }
+			);
+			setTempTypedMssg('');
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.bttnArea}>
@@ -29,7 +76,12 @@ const ChatInput = (props: Props) => {
 				<ChatTypeButton />
 			</div>
 			<div className={styles.mssgArea}>
-				<textarea className={styles.textArea} />
+				<textarea
+					className={styles.textArea}
+					onChange={(e) => updateText(e)}
+					onKeyDown={(e) => validateKeyPress(e)}
+					value={tempTypedMssg}
+				/>
 				<ChatSend />
 			</div>
 		</div>
