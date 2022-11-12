@@ -18,7 +18,7 @@ import {
 	RightBar,
 } from '../exporter';
 
-type Props = unknown;
+type Props = any;
 interface MessageInfo {
 	userName: string;
 	message: string;
@@ -67,31 +67,24 @@ const ChatRooms = (props: Props) => {
 		message: '',
 	});
 
-	const refreshRooms = () => {
+	const refreshMessages = () => {
 		setUpdate((prevState: boolean) => !prevState);
 	};
 
 	const GetRooms = async () => {
-		const roomsRef = collection(db, 'Rooms');
 		const userRoomsQuery = query(
-			roomsRef,
-			where('users', 'array-contains', currentUser.uid)
+			collection(db, 'rooms'),
+			where('user', 'array-contains', currentUser.uid)
 		);
-		// console.log(userRoomsQuery);
 
-		const querySnapshot = await getDocs(userRoomsQuery);
-		!querySnapshot
-			? console.log('No Data')
-			: setUserRooms(querySnapshot.docs.map((doc: any) => doc.id));
+		const userRoomsData = await getDocs(userRoomsQuery);
 
-		if (
-			selectedRoomTitle === '' ||
-			selectedRoomTitle === null ||
-			selectedRoomTitle == undefined
-		) {
+		setUserRooms(userRoomsData.docs.map((doc: any) => doc.id));
+
+		if (userRooms.length > 0) {
 			setSelectedRoomTitle(userRooms[0]);
-			getMessages();
 		}
+		// getMessages();
 	};
 
 	const getMessages = async () => {
@@ -108,27 +101,33 @@ const ChatRooms = (props: Props) => {
 		// }
 	};
 
-	useEffect(() => {
-		return () => {
-			GetRooms();
-		};
-	}, [, update]);
+	const finishSettingData = () => {
+		if (userRooms.length > 0) {
+			setIsLoading(false);
+		}
+	};
 
-	setTimeout(() => setIsLoading(false), 500);
+	useEffect(() => {
+		GetRooms();
+
+		if (userRooms.length > 0) {
+			console.log(userRooms);
+		}
+	}, [update, isLoading]);
 
 	return (
 		<div className={styles.wrapper}>
-			<LeftBar
-				selectedRoom={selectedRoomTitle}
-				listOfRooms={userRooms}
-			/>
+			<LeftBar listOfRooms={userRooms} />
 			<ChatBody
 				roomTitle={selectedRoomTitle}
 				messages={messagesArray}
 			/>
 			<RightBar />
 			<UserControlsContainer />
-			<ChatInput roomSelectedInfo={selectedRoomTitle} />
+			<ChatInput
+				roomSelectedInfo={selectedRoomTitle}
+				callRefreshMessages={refreshMessages}
+			/>
 		</div>
 	);
 };

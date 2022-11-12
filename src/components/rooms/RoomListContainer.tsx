@@ -4,10 +4,13 @@ import RoomContainer from './RoomContainer';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
-import RoomsSearch from './RoomsSearch';
-import { UserRoomsList } from '../exporter';
+import loadingAnim from '../../resources/ui/loading-anim.svg';
 
-type Props = any;
+import RoomsSearch from './RoomsSearch';
+
+interface Props {
+	listOfRooms: string[];
+}
 type Styles = {
 	container: string;
 };
@@ -19,19 +22,31 @@ const RoomListContainer = (props: Props) => {
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
+	const [highlightedRoom, setHighLightedRoom] = useState('');
 
-	const { currentUser } = useContext(UserContext);
+	const roomSelectionHandler = (selection: string) => {
+		setHighLightedRoom(selection);
+		// refreshMessages();
+	};
+
+	useEffect(() => {
+		if (props.listOfRooms.length > 0 && highlightedRoom === '') {
+			setHighLightedRoom(props.listOfRooms[0]);
+			setIsLoading(false);
+		}
+	}, [, props.listOfRooms]);
 
 	return (
 		<div className={styles.container}>
 			{isLoading ? (
-				<p>Loading Rooms...</p>
+				<img src={loadingAnim} />
 			) : (
-				props.userRooms.map((room: any) => (
+				props.listOfRooms.map((room: any) => (
 					<RoomContainer
 						key={Math.random() * 9}
 						title={room}
-						roomIsSelected={props.roomInfoReceived}
+						highlightedRoom={highlightedRoom}
+						roomChanged={roomSelectionHandler}
 					/>
 				))
 			)}

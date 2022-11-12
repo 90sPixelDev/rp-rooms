@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { UserContext } from '../../context/AuthContext';
-import { doc, setDoc, arrayUnion } from 'firebase/firestore';
+import {
+	doc,
+	setDoc,
+	arrayUnion,
+	collection,
+	getDoc,
+} from 'firebase/firestore';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase.config';
 import { SignUpBtn } from '../exporter';
@@ -64,33 +70,62 @@ const SignUpForm = (props: Props) => {
 			});
 	};
 
-	const setUserInfo = async (user: any) => {
-		await updateProfile(user, {
+	const setUserInfo = async (userInfo: any) => {
+		const uid = userInfo.uid;
+		await updateProfile(userInfo, {
 			displayName: 'SetNickname',
 		});
-		await setDoc(doc(db, 'users', user.uid), {
-			uid: user.uid,
-			email: user.email,
+		await setDoc(doc(db, 'users', userInfo.uid), {
+			email: userInfo.email,
 			displayName: 'SetNickname',
 		});
 
-		const newUserDoc = doc(db, 'Rooms', 'Rp Rooms Community');
-		// const newUserDoc2 = doc(db, 'Rooms', 'Test Room');
-		await setDoc(
-			newUserDoc,
-			{
-				users: arrayUnion(user.uid),
-			},
+		const newRoomRef = doc(db, 'rooms', 'RP Rooms Community');
+		const newRoomRef2 = doc(db, 'rooms', 'Test Room');
+		const docSnap = await getDoc(newRoomRef);
+		const docSnap2 = await getDoc(newRoomRef);
 
-			{ merge: true }
-		);
-		// await setDoc(
-		// 	newUserDoc2,
-		// 	{
-		// 		users: arrayUnion(user.uid),
-		// 	},
-		// 	{ merge: true }
-		// );
+		if (docSnap.exists()) {
+			await setDoc(
+				doc(db, 'rooms', 'RP Rooms Community'),
+				{
+					user: arrayUnion(uid),
+				},
+				{ merge: true }
+			);
+		} else {
+			await setDoc(
+				newRoomRef,
+				{
+					roomTitle: 'RP Rooms Community',
+					currentTurn: '',
+					currentChapter: '',
+					user: arrayUnion(uid),
+				},
+				{ merge: true }
+			);
+		}
+		if (docSnap2.exists()) {
+			await setDoc(
+				doc(db, 'rooms', 'Test Room'),
+				{
+					user: arrayUnion(uid),
+				},
+				{ merge: true }
+			);
+		} else {
+			await setDoc(
+				newRoomRef2,
+				{
+					roomTitle: 'Test Room',
+					currentTurn: '',
+					currentChapter: '',
+					user: arrayUnion(uid),
+				},
+				{ merge: true }
+			);
+		}
+
 		navigate('/');
 	};
 

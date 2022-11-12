@@ -2,7 +2,9 @@ import React from 'react';
 
 import { LeftBarTop, RoomListContainer } from '../exporter';
 
-type Props = any;
+interface Props {
+	listOfRooms: string[];
+}
 type Styles = {
 	container: string;
 };
@@ -15,10 +17,7 @@ const LeftBar = (props: Props) => {
 	return (
 		<section className={styles.container}>
 			<LeftBarTop />
-			<RoomListContainer
-			selectedRoom={props.selectedRoom}
-			listOfRooms={props.}
-			/>
+			<RoomListContainer listOfRooms={props.listOfRooms} />
 		</section>
 	);
 };
