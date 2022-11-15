@@ -1,7 +1,9 @@
 import React from 'react';
 import { StoryEvent } from '../exporter';
 
-type Props = unknown;
+interface Props {
+	isOpened: boolean;
+}
 type Styles = {
 	container: string;
 };
@@ -13,11 +15,11 @@ const EventsList = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<StoryEvent />
-			<StoryEvent />
-			<StoryEvent />
-			<StoryEvent />
-			<StoryEvent />
+			<StoryEvent isOpened={props.isOpened} />
+			<StoryEvent isOpened={props.isOpened} />
+			<StoryEvent isOpened={props.isOpened} />
+			<StoryEvent isOpened={props.isOpened} />
+			<StoryEvent isOpened={props.isOpened} />
 		</div>
 	);
 };

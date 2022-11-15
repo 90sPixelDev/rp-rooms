@@ -3,38 +3,66 @@ import { EventsList } from '../exporter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-type Props = unknown;
+interface Props {
+	toggleRightBar: () => void;
+	isOpened: boolean;
+}
 type Styles = {
-	container: string;
-	top: string;
-	textTop: string;
-	arrBtn: string;
+	containerOpen: string;
+	topOpen: string;
+	arrBtnOpen: string;
+	textTopOpen: string;
+	containerClosed: string;
+	topClosed: string;
+	arrBtnClosed: string;
+	textTopClosed: string;
 };
 
 const RightBar = (props: Props) => {
 	const styles: Styles = {
-		container:
-			'h-[98.5%] w-[93%] m-auto bg-purple-300 rounded-2xl shadow-md',
-		top: 'flex flex-row bg-purple-400 rounded-t-2xl',
-		textTop: 'text-center',
-		arrBtn: 'px-2 bg-purple-200 rounded-tl-2xl border-2 border-purple-400',
+		containerOpen:
+			'h-[98.5%] w-[93%] m-auto bg-purple-300 rounded-2xl shadow-md transition',
+		topOpen: 'flex flex-row bg-purple-400 rounded-t-2xl h-7 transition',
+		arrBtnOpen:
+			'absolute px-2 bg-purple-200 rounded-tl-2xl border-2 border-purple-400 hover:bg-purple-600 transition',
+		textTopOpen: 'text-center m-auto transition font-bold',
+		containerClosed: 'transition',
+		topClosed: '',
+		arrBtnClosed:
+			'px-2 bg-purple-400 border-2 border-purple-600 w-full hover:text-purple-200 rounded-bl-2xl transition',
+		textTopClosed: 'transition',
 	};
 
-	const rightArrIcon = (
-		<FontAwesomeIcon icon={solid('arrow-right')} className='' />
-	);
+	const rightArrIcon = <FontAwesomeIcon icon={solid('arrow-right')} />;
+	const leftArrIcon = <FontAwesomeIcon icon={solid('arrow-left')} />;
 
-	return (
-		<div className={styles.container}>
-			<div className={styles.top}>
-				<p className={styles.textTop}>
-					<button className={styles.arrBtn}>
+	if (props.isOpened)
+		return (
+			<div className={styles.containerOpen}>
+				<div className={styles.topOpen}>
+					<button
+						className={styles.arrBtnOpen}
+						onClick={props.toggleRightBar}
+					>
 						{rightArrIcon}
 					</button>
-					Timeline
-				</p>
+					<p className={styles.textTopOpen}>Timeline</p>
+				</div>
+				<EventsList isOpened={props.isOpened} />
 			</div>
-			<EventsList />
+		);
+
+	return (
+		<div className={styles.containerClosed}>
+			<div className={styles.topClosed}>
+				<button
+					className={styles.arrBtnClosed}
+					onClick={props.toggleRightBar}
+				>
+					{leftArrIcon}
+				</button>
+			</div>
+			<EventsList isOpened={props.isOpened} />
 		</div>
 	);
 };

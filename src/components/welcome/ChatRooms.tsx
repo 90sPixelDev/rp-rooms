@@ -29,12 +29,16 @@ type InitialMssgInfo = {
 	message: string;
 };
 type Styles = {
-	wrapper: string;
+	wrapperROpen: string;
+	wrapperRClosed: string;
 };
 
 const ChatRooms = () => {
 	const styles = {
-		wrapper: 'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[85%_minmax(50px,_350px)] absolute',
+		wrapperROpen:
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[85%_minmax(50px,_350px)] absolute',
+		wrapperRClosed:
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_50px] grid-rows-[85%_minmax(50px,_350px)] absolute',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -43,6 +47,7 @@ const ChatRooms = () => {
 	const [selectedRoomTitle, setSelectedRoomTitle] = useState('');
 	const [update, setUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isOpened, setIsOpened] = useState(false);
 
 	const refreshMessages = (newRoomName: string) => {
 		setSelectedRoomTitle(newRoomName);
@@ -61,6 +66,10 @@ const ChatRooms = () => {
 		setUserRooms(userRoomsData.docs.map((doc: any) => doc.id));
 	};
 
+	const toggleRightBar = () => {
+		setIsOpened((prevState: boolean) => !prevState);
+	};
+
 	useEffect(() => {
 		GetRooms();
 	}, [update, isLoading]);
@@ -77,14 +86,34 @@ const ChatRooms = () => {
 		}
 	}, [userRooms.length]);
 
+	if (isOpened)
+		return (
+			<div className={styles.wrapperROpen}>
+				<LeftBar
+					listOfRooms={userRooms}
+					callRefreshMessages={refreshMessages}
+				/>
+				<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
+				<RightBar
+					toggleRightBar={toggleRightBar}
+					isOpened={isOpened}
+				/>
+				<UserControlsContainer />
+				<ChatInput
+					roomSelectedInfo={selectedRoomTitle}
+					callRefreshMessages={refreshMessages}
+				/>
+			</div>
+		);
+
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapperRClosed}>
 			<LeftBar
 				listOfRooms={userRooms}
 				callRefreshMessages={refreshMessages}
 			/>
 			<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
-			<RightBar />
+			<RightBar toggleRightBar={toggleRightBar} isOpened={isOpened} />
 			<UserControlsContainer />
 			<ChatInput
 				roomSelectedInfo={selectedRoomTitle}

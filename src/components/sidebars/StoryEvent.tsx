@@ -1,17 +1,25 @@
 import React from 'react';
 
-type Props = unknown;
+interface Props {
+	isOpened: boolean;
+}
 type Styles = {
-	container: string;
+	containerOpen: string;
+	containerClosed: string;
 };
 
 const StoryEvent = (props: Props) => {
 	const styles: Styles = {
-		container:
+		containerOpen:
 			'bg-purple-100 rounded-2xl px-1 border-2 hover:border-purple-400 hover:bg-purple-200',
+		containerClosed:
+			'bg-purple-100 rounded-2xl px-1 border-2 border-purple-400 hover:border-purple-400 hover:bg-purple-200 overflow-hidden',
 	};
 
-	return <button className={styles.container}>StoryEvent</button>;
+	if (props.isOpened)
+		return <button className={styles.containerOpen}>StoryEvent</button>;
+
+	return <button className={styles.containerClosed}>StoryEvent</button>;
 };
 
 export default StoryEvent;
