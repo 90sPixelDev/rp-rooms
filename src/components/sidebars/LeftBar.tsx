@@ -4,6 +4,7 @@ import { LeftBarTop, RoomListContainer } from '../exporter';
 
 interface Props {
 	listOfRooms: string[];
+	callRefreshMessages: (text: string) => void;
 }
 type Styles = {
 	container: string;
@@ -11,13 +12,16 @@ type Styles = {
 
 const LeftBar = (props: Props) => {
 	const styles: Styles = {
-		container: 'flex flex-col gap-4',
+		container: 'flex flex-col gap-2 bg-purple-100',
 	};
 
 	return (
 		<section className={styles.container}>
 			<LeftBarTop />
-			<RoomListContainer listOfRooms={props.listOfRooms} />
+			<RoomListContainer
+				listOfRooms={props.listOfRooms}
+				callRefreshMessages={props.callRefreshMessages}
+			/>
 		</section>
 	);
 };

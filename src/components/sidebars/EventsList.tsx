@@ -1,5 +1,5 @@
 import React from 'react';
-import StoryEvent from './StoryEvent';
+import { StoryEvent } from '../exporter';
 
 type Props = unknown;
 type Styles = {

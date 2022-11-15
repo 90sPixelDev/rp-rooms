@@ -17,7 +17,7 @@ type Styles = {
 
 const Room = (props: Props) => {
 	const styles: Styles = {
-		container: 'w-[90%] hover:text-purple-600 transition',
+		container: 'w-[90%] hover:text-purple-600 transition cursor-pointer',
 		selectedContainer:
 			'w-[100%] bg-purple-100 rounded-tl-full hover:text-purple-600',
 		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
@@ -26,7 +26,7 @@ const Room = (props: Props) => {
 			'bg-purple-200 h-[10px] transition border-t-2 border-purple-400',
 		selectedTopPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
 		selectedRoomTitle:
-			'bg-purple-100 w-full rounded-tl-lg rounded-r-lg text-left pl-5',
+			'bg-purple-100 w-full rounded-tl-lg rounded-r-lg text-left pl-5 cursor-default',
 		selectedBottomPad:
 			'bg-purple-200 h-[10px] rounded-tr-full transition border-t-2 border-purple-400',
 	};

@@ -10,6 +10,7 @@ import RoomsSearch from './RoomsSearch';
 
 interface Props {
 	listOfRooms: string[];
+	callRefreshMessages: (text: string) => void;
 }
 type Styles = {
 	container: string;
@@ -18,7 +19,7 @@ type Styles = {
 const RoomListContainer = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'bg-purple-200 rounded-2xl ml-4 overflow-y-auto overflow-x-hidden scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
+			'bg-purple-200 rounded-tr-lg overflow-y-auto overflow-x-hidden scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full h-full transition',
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +27,7 @@ const RoomListContainer = (props: Props) => {
 
 	const roomSelectionHandler = (selection: string) => {
 		setHighLightedRoom(selection);
-		// refreshMessages();
+		props.callRefreshMessages(selection);
 	};
 
 	useEffect(() => {

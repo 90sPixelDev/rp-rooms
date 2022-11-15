@@ -101,6 +101,7 @@ const SignUpForm = (props: Props) => {
 					currentTurn: '',
 					currentChapter: '',
 					user: arrayUnion(uid),
+					messages: [],
 				},
 				{ merge: true }
 			);
@@ -121,6 +122,7 @@ const SignUpForm = (props: Props) => {
 					currentTurn: '',
 					currentChapter: '',
 					user: arrayUnion(uid),
+					messages: [],
 				},
 				{ merge: true }
 			);

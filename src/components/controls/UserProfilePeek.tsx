@@ -19,7 +19,7 @@ const UserProfilePeek = (props: Props) => {
 		container: 'flex',
 		names: 'ml-2 mt-2',
 		userName: 'font-bold',
-		nickName: 'italic',
+		nickName: 'italic cursor-pointer',
 		nickNameInput: 'italic w-fit outline-purple-500',
 		charaPic: ' bg-purple-700 w-[50px] h-[50px] rounded-full ml-2 mt-2',
 	};

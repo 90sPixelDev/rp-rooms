@@ -4,6 +4,8 @@ import { db } from '../../firebase.config';
 import { ChatBox } from '../exporter';
 import { UserContext } from '../../context/AuthContext';
 
+import loadingAnim from '../../resources/ui/loading-anim.svg';
+
 interface MessagesInfo {
 	userName: string;
 	message: string;
@@ -12,32 +14,42 @@ interface MessagesInfo {
 }
 type Props = {
 	messages: MessagesInfo[];
+	isLoading: boolean;
 };
 type Styles = {
 	chatBoxContainer: string;
+	loading: string;
 };
 
 const ChatBoxContainer = (props: Props) => {
 	const styles: Styles = {
 		chatBoxContainer:
-			'flex flex-col justify-end gap-2 m-2 h-[96%] overflow-y-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
+			'flex flex-col-reverse gap-2 m-2 h-[96%] overflow-y-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
+		loading: 'h-[50%] w-[50%] m-auto',
 	};
 
-	const [messages, setMessages] = useState<MessagesInfo[] | null>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [refreshMssgs, setRefreshMssgs] = useState<boolean>(false);
 	const { currentUser } = useContext(UserContext);
 
+	useEffect(() => {
+		setRefreshMssgs((prevState) => !prevState);
+	}, [, props.messages]);
+
 	return (
 		<div className={styles.chatBoxContainer}>
-			{props.messages.map((mssg) => (
-				<ChatBox
-					key={Math.random() * 9}
-					charaName={mssg.userName}
-					charaMssg={mssg.message}
-				/>
-			))}
-			{/* <ChatBox /> */}
+			{props.isLoading && (
+				<img className={styles.loading} src={loadingAnim} />
+			)}
+			{!props.isLoading &&
+				props.messages
+					.map((mssg) => (
+						<ChatBox
+							key={Math.random() * 9}
+							charaName={mssg.userName}
+							charaMssg={mssg.message}
+						/>
+					))
+					.reverse()}
 		</div>
 	);
 };

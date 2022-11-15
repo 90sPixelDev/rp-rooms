@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
+
 import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
 interface MessageInfo {
@@ -12,35 +15,56 @@ type InitialMssgInfo = {
 };
 interface Props {
 	roomTitle: string;
-	messages: MessageInfo[];
+	refresh: boolean;
 }
 type Styles = {
 	body: string;
-	chatBoxContainer: string;
 };
 
 const ChatBody = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-100 rounded-2xl',
-		chatBoxContainer: 'flex flex-col gap-2',
+		body: 'bg-purple-100 rounded-b-2xl h-full',
 	};
 
-	const [users, setUsers] = useState({});
+	const [messagesArray, setMessagesArray] = useState<MessageInfo[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 
 	const getRoomInfo = () => {
 		// TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters, as well as Room messages of course and then conver to need state formate and pass down as prop to children
 	};
 
-	// useEffect(() => {
-	// 	const unsub = () => console.log(props.messages);
+	const getMessages = async () => {
+		const roomRef = doc(db, 'rooms', props.roomTitle);
+		const messagesDocSnap = await getDoc(roomRef);
 
-	// 	return unsub;
-	// }, [, props.messages]);
+		if (messagesDocSnap.exists()) {
+			const mssgArr = messagesDocSnap.data().messages;
+
+			setMessagesArray(mssgArr.map((msg: any) => msg));
+		} else {
+			// doc.data() will be undefined in this case
+			console.log('No such document!');
+		}
+	};
+
+	useEffect(() => {
+		props.roomTitle && getMessages();
+	}, [props.roomTitle, props.refresh]);
+
+	useEffect(() => {
+		if (messagesArray[0] !== undefined) {
+			setIsLoading(false);
+		}
+	}, [messagesArray[0]]);
 
 	return (
 		<div className={styles.body}>
 			<RoomTopTitle />
-			<ChatBoxContainer messages={props.messages} />
+			<ChatBoxContainer
+				messages={messagesArray}
+				isLoading={isLoading}
+			/>
 		</div>
 	);
 };

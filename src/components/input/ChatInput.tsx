@@ -17,7 +17,7 @@ import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
 
 interface Props {
 	roomSelectedInfo: string;
-	callRefreshMessages: () => void;
+	callRefreshMessages: (text: string) => void;
 }
 type Styles = {
 	container: string;
@@ -60,16 +60,11 @@ const ChatInput = (props: Props) => {
 				timeSent: Timestamp.now(),
 			};
 
-			const roomRef = collection(
-				db,
-				'Rooms',
-				props.roomSelectedInfo,
-				'messages'
-			);
-			await addDoc(roomRef, {
-				uid: { mssgFormat },
+			const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
+			await updateDoc(roomRef, {
+				messages: arrayUnion({ ...mssgFormat }),
 			});
-			props.callRefreshMessages();
+			props.callRefreshMessages(props.roomSelectedInfo);
 			setTempTypedMssg('');
 		}
 	};

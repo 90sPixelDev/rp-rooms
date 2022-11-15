@@ -9,7 +9,7 @@ type Styles = {
 const RoomTopTitle = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'bg-purple-300 h-fit w-[98%] py-1 rounded-2xl mx-auto drop-shadow-md shadow-purple-500',
+			'bg-purple-300 h-fit w-[98%] py-1 rounded-b-2xl mx-auto drop-shadow-md shadow-purple-500',
 		roomTitle: 'flow-root m-auto font-bold w-fit',
 	};
 
