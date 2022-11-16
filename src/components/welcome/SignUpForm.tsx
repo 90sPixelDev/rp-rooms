@@ -99,7 +99,10 @@ const SignUpForm = (props: Props) => {
 				{
 					roomTitle: 'RP Rooms Community',
 					currentTurn: '',
-					currentChapter: '',
+					currentChapter: {
+						num: '',
+						desc: '',
+					},
 					user: arrayUnion(uid),
 					messages: [],
 				},
@@ -120,7 +123,10 @@ const SignUpForm = (props: Props) => {
 				{
 					roomTitle: 'Test Room',
 					currentTurn: '',
-					currentChapter: '',
+					currentChapter: {
+						num: '',
+						desc: '',
+					},
 					user: arrayUnion(uid),
 					messages: [],
 				},

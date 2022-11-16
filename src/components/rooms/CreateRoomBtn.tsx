@@ -9,7 +9,7 @@ type Styles = {
 
 const CreateRoomBtn = (props: Props) => {
 	const styles: Styles = {
-		btn: 'bg-purple-300 mb-4 w-6 rounded-r-lg',
+		btn: 'bg-purple-400 mb-4 w-6 rounded-r-lg hover:text-purple-200 border-t-2 border-r-2 border-b-2 border-purple-600',
 	};
 
 	const addRoomIcon = <FontAwesomeIcon icon={solid('plus')} />;

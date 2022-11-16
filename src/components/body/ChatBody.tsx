@@ -27,6 +27,7 @@ const ChatBody = (props: Props) => {
 	};
 
 	const [messagesArray, setMessagesArray] = useState<MessageInfo[]>([]);
+	const [currentCh, setCurrentCh] = useState<string>('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
 
@@ -36,10 +37,11 @@ const ChatBody = (props: Props) => {
 
 	const getMessages = async () => {
 		const roomRef = doc(db, 'rooms', props.roomTitle);
-		const messagesDocSnap = await getDoc(roomRef);
+		const docSnap = await getDoc(roomRef);
 
-		if (messagesDocSnap.exists()) {
-			const mssgArr = messagesDocSnap.data().messages;
+		if (docSnap.exists()) {
+			setCurrentCh(docSnap.data().currentCh);
+			const mssgArr = docSnap.data().messages;
 
 			setMessagesArray(mssgArr.map((msg: any) => msg));
 		} else {
@@ -60,7 +62,7 @@ const ChatBody = (props: Props) => {
 
 	return (
 		<div className={styles.body}>
-			<RoomTopTitle />
+			<RoomTopTitle currentCh={currentCh} />
 			<ChatBoxContainer
 				messages={messagesArray}
 				isLoading={isLoading}

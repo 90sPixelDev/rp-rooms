@@ -76,9 +76,10 @@ const ChatRooms = () => {
 
 	useEffect(() => {
 		if (
-			userRooms.length > 0 &&
-			(selectedRoomTitle === null ||
-				selectedRoomTitle === undefined ||
+			userRooms != undefined &&
+			userRooms != null &&
+			(selectedRoomTitle == null ||
+				selectedRoomTitle == undefined ||
 				selectedRoomTitle == '')
 		) {
 			setSelectedRoomTitle(userRooms[0]);

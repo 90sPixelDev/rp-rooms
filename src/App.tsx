@@ -40,16 +40,6 @@ function App() {
 		} else return children;
 	};
 
-	// const saveElem = (
-	// 	<div className={styles.wrapper}>
-	// 		<LeftBar />
-	// 		<ChatBody />
-	// 		<RightBar />
-	// 		<UserControlsContainer />
-	// 		<ChatInput />
-	// 	</div>
-	// );
-
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -58,7 +48,9 @@ function App() {
 						index
 						element={
 							<ProtectedRoute>
-								<ChatRooms />
+								<div id='portal-container'>
+									<ChatRooms />
+								</div>
 							</ProtectedRoute>
 						}
 					/>
