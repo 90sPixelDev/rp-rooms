@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 
 import { RoomsSearch } from '../exporter';
 
-type Props = unknown;
+interface Props {
+	callRefreshMessages: (roomTitle: string) => void;
+}
 type Styles = {
 	container: string;
 	roomsTitle: string;
@@ -36,7 +38,7 @@ const LeftBarTop = (props: Props) => {
 				{homeIcon}
 				<p className={styles.roomsTitle}>RP Rooms</p>
 			</Link>
-			<RoomsSearch />
+			<RoomsSearch callRefreshMessages={props.callRefreshMessages} />
 		</section>
 	);
 };

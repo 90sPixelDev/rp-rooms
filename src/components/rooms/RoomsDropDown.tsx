@@ -5,6 +5,7 @@ import loadingAnim from '../../resources/ui/loading-anim.svg';
 
 interface Props {
 	roomsSearched: string[];
+	addSelectedRoom: (room: string) => void;
 }
 // type Props = any;
 type Styles = {
@@ -23,12 +24,9 @@ const RoomsDropDown = (props: Props) => {
 
 	useEffect(() => {
 		if (props.roomsSearched.length > 0) {
-			console.log('Rooms found: ' + props.roomsSearched);
 			setIsLoading(false);
 		}
 	}, [props.roomsSearched]);
-
-	// console.log(props.roomsSearched);
 
 	return (
 		<div className={styles.container}>
@@ -36,12 +34,13 @@ const RoomsDropDown = (props: Props) => {
 				<img src={loadingAnim} />
 			) : (
 				props.roomsSearched.map((room: string) => (
-					<DropDownItem title={room} key={Math.random() * 9} />
+					<DropDownItem
+						title={room}
+						key={Math.random() * 9}
+						addSelectedRoom={props.addSelectedRoom}
+					/>
 				))
 			)}
-			{/* {props.roomsSearched.map((room: any) => (
-				<DropDownItem title={room} key={Math.random() * 9} />
-			))} */}
 		</div>
 	);
 };

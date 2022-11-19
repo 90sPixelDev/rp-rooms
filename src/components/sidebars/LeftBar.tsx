@@ -17,7 +17,7 @@ const LeftBar = (props: Props) => {
 
 	return (
 		<section className={styles.container}>
-			<LeftBarTop />
+			<LeftBarTop callRefreshMessages={props.callRefreshMessages} />
 			<RoomListContainer
 				listOfRooms={props.listOfRooms}
 				callRefreshMessages={props.callRefreshMessages}

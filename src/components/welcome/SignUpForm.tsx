@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import react, { useState, useEffect, useReducer } from 'react';
 import { UserContext } from '../../context/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import {
 	doc,
 	setDoc,
@@ -24,6 +26,9 @@ type Styles = {
 	text: string;
 	textLink: string;
 	errMssg: string;
+	passSection: string;
+	eyeIconShow: string;
+	eyeIconHide: string;
 };
 
 const SignUpForm = (props: Props) => {
@@ -32,21 +37,39 @@ const SignUpForm = (props: Props) => {
 		container:
 			'bg-purple-400 min-h-[200px] min-w-[300px] rounded-lg shadow-lg shadow-purple-900',
 		title: 'text-lg text-center p-2 bg-purple-300 rounded-t-lg mb-4',
-		formContainer: 'flex flex-col place-items-center',
+		formContainer: 'flex flex-col',
 		userInput:
-			'p-1 w-fit bg-transparent border-b-2 border-purple-200/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white',
+			'p-1 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition',
 		emailInput:
-			'p-1 w-fit mt-2 bg-transparent border-b-2 border-purple-200/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white',
+			'p-1 mt-2 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition',
 		passInput:
-			'p-1 w-fit mt-2 bg-transparent border-b-2 border-purple-200/90 focus:border-white outline-none  placeholder-purple-300 caret-purple-100 text-white ',
+			'p-1 mt-2 ml-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none  placeholder-purple-300 caret-purple-100 text-white transition',
 		text: 'text-center',
 		textLink: 'underline text-purple-900 hover:text-purple-200',
 		errMssg: 'text-red-700 font-bold w-full text-center',
+		passSection: 'flex flex-row items-center ',
+		eyeIconShow:
+			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 flow-root rounded-lg',
+		eyeIconHide:
+			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 rounded-lg',
 	};
 
 	const navigate = useNavigate();
 
 	const [err, setErr] = useState(false);
+
+	const [email, setEmail] = useState('');
+	const [emailValid, setEmailValid] = useState(false);
+
+	const [pass, setPass] = useState('');
+	const [passConfirm, setPassConfirm] = useState('');
+	const [passwordNotDiff, setPasswordNotDiff] = useState(false);
+	const [{}] = 
+
+	const [formIsValid, setFormIsValid] = useState(false);
+
+	const [showPassword, setShowPassword] = useState(false);
+	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -100,8 +123,8 @@ const SignUpForm = (props: Props) => {
 					roomTitle: 'RP Rooms Community',
 					currentTurn: '',
 					currentChapter: {
-						num: '',
-						desc: '',
+						num: '0',
+						desc: 'A new beginning!',
 					},
 					user: arrayUnion(uid),
 					messages: [],
@@ -124,8 +147,8 @@ const SignUpForm = (props: Props) => {
 					roomTitle: 'Test Room',
 					currentTurn: '',
 					currentChapter: {
-						num: '',
-						desc: '',
+						num: '0',
+						desc: 'A new beginning!',
 					},
 					user: arrayUnion(uid),
 					messages: [],
@@ -133,9 +156,125 @@ const SignUpForm = (props: Props) => {
 				{ merge: true }
 			);
 		}
-
 		navigate('/');
 	};
+
+	const passUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPass((prevState) => (prevState = e.target.value));
+
+		pass === passConfirm
+			? setPasswordNotDiff(false)
+			: setPasswordNotDiff(true);
+	};
+	const passConfirmUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPassConfirm((prevState) => (prevState = e.target.value));
+
+		pass === passConfirm
+			? setPasswordNotDiff(false)
+			: setPasswordNotDiff(true);
+	};
+
+	useEffect(() => {
+		const validatePass = setTimeout(() => {
+			setFormIsValid(emailValid && passwordNotDiff);
+		}, 500);
+
+		return () => {
+			clearTimeout(validatePass);
+		};
+	}, [emailValid, passwordNotDiff]);
+
+	const validateEmail = (e: react.ChangeEvent<HTMLInputElement>) => {
+		setEmail((prevState) => (prevState = e.target.value));
+
+		if (e.target.value.includes('@') && e.target.value.includes('.')) {
+			setEmailValid(true);
+		} else {
+			setEmailValid(false);
+		}
+	};
+
+	const passwordConfirmShow = (
+		<div className={styles.passSection}>
+			<input
+				type='test'
+				placeholder='Confirm Password'
+				className={styles.passInput}
+				onChange={(e) => {
+					passConfirmUpdate(e);
+				}}
+				required
+			/>
+			<FontAwesomeIcon
+				icon={solid('eye')}
+				className={styles.eyeIconShow}
+				onClick={() => {
+					setShowPasswordConfirm((prevState) => !prevState);
+				}}
+			/>
+		</div>
+	);
+	const passwordConfirmHide = (
+		<div className={styles.passSection}>
+			<input
+				type='password'
+				placeholder='Confirm Password'
+				className={styles.passInput}
+				onChange={(e) => {
+					passConfirmUpdate(e);
+				}}
+				required
+			/>
+			<FontAwesomeIcon
+				icon={solid('eye-slash')}
+				className={styles.eyeIconShow}
+				onClick={() => {
+					setShowPasswordConfirm((prevState) => !prevState);
+				}}
+			/>
+		</div>
+	);
+
+	const passwordShow = (
+		<div className={styles.passSection}>
+			<input
+				type='text'
+				placeholder='Password'
+				className={styles.passInput}
+				onChange={(e) => {
+					passUpdate(e);
+				}}
+				required
+			/>
+			<FontAwesomeIcon
+				icon={solid('eye')}
+				className={styles.eyeIconShow}
+				onClick={() => {
+					setShowPassword((prevState) => !prevState);
+				}}
+			/>
+		</div>
+	);
+	const passwordHide = (
+		<div className={styles.passSection}>
+			<input
+				type='password'
+				placeholder='Password'
+				className={styles.passInput}
+				onChange={(e) => {
+					passUpdate(e);
+				}}
+				required
+			/>
+			<FontAwesomeIcon
+				icon={solid('eye-slash')}
+				className={styles.eyeIconHide}
+				onClick={() => {
+					setShowPassword((prevState) => !prevState);
+				}}
+			/>
+		</div>
+	);
 
 	return (
 		<div className={styles.body}>
@@ -155,22 +294,22 @@ const SignUpForm = (props: Props) => {
 						type='email'
 						placeholder='Email'
 						className={styles.emailInput}
+						onChange={(e) => {
+							validateEmail(e);
+						}}
 						required
 					/>
-					<input
-						type='password'
-						placeholder='Password'
-						className={styles.passInput}
-						required
-					/>
-					{/* <input
-					type='password'
-					placeholder='Confirm Password'
-					className={styles.passInput}
-					required
-				/> */}
+					{showPassword ? passwordShow : passwordHide}
+					{showPasswordConfirm
+						? passwordConfirmShow
+						: passwordConfirmHide}
 					<SignUpBtn />
 				</form>
+				{!formIsValid && (
+					<p className={styles.errMssg}>
+						Password is not the same or email is invalid!
+					</p>
+				)}
 				{err && (
 					<p className={styles.errMssg}>
 						Oh no! Something went wrong!

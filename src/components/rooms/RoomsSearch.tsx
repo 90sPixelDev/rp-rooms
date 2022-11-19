@@ -13,7 +13,9 @@ import { UserContext } from '../../context/AuthContext';
 
 import { CreateRoomBtn, RoomsDropDown } from '../exporter';
 
-type Props = unknown;
+interface Props {
+	callRefreshMessages: (roomTitle: string) => void;
+}
 type Styles = {
 	section: string;
 	inputBox: string;
@@ -39,6 +41,8 @@ const RoomsSearch = (props: Props) => {
 	const { currentUser } = useContext(UserContext);
 
 	const addRoom = async (inputText: Query) => {
+		console.log('Adding Room!');
+
 		try {
 			if (inputText.length <= 3) {
 				throw new Error(`\"${inputText}\" is an invalid search!`);
@@ -77,47 +81,22 @@ const RoomsSearch = (props: Props) => {
 			console.error(`Message: ${err}`);
 			setInputText('');
 		}
+		props.callRefreshMessages(inputText);
 	};
 
-	// const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	e.preventDefault();
-	// 	const lowerInput = e.target.value.toLowerCase();
-	// 	setInputText((prevstate) => (prevstate = e.target.value));
-	// 	const roomSearchList: string[] = [];
-
-	// 	e.target.value.length > 0
-	// 		? setIsSearching(true)
-	// 		: setIsSearching(false);
-
-	// 	try {
-	// 		const roomSearch = await getDocs(collection(db, 'rooms'));
-	// 		roomSearch.forEach((doc) => {
-	// 			const lower = doc.data().roomTitle.toLowerCase();
-	// 			if (lower.includes(lowerInput)) {
-	// 				roomSearchList.push(lower.roomTitle);
-	// 			}
-	// 			setSearchedRooms(roomSearchList.map((rt) => rt));
-	// 		});
-	// 	} catch (err) {
-	// 		setErr(true);
-	// 		console.error(`Message: ${err}`);
-	// 	}
-	// 	console.log(isSearching);
-	// };
 	const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		const lowerInput = e.target.value.toLowerCase();
 		setInputText((prevstate) => (prevstate = e.target.value));
 		const roomSearchList: string[] = [];
 
-		lowerInput.length > 0 ? setIsSearching(true) : setIsSearching(false);
+		lowerInput.length > 3 ? setIsSearching(true) : setIsSearching(false);
 
 		try {
 			const roomSearch = await getDocs(collection(db, 'rooms'));
 			roomSearch.forEach((doc) => {
 				const lower = doc.data().roomTitle.toLowerCase();
 				if (lower.includes(lowerInput)) {
-					console.log(lower);
 					roomSearchList.push(doc.data().roomTitle);
 				}
 				setSearchedRooms(roomSearchList.map((rt) => rt));
@@ -126,7 +105,14 @@ const RoomsSearch = (props: Props) => {
 			setErr(true);
 			console.error(`Message: ${err}`);
 		}
-		console.log(isSearching);
+	};
+
+	const unFocusRoomSearch = () => {
+		setTimeout(() => {
+			setInputText('');
+			setSearchedRooms([]);
+			setIsSearching(false);
+		}, 300);
 	};
 
 	return (
@@ -144,9 +130,7 @@ const RoomsSearch = (props: Props) => {
 						setIsFocused(true);
 					}}
 					onBlur={() => {
-						setInputText('');
-						setSearchedRooms([]);
-						setIsSearching(false);
+						unFocusRoomSearch();
 					}}
 					name=''
 					id=''
@@ -154,7 +138,12 @@ const RoomsSearch = (props: Props) => {
 				/>
 				<CreateRoomBtn onBtnClicked={() => addRoom(inputText)} />
 			</div>
-			{isSearching && <RoomsDropDown roomsSearched={searchedRooms} />}
+			{isSearching && (
+				<RoomsDropDown
+					roomsSearched={searchedRooms}
+					addSelectedRoom={addRoom}
+				/>
+			)}
 		</section>
 	);
 };
