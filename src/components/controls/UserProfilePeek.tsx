@@ -19,32 +19,34 @@ const UserProfilePeek = (props: Props) => {
 		container: 'flex',
 		names: 'ml-2 mt-2',
 		userName: 'font-bold',
-		nickName: 'italic cursor-pointer',
-		nickNameInput: 'italic w-fit outline-purple-500',
+		nickName: 'underline cursor-pointer',
+		nickNameInput: 'italic w-[140px] outline-purple-500',
 		charaPic: ' bg-purple-700 w-[50px] h-[50px] rounded-full ml-2 mt-2',
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
 	const { currentUser } = useContext(UserContext);
-	// const usersRef = doc(db, 'users', currentUser.uid);
 	const [isPTag, setPTag] = useState(true);
 
-	const validateNickname = async (e: React.MouseEvent<HTMLInputElement>) => {
+	const validateNickname = async (
+		e: React.KeyboardEvent<HTMLInputElement>
+	) => {
 		const newNickname = e.currentTarget.value;
-		if (
-			newNickname !== ' ' &&
-			newNickname.length > 2 &&
-			newNickname.length < 20
-		) {
-			await updateProfile(currentUser, {
-				displayName: newNickname,
-			});
-			setPTag(true);
-
-			console.log('Updated nickname!');
-		} else {
-			console.log('Nickname is not valid!');
-			setPTag(true);
+		if (e.key === 'Enter') {
+			if (
+				newNickname !== ' ' &&
+				newNickname.length > 3 &&
+				newNickname.length < 17
+			) {
+				await updateProfile(currentUser, {
+					displayName: newNickname,
+				});
+				setPTag(true);
+				console.log('Updated nickname!');
+			} else {
+				console.log('Nickname is not valid!');
+				setPTag(true);
+			}
 		}
 	};
 
@@ -75,7 +77,7 @@ const UserProfilePeek = (props: Props) => {
 					<input
 						className={styles.nickNameInput}
 						autoFocus
-						onClick={(e) => validateNickname(e)}
+						onKeyDown={(e) => validateNickname(e)}
 						type='text'
 					/>
 				)}

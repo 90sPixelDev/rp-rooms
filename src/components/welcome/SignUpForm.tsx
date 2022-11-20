@@ -58,15 +58,11 @@ const SignUpForm = (props: Props) => {
 
 	const [err, setErr] = useState(false);
 
+	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [emailValid, setEmailValid] = useState(false);
 
 	const [pass, setPass] = useState('');
-	const [passConfirm, setPassConfirm] = useState('');
-	const [passwordNotDiff, setPasswordNotDiff] = useState(false);
-	const [{}] = 
-
-	const [formIsValid, setFormIsValid] = useState(false);
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -77,30 +73,32 @@ const SignUpForm = (props: Props) => {
 		const emailInput = e.currentTarget[1] as HTMLInputElement;
 		const passwordInput = e.currentTarget[2] as HTMLInputElement;
 
-		const res = await createUserWithEmailAndPassword(
-			auth,
-			emailInput.value,
-			passwordInput.value
-		)
-			.then((userCredential) => {
-				const user = userCredential.user;
-				setUserInfo(user);
-			})
-			.catch((err) => {
-				const errorCode = err.code;
-				const errorMessage = err.message;
-				setErr(true);
-			});
+		if (emailValid && username.length > 3) {
+			const res = await createUserWithEmailAndPassword(
+				auth,
+				emailInput.value,
+				passwordInput.value
+			)
+				.then((userCredential) => {
+					const user = userCredential.user;
+					setUserInfo(user);
+				})
+				.catch((err) => {
+					const errorCode = err.code;
+					const errorMessage = err.message;
+					setErr(true);
+				});
+		}
 	};
 
 	const setUserInfo = async (userInfo: any) => {
 		const uid = userInfo.uid;
 		await updateProfile(userInfo, {
-			displayName: 'SetNickname',
+			displayName: username,
 		});
 		await setDoc(doc(db, 'users', userInfo.uid), {
 			email: userInfo.email,
-			displayName: 'SetNickname',
+			displayName: username,
 		});
 
 		const newRoomRef = doc(db, 'rooms', 'RP Rooms Community');
@@ -161,28 +159,7 @@ const SignUpForm = (props: Props) => {
 
 	const passUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setPass((prevState) => (prevState = e.target.value));
-
-		pass === passConfirm
-			? setPasswordNotDiff(false)
-			: setPasswordNotDiff(true);
 	};
-	const passConfirmUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setPassConfirm((prevState) => (prevState = e.target.value));
-
-		pass === passConfirm
-			? setPasswordNotDiff(false)
-			: setPasswordNotDiff(true);
-	};
-
-	useEffect(() => {
-		const validatePass = setTimeout(() => {
-			setFormIsValid(emailValid && passwordNotDiff);
-		}, 500);
-
-		return () => {
-			clearTimeout(validatePass);
-		};
-	}, [emailValid, passwordNotDiff]);
 
 	const validateEmail = (e: react.ChangeEvent<HTMLInputElement>) => {
 		setEmail((prevState) => (prevState = e.target.value));
@@ -194,46 +171,40 @@ const SignUpForm = (props: Props) => {
 		}
 	};
 
-	const passwordConfirmShow = (
-		<div className={styles.passSection}>
-			<input
-				type='test'
-				placeholder='Confirm Password'
-				className={styles.passInput}
-				onChange={(e) => {
-					passConfirmUpdate(e);
-				}}
-				required
-			/>
-			<FontAwesomeIcon
-				icon={solid('eye')}
-				className={styles.eyeIconShow}
-				onClick={() => {
-					setShowPasswordConfirm((prevState) => !prevState);
-				}}
-			/>
-		</div>
-	);
-	const passwordConfirmHide = (
-		<div className={styles.passSection}>
-			<input
-				type='password'
-				placeholder='Confirm Password'
-				className={styles.passInput}
-				onChange={(e) => {
-					passConfirmUpdate(e);
-				}}
-				required
-			/>
-			<FontAwesomeIcon
-				icon={solid('eye-slash')}
-				className={styles.eyeIconShow}
-				onClick={() => {
-					setShowPasswordConfirm((prevState) => !prevState);
-				}}
-			/>
-		</div>
-	);
+	// const passwordConfirmShow = (
+	// 	<div className={styles.passSection}>
+	// 		<input
+	// 			type='test'
+	// 			placeholder='Confirm Password'
+	// 			className={styles.passInput}
+	// 			required
+	// 		/>
+	// 		<FontAwesomeIcon
+	// 			icon={solid('eye')}
+	// 			className={styles.eyeIconShow}
+	// 			onClick={() => {
+	// 				setShowPasswordConfirm((prevState) => !prevState);
+	// 			}}
+	// 		/>
+	// 	</div>
+	// );
+	// const passwordConfirmHide = (
+	// 	<div className={styles.passSection}>
+	// 		<input
+	// 			type='password'
+	// 			placeholder='Confirm Password'
+	// 			className={styles.passInput}
+	// 			required
+	// 		/>
+	// 		<FontAwesomeIcon
+	// 			icon={solid('eye-slash')}
+	// 			className={styles.eyeIconShow}
+	// 			onClick={() => {
+	// 				setShowPasswordConfirm((prevState) => !prevState);
+	// 			}}
+	// 		/>
+	// 	</div>
+	// );
 
 	const passwordShow = (
 		<div className={styles.passSection}>
@@ -241,9 +212,6 @@ const SignUpForm = (props: Props) => {
 				type='text'
 				placeholder='Password'
 				className={styles.passInput}
-				onChange={(e) => {
-					passUpdate(e);
-				}}
 				required
 			/>
 			<FontAwesomeIcon
@@ -288,6 +256,12 @@ const SignUpForm = (props: Props) => {
 						type='text'
 						placeholder='Username'
 						className={styles.userInput}
+						onChange={(e) => {
+							setUsername(
+								(prevState) =>
+									(prevState = e.target.value)
+							);
+						}}
 						required
 					/>
 					<input
@@ -300,16 +274,8 @@ const SignUpForm = (props: Props) => {
 						required
 					/>
 					{showPassword ? passwordShow : passwordHide}
-					{showPasswordConfirm
-						? passwordConfirmShow
-						: passwordConfirmHide}
 					<SignUpBtn />
 				</form>
-				{!formIsValid && (
-					<p className={styles.errMssg}>
-						Password is not the same or email is invalid!
-					</p>
-				)}
 				{err && (
 					<p className={styles.errMssg}>
 						Oh no! Something went wrong!

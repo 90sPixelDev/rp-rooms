@@ -64,8 +64,8 @@ const RoomsSearch = (props: Props) => {
 						roomTitle: inputText,
 						currentTurn: '',
 						currentChapter: {
-							num: '',
-							desc: '',
+							num: '0',
+							desc: 'A New Beginning!',
 						},
 						user: arrayUnion(currentUser.uid),
 						messages: [],

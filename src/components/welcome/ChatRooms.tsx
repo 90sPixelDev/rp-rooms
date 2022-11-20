@@ -36,9 +36,9 @@ type Styles = {
 const ChatRooms = () => {
 	const styles = {
 		wrapperROpen:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[85%_minmax(50px,_350px)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
 		wrapperRClosed:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_50px] grid-rows-[85%_minmax(50px,_350px)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
 	};
 
 	const { currentUser } = useContext(UserContext);

@@ -10,10 +10,9 @@ type Styles = {
 
 const StoryEvent = (props: Props) => {
 	const styles: Styles = {
-		containerOpen:
-			'bg-purple-100 rounded-2xl px-1 border-2 hover:border-purple-400 hover:bg-purple-200',
+		containerOpen: 'bg-purple-100 rounded-2xl px-1 hover:bg-purple-200',
 		containerClosed:
-			'bg-purple-100 rounded-2xl px-1 border-2 border-purple-400 hover:border-purple-400 hover:bg-purple-200 overflow-hidden',
+			'bg-purple-100 rounded-2xl px-1 hover:bg-purple-300 overflow-hidden',
 	};
 
 	if (props.isOpened)
