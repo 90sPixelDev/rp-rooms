@@ -47,7 +47,8 @@ const ChatRooms = () => {
 	const [selectedRoomTitle, setSelectedRoomTitle] = useState('');
 	const [update, setUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOpened, setIsOpened] = useState(false);
+	const [isRBOpened, setRBIsOpened] = useState(false);
+	const [isLBOpened, setLBIsOpened] = useState(false);
 
 	const refreshMessages = (newRoomName: string) => {
 		setSelectedRoomTitle(newRoomName);
@@ -67,7 +68,10 @@ const ChatRooms = () => {
 	};
 
 	const toggleRightBar = () => {
-		setIsOpened((prevState: boolean) => !prevState);
+		setRBIsOpened((prevState: boolean) => !prevState);
+	};
+	const toggleLeftBar = () => {
+		setLBIsOpened((prevState: boolean) => !prevState);
 	};
 
 	useEffect(() => {
@@ -87,17 +91,18 @@ const ChatRooms = () => {
 		}
 	}, [userRooms.length]);
 
-	if (isOpened)
+	if (isRBOpened)
 		return (
 			<div className={styles.wrapperROpen}>
 				<LeftBar
 					listOfRooms={userRooms}
 					callRefreshMessages={refreshMessages}
+					toggleLeftBar={toggleLeftBar}
 				/>
 				<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
 				<RightBar
 					toggleRightBar={toggleRightBar}
-					isOpened={isOpened}
+					isOpened={isRBOpened}
 				/>
 				<UserControlsContainer />
 				<ChatInput
@@ -112,9 +117,13 @@ const ChatRooms = () => {
 			<LeftBar
 				listOfRooms={userRooms}
 				callRefreshMessages={refreshMessages}
+				toggleLeftBar={toggleLeftBar}
 			/>
 			<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
-			<RightBar toggleRightBar={toggleRightBar} isOpened={isOpened} />
+			<RightBar
+				toggleRightBar={toggleRightBar}
+				isOpened={isRBOpened}
+			/>
 			<UserControlsContainer />
 			<ChatInput
 				roomSelectedInfo={selectedRoomTitle}

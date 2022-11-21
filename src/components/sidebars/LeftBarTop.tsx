@@ -7,12 +7,17 @@ import { RoomsSearch } from '../exporter';
 
 interface Props {
 	callRefreshMessages: (roomTitle: string) => void;
+	toggleLeftBar: () => void;
 }
 type Styles = {
 	container: string;
 	roomsTitle: string;
 	top: string;
+	homeLink: string;
 	icon: string;
+	arrBtnOpen: string;
+	arrBtnClose: string;
+	topClosed: string;
 };
 
 const LeftBarTop = (props: Props) => {
@@ -20,9 +25,17 @@ const LeftBarTop = (props: Props) => {
 		container:
 			'flex flex-col gap-4 border-purple-100 bg-purple-300 rounded-br-lg',
 		roomsTitle: 'text-center font-bold text-lg',
-		top: 'flex flex-row py-2 bg-purple-400 justify-center items-center gap-4 rounded-br-lg',
+		top: 'flex flex-row ',
+		homeLink:
+			'flex flex-row py-2 bg-purple-400 justify-center items-center gap-2 rounded-br-lg',
 		icon: '',
+		arrBtnOpen: '',
+		arrBtnClose: 'bg-purple-200 h-full w-full',
+		topClosed: '',
 	};
+
+	const rightArrIcon = <FontAwesomeIcon icon={solid('arrow-right')} />;
+	const leftArrIcon = <FontAwesomeIcon icon={solid('arrow-left')} />;
 
 	const homeIcon = (
 		<FontAwesomeIcon
@@ -34,10 +47,20 @@ const LeftBarTop = (props: Props) => {
 
 	return (
 		<section className={styles.container}>
-			<Link className={styles.top} to='/'>
-				{homeIcon}
-				<p className={styles.roomsTitle}>RP Rooms</p>
-			</Link>
+			<div className={styles.top}>
+				<Link className={styles.homeLink} to='/'>
+					{homeIcon}
+					<p className={styles.roomsTitle}>RP Rooms</p>
+				</Link>
+				<div className={styles.topClosed}>
+					<button
+						className={styles.arrBtnClose}
+						onClick={props.toggleLeftBar}
+					>
+						{leftArrIcon}
+					</button>
+				</div>
+			</div>
 			<RoomsSearch callRefreshMessages={props.callRefreshMessages} />
 		</section>
 	);

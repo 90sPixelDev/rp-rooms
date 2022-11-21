@@ -14,7 +14,7 @@ type Styles = {
 	textTopOpen: string;
 	containerClosed: string;
 	topClosed: string;
-	arrBtnClosed: string;
+	arrBtnClose: string;
 	textTopClosed: string;
 };
 
@@ -28,13 +28,15 @@ const RightBar = (props: Props) => {
 		textTopOpen: 'text-center m-auto transition font-bold',
 		containerClosed: 'transition',
 		topClosed: '',
-		arrBtnClosed:
+		arrBtnClose:
 			'px-2 bg-purple-400 border-2 border-purple-600 w-full hover:text-purple-200 rounded-bl-2xl transition',
 		textTopClosed: 'transition',
 	};
 
 	const rightArrIcon = <FontAwesomeIcon icon={solid('arrow-right')} />;
 	const leftArrIcon = <FontAwesomeIcon icon={solid('arrow-left')} />;
+
+	console.log(props.isOpened);
 
 	if (props.isOpened)
 		return (
@@ -56,7 +58,7 @@ const RightBar = (props: Props) => {
 		<div className={styles.containerClosed}>
 			<div className={styles.topClosed}>
 				<button
-					className={styles.arrBtnClosed}
+					className={styles.arrBtnClose}
 					onClick={props.toggleRightBar}
 				>
 					{leftArrIcon}
