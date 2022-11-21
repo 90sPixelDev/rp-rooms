@@ -91,6 +91,27 @@ const ChatRooms = () => {
 		}
 	}, [userRooms.length]);
 
+	if (isLBOpened)
+		return (
+			<div className={styles.wrapperROpen}>
+				<LeftBar
+					listOfRooms={userRooms}
+					callRefreshMessages={refreshMessages}
+					toggleLeftBar={toggleLeftBar}
+					// isOpened={isLBOpened}
+				/>
+				<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
+				<RightBar
+					toggleRightBar={toggleRightBar}
+					isOpened={isRBOpened}
+				/>
+				<UserControlsContainer />
+				<ChatInput
+					roomSelectedInfo={selectedRoomTitle}
+					callRefreshMessages={refreshMessages}
+				/>
+			</div>
+		);
 	if (isRBOpened)
 		return (
 			<div className={styles.wrapperROpen}>

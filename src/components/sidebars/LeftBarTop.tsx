@@ -25,12 +25,13 @@ const LeftBarTop = (props: Props) => {
 		container:
 			'flex flex-col gap-4 border-purple-100 bg-purple-300 rounded-br-lg',
 		roomsTitle: 'text-center font-bold text-lg',
-		top: 'flex flex-row ',
+		top: 'flex flex-row place-items-stretch',
 		homeLink:
-			'flex flex-row py-2 bg-purple-400 justify-center items-center gap-2 rounded-br-lg',
+			'flex flex-row py-2 bg-purple-400 justify-center items-center gap-2 h-full w-full',
 		icon: '',
 		arrBtnOpen: '',
-		arrBtnClose: 'bg-purple-200 h-full w-full',
+		arrBtnClose:
+			'bg-purple-200 h-full w-full px-2 border-2 border-purple-400 hover:bg-purple-600',
 		topClosed: '',
 	};
 

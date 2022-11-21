@@ -36,8 +36,6 @@ const RightBar = (props: Props) => {
 	const rightArrIcon = <FontAwesomeIcon icon={solid('arrow-right')} />;
 	const leftArrIcon = <FontAwesomeIcon icon={solid('arrow-left')} />;
 
-	console.log(props.isOpened);
-
 	if (props.isOpened)
 		return (
 			<div className={styles.containerOpen}>
