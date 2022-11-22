@@ -15,20 +15,24 @@ import { CreateRoomBtn, RoomsDropDown } from '../exporter';
 
 interface Props {
 	callRefreshMessages: (roomTitle: string) => void;
+	isOpened: boolean;
 }
 type Styles = {
 	section: string;
 	inputBox: string;
+	inputBoxClosed: string;
 	bar: string;
 };
 type Query = string;
 
 const RoomsSearch = (props: Props) => {
 	const styles: Styles = {
-		section: 'relative flex flex-col m-auto',
+		section: 'relative flex flex-col',
 		inputBox:
-			'flow-root p-1 rounded-l-lg outline-none caret-purple-500 mb-4 border-l-2 border-b-2 border-t-2 border-purple-600 z-3',
-		bar: 'flex flex-row m-auto',
+			'flow-root p-1 rounded-l-lg outline-none caret-purple-500 mb-4 border-l-2 border-b-2 border-t-2 border-purple-600 w-[70%] z-3',
+		inputBoxClosed:
+			'flow-root p-1 rounded-l-lg outline-none caret-purple-500 mb-4 border-l-2 border-b-2 border-t-2 border-purple-600 w-24 z-3',
+		bar: 'flex flex-row justify-center',
 	};
 
 	const [room, setRoom] = useState(null as any);
@@ -115,6 +119,41 @@ const RoomsSearch = (props: Props) => {
 		}, 300);
 	};
 
+	if (props.isOpened)
+		return (
+			<section className={styles.section}>
+				<div className={styles.bar}>
+					<input
+						className={styles.inputBox}
+						type='text'
+						value={inputText}
+						onKeyDown={(e) => {
+							if (e.code === 'Enter') addRoom(inputText);
+						}}
+						onChange={onSearch}
+						onFocus={() => {
+							setIsFocused(true);
+						}}
+						onBlur={() => {
+							unFocusRoomSearch();
+						}}
+						name=''
+						id=''
+						placeholder='Add Rooms...'
+					/>
+					<CreateRoomBtn
+						onBtnClicked={() => addRoom(inputText)}
+					/>
+				</div>
+				{isSearching && (
+					<RoomsDropDown
+						roomsSearched={searchedRooms}
+						addSelectedRoom={addRoom}
+					/>
+				)}
+			</section>
+		);
+
 	return (
 		<section className={styles.section}>
 			<div className={styles.bar}>
@@ -136,7 +175,6 @@ const RoomsSearch = (props: Props) => {
 					id=''
 					placeholder='Add Rooms...'
 				/>
-				<CreateRoomBtn onBtnClicked={() => addRoom(inputText)} />
 			</div>
 			{isSearching && (
 				<RoomsDropDown

@@ -10,7 +10,7 @@ type Styles = {
 
 const DropDownItem = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-100 hover:bg-purple-200 transition hover:border-purple-400 border-2',
+		body: 'bg-purple-100 hover:bg-purple-200 transition hover:border-purple-400 border-2 border-purple-200 hover:rounded-lg',
 	};
 
 	return (

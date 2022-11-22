@@ -10,7 +10,7 @@ type Styles = {
 
 const ChatSend = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-400 w-20 ml-2 rounded-tr-lg flex flex-row justify-center hover:text-purple-700',
+		body: 'bg-purple-400 rounded-tr-lg flex flex-row justify-center hover:text-purple-700 grow',
 		icon: 'm-auto h-[40%] w-[40%]',
 	};
 

@@ -30,15 +30,21 @@ type InitialMssgInfo = {
 };
 type Styles = {
 	wrapperROpen: string;
-	wrapperRClosed: string;
+	wrapperLOpen: string;
+	wrapperBOpen: string;
+	wrapperClosed: string;
 };
 
 const ChatRooms = () => {
 	const styles = {
 		wrapperROpen:
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+		wrapperLOpen:
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[250px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+		wrapperBOpen:
 			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
-		wrapperRClosed:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+		wrapperClosed:
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -91,67 +97,110 @@ const ChatRooms = () => {
 		}
 	}, [userRooms.length]);
 
-	if (isLBOpened)
-		return (
-			<div className={styles.wrapperROpen}>
-				<LeftBar
-					listOfRooms={userRooms}
-					callRefreshMessages={refreshMessages}
-					toggleLeftBar={toggleLeftBar}
-					// isOpened={isLBOpened}
-				/>
-				<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
-				<RightBar
-					toggleRightBar={toggleRightBar}
-					isOpened={isRBOpened}
-				/>
-				<UserControlsContainer />
-				<ChatInput
-					roomSelectedInfo={selectedRoomTitle}
-					callRefreshMessages={refreshMessages}
-				/>
-			</div>
-		);
-	if (isRBOpened)
-		return (
-			<div className={styles.wrapperROpen}>
-				<LeftBar
-					listOfRooms={userRooms}
-					callRefreshMessages={refreshMessages}
-					toggleLeftBar={toggleLeftBar}
-				/>
-				<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
-				<RightBar
-					toggleRightBar={toggleRightBar}
-					isOpened={isRBOpened}
-				/>
-				<UserControlsContainer />
-				<ChatInput
-					roomSelectedInfo={selectedRoomTitle}
-					callRefreshMessages={refreshMessages}
-				/>
-			</div>
-		);
+	const renderSideBarsConditionally = () => {
+		switch (true) {
+			case isLBOpened && isRBOpened:
+				return (
+					<div className={styles.wrapperBOpen}>
+						<LeftBar
+							listOfRooms={userRooms}
+							callRefreshMessages={refreshMessages}
+							toggleLeftBar={toggleLeftBar}
+							isOpened={isLBOpened}
+						/>
+						<ChatBody
+							roomTitle={selectedRoomTitle}
+							refresh={update}
+						/>
+						<RightBar
+							toggleRightBar={toggleRightBar}
+							isOpened={isRBOpened}
+						/>
+						<UserControlsContainer />
+						<ChatInput
+							roomSelectedInfo={selectedRoomTitle}
+							callRefreshMessages={refreshMessages}
+						/>
+					</div>
+				);
+			case !isLBOpened && !isRBOpened:
+				return (
+					<div className={styles.wrapperClosed}>
+						<LeftBar
+							listOfRooms={userRooms}
+							callRefreshMessages={refreshMessages}
+							toggleLeftBar={toggleLeftBar}
+							isOpened={isLBOpened}
+						/>
+						<ChatBody
+							roomTitle={selectedRoomTitle}
+							refresh={update}
+						/>
+						<RightBar
+							toggleRightBar={toggleRightBar}
+							isOpened={isRBOpened}
+						/>
+						<UserControlsContainer />
+						<ChatInput
+							roomSelectedInfo={selectedRoomTitle}
+							callRefreshMessages={refreshMessages}
+						/>
+					</div>
+				);
+			case !isLBOpened && isRBOpened:
+				return (
+					<div className={styles.wrapperROpen}>
+						<LeftBar
+							listOfRooms={userRooms}
+							callRefreshMessages={refreshMessages}
+							toggleLeftBar={toggleLeftBar}
+							isOpened={isLBOpened}
+						/>
+						<ChatBody
+							roomTitle={selectedRoomTitle}
+							refresh={update}
+						/>
+						<RightBar
+							toggleRightBar={toggleRightBar}
+							isOpened={isRBOpened}
+						/>
+						<UserControlsContainer />
+						<ChatInput
+							roomSelectedInfo={selectedRoomTitle}
+							callRefreshMessages={refreshMessages}
+						/>
+					</div>
+				);
+			case isLBOpened && !isRBOpened:
+				return (
+					<div className={styles.wrapperLOpen}>
+						<LeftBar
+							listOfRooms={userRooms}
+							callRefreshMessages={refreshMessages}
+							toggleLeftBar={toggleLeftBar}
+							isOpened={isLBOpened}
+						/>
+						<ChatBody
+							roomTitle={selectedRoomTitle}
+							refresh={update}
+						/>
+						<RightBar
+							toggleRightBar={toggleRightBar}
+							isOpened={isRBOpened}
+						/>
+						<UserControlsContainer />
+						<ChatInput
+							roomSelectedInfo={selectedRoomTitle}
+							callRefreshMessages={refreshMessages}
+						/>
+					</div>
+				);
+			default:
+				return <p>FATAL ERROR!</p>;
+		}
+	};
 
-	return (
-		<div className={styles.wrapperRClosed}>
-			<LeftBar
-				listOfRooms={userRooms}
-				callRefreshMessages={refreshMessages}
-				toggleLeftBar={toggleLeftBar}
-			/>
-			<ChatBody roomTitle={selectedRoomTitle} refresh={update} />
-			<RightBar
-				toggleRightBar={toggleRightBar}
-				isOpened={isRBOpened}
-			/>
-			<UserControlsContainer />
-			<ChatInput
-				roomSelectedInfo={selectedRoomTitle}
-				callRefreshMessages={refreshMessages}
-			/>
-		</div>
-	);
+	return <>{renderSideBarsConditionally()}</>;
 };
 
 export default ChatRooms;

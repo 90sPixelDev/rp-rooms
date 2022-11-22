@@ -12,8 +12,7 @@ interface Props {
 
 const RoomContainer = (props: Props) => {
 	const styles: Styles = {
-		roomParent:
-			'bg-purple-200 w-[100%] rounded-r-full flex flex-col mx-auto',
+		roomParent: 'bg-purple-200 rounded-r-full flex flex-col mx-auto',
 	};
 
 	const [selectedRoomTitle, setSelectedRoomTitle] = useState<

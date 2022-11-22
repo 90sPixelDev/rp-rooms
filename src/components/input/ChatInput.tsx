@@ -30,13 +30,13 @@ type Styles = {
 const ChatInput = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'overflow-y-auto bg-purple-200 rounded-lg flex flex-col justify-between mb-4 ',
+			'overflow-hidden bg-purple-200 rounded-lg flex flex-col justify-around px-1',
 		textArea:
-			'h-[70%] w-[90%] resize-none p-1 mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg',
+			'h-[70%] w-[90%] h-fit resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0',
 		button: 'm-1 py-1 px-2 border-2 border-purple-500 bg-purple-300 hover:bg-purple-200',
 		bttnArea: 'bg-purple-200',
 		mssgArea:
-			'flex flex-row h-fit bg-purple-300 rounded-tr-lg rounded-tl-lg h-[45%] border-2 border-purple-400',
+			'flex flex-row bg-purple-300 rounded-tr-lg rounded-tl-lg border-2 border-purple-400 h-fit',
 	};
 
 	const [tempTypedMssg, setTempTypedMssg] = useState<string>('');

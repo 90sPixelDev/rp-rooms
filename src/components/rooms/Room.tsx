@@ -21,12 +21,12 @@ const Room = (props: Props) => {
 		selectedContainer:
 			'w-[100%] bg-purple-100 rounded-tl-full hover:text-purple-600',
 		topPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
-		roomTitle: 'ml-2',
+		roomTitle: 'ml-2 text-sm md:text-base',
 		bottomPad:
 			'bg-purple-200 h-[10px] transition border-t-2 border-purple-400',
 		selectedTopPad: 'bg-purple-200 h-[10px] rounded-br-full transition',
 		selectedRoomTitle:
-			'bg-purple-100 w-full rounded-tl-lg rounded-r-lg text-left pl-5 cursor-default',
+			'bg-purple-100 w-full rounded-tl-lg rounded-r-lg text-left pl-5 cursor-default text-sm md:text-base',
 		selectedBottomPad:
 			'bg-purple-200 h-[10px] rounded-tr-full transition border-t-2 border-purple-400',
 	};

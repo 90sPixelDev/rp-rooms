@@ -6,6 +6,7 @@ interface Props {
 	listOfRooms: string[];
 	callRefreshMessages: (text: string) => void;
 	toggleLeftBar: () => void;
+	isOpened: boolean;
 }
 type Styles = {
 	container: string;
@@ -21,6 +22,7 @@ const LeftBar = (props: Props) => {
 			<LeftBarTop
 				callRefreshMessages={props.callRefreshMessages}
 				toggleLeftBar={props.toggleLeftBar}
+				isOpened={props.isOpened}
 			/>
 			<RoomListContainer
 				listOfRooms={props.listOfRooms}

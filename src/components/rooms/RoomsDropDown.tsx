@@ -16,8 +16,8 @@ type Styles = {
 const RoomsDropDown = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'absolute bg-purple-100 flex flex-col h-fit w-full top-[70%] border-2 border-purple-300 transition',
-		body: 'bg-purple-100 flex flex-col h-full w-full',
+			'absolute bg-purple-500 flex flex-col h-fit w-full top-[70%] border-2 border-purple-300 transition',
+		body: 'flex flex-col h-full w-full transition',
 	};
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
