@@ -7,16 +7,24 @@ interface Props {
 	roomsSearched: string[];
 	addSelectedRoom: (room: string) => void;
 }
-// type Props = any;
+interface Props {
+	isOpened: boolean;
+}
 type Styles = {
+	containerOpened: string;
+	containerLoadingClosed: string;
 	container: string;
 	body: string;
 };
 
 const RoomsDropDown = (props: Props) => {
 	const styles: Styles = {
-		container:
+		containerOpened:
 			'absolute bg-purple-500 flex flex-col h-fit w-full top-[70%] border-2 border-purple-300 transition',
+		container:
+			'fixed bg-purple-500 flex flex-col h-fit w-full top-[51%] border-2 border-purple-300 transition m-h-fit',
+		containerLoadingClosed:
+			'fixed bg-[transparent] flex flex-col h-fit w-full top-[51%] border-2 border-purple-300 transition m-h-fit',
 		body: 'flex flex-col h-full w-full transition',
 	};
 
@@ -28,20 +36,44 @@ const RoomsDropDown = (props: Props) => {
 		}
 	}, [props.roomsSearched]);
 
-	return (
-		<div className={styles.container}>
-			{isLoading ? (
-				<img src={loadingAnim} />
-			) : (
-				props.roomsSearched.map((room: string) => (
+	if (props.isOpened) {
+		if (isLoading)
+			return (
+				<div className={styles.containerOpened}>
+					<img src={loadingAnim} />
+				</div>
+			);
+
+		return (
+			<div className={styles.containerOpened}>
+				{props.roomsSearched.map((room: string) => (
 					<DropDownItem
 						title={room}
 						key={Math.random() * 9}
 						addSelectedRoom={props.addSelectedRoom}
 					/>
-				))
+				))}
+			</div>
+		);
+	}
+
+	return (
+		<>
+			{isLoading && (
+				<div className={styles.containerLoadingClosed}>
+					<img src={loadingAnim} />
+				</div>
 			)}
-		</div>
+			<div className={styles.container}>
+				{props.roomsSearched.map((room: string) => (
+					<DropDownItem
+						title={room}
+						key={Math.random() * 9}
+						addSelectedRoom={props.addSelectedRoom}
+					/>
+				))}
+			</div>
+		</>
 	);
 };
 

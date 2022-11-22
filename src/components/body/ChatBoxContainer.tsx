@@ -24,7 +24,7 @@ type Styles = {
 const ChatBoxContainer = (props: Props) => {
 	const styles: Styles = {
 		chatBoxContainer:
-			'flex flex-col-reverse gap-2 m-2 h-[96%] overflow-y-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
+			'flex flex-col-reverse gap-2 mx-2 h-full overflow-y-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
 		loading: 'h-[50%] w-[50%] m-auto',
 	};
 

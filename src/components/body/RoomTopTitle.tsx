@@ -1,8 +1,11 @@
 import React from 'react';
 
 interface Props {
-	currentCh: string;
+	currentChInfo: Record<string, any>;
 }
+// type Props = {
+// 	currentChInfo: Record<string, any>;
+// };
 type Styles = {
 	container: string;
 	roomTitle: string;
@@ -17,7 +20,9 @@ const RoomTopTitle = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<p className={styles.roomTitle}>{props.currentCh}</p>
+			<p className={styles.roomTitle}>
+				{props.currentChInfo.num}: {props.currentChInfo.desc}
+			</p>
 		</div>
 	);
 };

@@ -23,11 +23,11 @@ type Styles = {
 
 const ChatBody = (props: Props) => {
 	const styles: Styles = {
-		body: 'bg-purple-100 rounded-b-2xl h-full',
+		body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col',
 	};
 
 	const [messagesArray, setMessagesArray] = useState<MessageInfo[]>([]);
-	const [currentCh, setCurrentCh] = useState<string>('');
+	const [currentCh, setCurrentCh] = useState<object>({});
 	const [isLoading, setIsLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
 
@@ -40,7 +40,7 @@ const ChatBody = (props: Props) => {
 		const docSnap = await getDoc(roomRef);
 
 		if (docSnap.exists()) {
-			setCurrentCh(docSnap.data().currentCh);
+			setCurrentCh(docSnap.data().currentChapter);
 			const mssgArr = docSnap.data().messages;
 
 			setMessagesArray(mssgArr.map((msg: any) => msg));
@@ -62,7 +62,7 @@ const ChatBody = (props: Props) => {
 
 	return (
 		<div className={styles.body}>
-			<RoomTopTitle currentCh={currentCh} />
+			<RoomTopTitle currentChInfo={currentCh} />
 			<ChatBoxContainer
 				messages={messagesArray}
 				isLoading={isLoading}

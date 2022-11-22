@@ -116,7 +116,7 @@ const ChatRooms = () => {
 							toggleRightBar={toggleRightBar}
 							isOpened={isRBOpened}
 						/>
-						<UserControlsContainer />
+						<UserControlsContainer isOpened={isLBOpened} />
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
@@ -140,7 +140,7 @@ const ChatRooms = () => {
 							toggleRightBar={toggleRightBar}
 							isOpened={isRBOpened}
 						/>
-						<UserControlsContainer />
+						<UserControlsContainer isOpened={isLBOpened} />
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
@@ -164,7 +164,7 @@ const ChatRooms = () => {
 							toggleRightBar={toggleRightBar}
 							isOpened={isRBOpened}
 						/>
-						<UserControlsContainer />
+						<UserControlsContainer isOpened={isLBOpened} />
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
@@ -188,7 +188,7 @@ const ChatRooms = () => {
 							toggleRightBar={toggleRightBar}
 							isOpened={isRBOpened}
 						/>
-						<UserControlsContainer />
+						<UserControlsContainer isOpened={isLBOpened} />
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}

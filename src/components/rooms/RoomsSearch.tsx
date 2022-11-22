@@ -20,7 +20,9 @@ interface Props {
 type Styles = {
 	section: string;
 	inputBox: string;
+	backdrop: string;
 	inputBoxClosed: string;
+	inputBoxClosedFocused: string;
 	bar: string;
 };
 type Query = string;
@@ -30,8 +32,12 @@ const RoomsSearch = (props: Props) => {
 		section: 'relative flex flex-col',
 		inputBox:
 			'flow-root p-1 rounded-l-lg outline-none caret-purple-500 mb-4 border-l-2 border-b-2 border-t-2 border-purple-600 w-[70%] z-3',
+		backdrop:
+			'fixed bg-[rgba(0,0,0,0.5)] h-[100vh] w-[100vw] top-0 left-0 flex flex-col place-items-center justify-center',
 		inputBoxClosed:
-			'flow-root p-1 rounded-l-lg outline-none caret-purple-500 mb-4 border-l-2 border-b-2 border-t-2 border-purple-600 w-24 z-3',
+			'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 border-purple-600 w-8 z-3 m-auto',
+		inputBoxClosedFocused:
+			'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-2 border-purple-600 w-fit z-3',
 		bar: 'flex flex-row justify-center',
 	};
 
@@ -40,6 +46,7 @@ const RoomsSearch = (props: Props) => {
 	const [isSearching, setIsSearching] = useState(false);
 	const [searchedRooms, setSearchedRooms] = useState<string[]>([]);
 	const [isFocused, setIsFocused] = useState(false);
+	const [isFocusedMini, setIsFocusedMini] = useState(false);
 	const [err, setErr] = useState(false);
 
 	const { currentUser } = useContext(UserContext);
@@ -115,6 +122,7 @@ const RoomsSearch = (props: Props) => {
 		setTimeout(() => {
 			setInputText('');
 			setSearchedRooms([]);
+			setIsFocusedMini(false);
 			setIsSearching(false);
 		}, 300);
 	};
@@ -137,8 +145,6 @@ const RoomsSearch = (props: Props) => {
 						onBlur={() => {
 							unFocusRoomSearch();
 						}}
-						name=''
-						id=''
 						placeholder='Add Rooms...'
 					/>
 					<CreateRoomBtn
@@ -149,6 +155,7 @@ const RoomsSearch = (props: Props) => {
 					<RoomsDropDown
 						roomsSearched={searchedRooms}
 						addSelectedRoom={addRoom}
+						isOpened={props.isOpened}
 					/>
 				)}
 			</section>
@@ -156,9 +163,30 @@ const RoomsSearch = (props: Props) => {
 
 	return (
 		<section className={styles.section}>
-			<div className={styles.bar}>
+			{isFocusedMini ? (
+				<div className={styles.backdrop}>
+					<input
+						autoFocus
+						className={styles.inputBoxClosedFocused}
+						type='text'
+						value={inputText}
+						onKeyDown={(e) => {
+							if (e.code === 'Enter') addRoom(inputText);
+						}}
+						onChange={onSearch}
+						onFocus={() => {
+							setIsFocused(true);
+							setIsFocusedMini(true);
+						}}
+						onBlur={() => {
+							unFocusRoomSearch();
+						}}
+						placeholder='Room Name...'
+					/>
+				</div>
+			) : (
 				<input
-					className={styles.inputBox}
+					className={styles.inputBoxClosed}
 					type='text'
 					value={inputText}
 					onKeyDown={(e) => {
@@ -167,19 +195,19 @@ const RoomsSearch = (props: Props) => {
 					onChange={onSearch}
 					onFocus={() => {
 						setIsFocused(true);
+						setIsFocusedMini(true);
 					}}
 					onBlur={() => {
 						unFocusRoomSearch();
 					}}
-					name=''
-					id=''
-					placeholder='Add Rooms...'
+					placeholder='&#128269;'
 				/>
-			</div>
+			)}
 			{isSearching && (
 				<RoomsDropDown
 					roomsSearched={searchedRooms}
 					addSelectedRoom={addRoom}
+					isOpened={props.isOpened}
 				/>
 			)}
 		</section>

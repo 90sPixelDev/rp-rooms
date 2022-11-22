@@ -4,7 +4,9 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 import { db, auth } from '../../firebase.config';
 
-type Props = unknown;
+interface Props {
+	isOpened: boolean;
+}
 type Styles = {
 	container: string;
 	names: string;
@@ -12,6 +14,7 @@ type Styles = {
 	nickName: string;
 	nickNameInput: string;
 	charaPic: string;
+	charaPicClosed: string;
 };
 
 const UserProfilePeek = (props: Props) => {
@@ -21,7 +24,10 @@ const UserProfilePeek = (props: Props) => {
 		userName: 'font-bold',
 		nickName: 'underline cursor-pointer',
 		nickNameInput: 'italic w-[140px] outline-purple-500',
-		charaPic: ' bg-purple-700 w-[50px] h-[50px] rounded-full ml-2 mt-2',
+		charaPic:
+			' bg-purple-700 w-[50px] h-[50px] rounded-full ml-2 mt-2 transition',
+		charaPicClosed:
+			' bg-purple-700 w-[40px] h-[40px] rounded-full mt-2 transition',
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -61,27 +67,34 @@ const UserProfilePeek = (props: Props) => {
 		<p className={styles.userName}>user undefined</p>
 	);
 
+	if (props.isOpened)
+		return (
+			<div className={styles.container}>
+				<div className={styles.charaPic}></div>
+				<div className={styles.names}>
+					{showUserName}
+					{isPTag ? (
+						<p
+							className={styles.nickName}
+							onClick={() => setPTag(false)}
+						>
+							{currentUser.displayName}
+						</p>
+					) : (
+						<input
+							className={styles.nickNameInput}
+							autoFocus
+							onKeyDown={(e) => validateNickname(e)}
+							type='text'
+						/>
+					)}
+				</div>
+			</div>
+		);
+
 	return (
 		<div className={styles.container}>
-			<div className={styles.charaPic}></div>
-			<div className={styles.names}>
-				{showUserName}
-				{isPTag ? (
-					<p
-						className={styles.nickName}
-						onClick={() => setPTag(false)}
-					>
-						{currentUser.displayName}
-					</p>
-				) : (
-					<input
-						className={styles.nickNameInput}
-						autoFocus
-						onKeyDown={(e) => validateNickname(e)}
-						type='text'
-					/>
-				)}
-			</div>
+			<div className={styles.charaPicClosed}></div>
 		</div>
 	);
 };
