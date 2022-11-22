@@ -40,6 +40,7 @@ const LogOutControl = (props: Props) => {
 		<FontAwesomeIcon
 			icon={solid('arrow-right-from-bracket')}
 			className={styles.iconClosed}
+			onClick={() => signOut(auth)}
 		/>
 	);
 };
