@@ -19,7 +19,7 @@ type Styles = {
 
 const UserProfilePeek = (props: Props) => {
 	const styles: Styles = {
-		container: 'flex',
+		container: 'flex flex-row',
 		names: 'ml-2 mt-2',
 		userName: 'font-bold',
 		nickName: 'underline cursor-pointer',
@@ -108,12 +108,6 @@ const UserProfilePeek = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<input
-				// className={styles.input}
-				type='file'
-				name='avatar'
-				id='image-file'
-			/>
 			<img
 				className={styles.charaPicClosed}
 				src={currentUser.photoURL}
@@ -124,6 +118,12 @@ const UserProfilePeek = (props: Props) => {
 				alt=''
 				onClick={updateProfilePic}
 			/>
+			{/* <input
+				// className={styles.input}
+				type='file'
+				name='avatar'
+				id='image-file'
+			/> */}
 		</div>
 	);
 };
