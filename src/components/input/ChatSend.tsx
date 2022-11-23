@@ -2,7 +2,9 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-type Props = unknown;
+interface Props {
+	sendMssg: () => void;
+}
 type Styles = {
 	body: string;
 	icon: string;
@@ -22,7 +24,11 @@ const ChatSend = (props: Props) => {
 		/>
 	);
 
-	return <button className={styles.body}>{sendIcon}</button>;
+	return (
+		<button className={styles.body} onClick={props.sendMssg}>
+			{sendIcon}
+		</button>
+	);
 };
 
 export default ChatSend;

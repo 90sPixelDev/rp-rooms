@@ -51,22 +51,26 @@ const ChatInput = (props: Props) => {
 		e: React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
 		if (e.code === 'Enter') {
-			const uid = currentUser.uid;
-			const mssgFormat = {
-				message: tempTypedMssg,
-				email: currentUser.email,
-				userName: currentUser.displayName,
-				uid: uid,
-				timeSent: Timestamp.now(),
-			};
-
-			const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
-			await updateDoc(roomRef, {
-				messages: arrayUnion({ ...mssgFormat }),
-			});
-			props.callRefreshMessages(props.roomSelectedInfo);
-			setTempTypedMssg('');
+			sendMessage();
 		}
+	};
+
+	const sendMessage = async () => {
+		const uid = currentUser.uid;
+		const mssgFormat = {
+			message: tempTypedMssg,
+			email: currentUser.email,
+			userName: currentUser.displayName,
+			uid: uid,
+			timeSent: Timestamp.now(),
+		};
+
+		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
+		await updateDoc(roomRef, {
+			messages: arrayUnion({ ...mssgFormat }),
+		});
+		props.callRefreshMessages(props.roomSelectedInfo);
+		setTempTypedMssg('');
 	};
 
 	return (
@@ -82,7 +86,7 @@ const ChatInput = (props: Props) => {
 					onKeyDown={(e) => validateKeyPress(e)}
 					value={tempTypedMssg}
 				/>
-				<ChatSend />
+				<ChatSend sendMssg={sendMessage} />
 			</div>
 		</div>
 	);
