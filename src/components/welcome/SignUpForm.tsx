@@ -9,8 +9,9 @@ import {
 	collection,
 	getDoc,
 } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../../firebase.config';
+import { auth, db, storage } from '../../firebase.config';
 import { SignUpBtn } from '../exporter';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -29,6 +30,9 @@ type Styles = {
 	passSection: string;
 	eyeIconShow: string;
 	eyeIconHide: string;
+	input: string;
+	icon: string;
+	profileBtn: string;
 };
 
 const SignUpForm = (props: Props) => {
@@ -52,6 +56,10 @@ const SignUpForm = (props: Props) => {
 			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 flow-root rounded-lg',
 		eyeIconHide:
 			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 rounded-lg',
+		icon: 'text-purple-200 h-10 w-10',
+		input: 'absolute z-[-1] opacity-0',
+		profileBtn:
+			'text-purple-200 hover:bg-purple-300/40 hover:text-white flex flex-row place-items-center justify-center gap-2 w-fit pr-1 mx-auto mt-4 rounded-lg',
 	};
 
 	const navigate = useNavigate();
@@ -72,8 +80,12 @@ const SignUpForm = (props: Props) => {
 		const usernameInput = e.currentTarget[0] as HTMLInputElement;
 		const emailInput = e.currentTarget[1] as HTMLInputElement;
 		const passwordInput = e.currentTarget[2] as HTMLInputElement;
+		const avatarInput = e.currentTarget[3] as HTMLInputElement;
+		const avatarFile = avatarInput.files![0];
 
-		if (emailValid && username.length > 3) {
+		// console.log(e.currentTarget)
+
+		if (emailValid && username.length > 3 && avatarFile !== null) {
 			const res = await createUserWithEmailAndPassword(
 				auth,
 				emailInput.value,
@@ -81,7 +93,7 @@ const SignUpForm = (props: Props) => {
 			)
 				.then((userCredential) => {
 					const user = userCredential.user;
-					setUserInfo(user);
+					setUserInfo(user, avatarFile);
 				})
 				.catch((err) => {
 					const errorCode = err.code;
@@ -91,15 +103,48 @@ const SignUpForm = (props: Props) => {
 		}
 	};
 
-	const setUserInfo = async (userInfo: any) => {
+	const setUserInfo = async (userInfo: any, file: File) => {
 		const uid = userInfo.uid;
-		await updateProfile(userInfo, {
-			displayName: username,
-		});
-		await setDoc(doc(db, 'users', userInfo.uid), {
-			email: userInfo.email,
-			displayName: username,
-		});
+
+		const storageRef = ref(storage, uid);
+
+		const uploadTask = uploadBytesResumable(storageRef, file);
+
+		uploadTask.on(
+			'state_changed',
+			(snapshot) => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) *
+					100;
+				console.log('Upload is ' + progress + '% done');
+				switch (snapshot.state) {
+					case 'paused':
+						console.log('Upload is paused');
+						break;
+					case 'running':
+						console.log('Upload is running');
+						break;
+				}
+			},
+			(error) => {
+				// Handle unsuccessful uploads
+			},
+			() => {
+				getDownloadURL(uploadTask.snapshot.ref).then(
+					async (downloadURL) => {
+						await updateProfile(userInfo, {
+							displayName: username,
+							photoURL: downloadURL,
+						});
+						await setDoc(doc(db, 'users', userInfo.uid), {
+							email: userInfo.email,
+							displayName: username,
+							photoURL: downloadURL,
+						});
+					}
+				);
+			}
+		);
 
 		const newRoomRef = doc(db, 'rooms', 'RP Rooms Community');
 		const newRoomRef2 = doc(db, 'rooms', 'Test Room');
@@ -274,6 +319,22 @@ const SignUpForm = (props: Props) => {
 						required
 					/>
 					{showPassword ? passwordShow : passwordHide}
+					<label
+						htmlFor='image-file'
+						className={styles.profileBtn}
+					>
+						<FontAwesomeIcon
+							className={styles.icon}
+							icon={solid('image-portrait')}
+						/>
+						Add a profile picture
+					</label>
+					<input
+						className={styles.input}
+						type='file'
+						name='avatar'
+						id='image-file'
+					/>
 					<SignUpBtn />
 				</form>
 				{err && (

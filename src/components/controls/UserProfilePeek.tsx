@@ -25,9 +25,9 @@ const UserProfilePeek = (props: Props) => {
 		nickName: 'underline cursor-pointer',
 		nickNameInput: 'italic w-[140px] outline-purple-500',
 		charaPic:
-			' bg-purple-700 w-[50px] h-[50px] rounded-full ml-2 mt-2 transition',
+			' bg-purple-700 w-[50px] h-[50px] rounded-lg ml-2 mt-2 transition',
 		charaPicClosed:
-			' bg-purple-700 w-[40px] h-[40px] rounded-full mt-2 transition',
+			' bg-purple-700 w-[35px] h-[35px] rounded-lg mt-2 mx-auto transition',
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -67,10 +67,24 @@ const UserProfilePeek = (props: Props) => {
 		<p className={styles.userName}>user undefined</p>
 	);
 
+	const updateProfilePic = () => {
+		// await updateProfile(userInfo, {
+		// photoURL: downloadURL,
+		// }
+	};
+
 	if (props.isOpened)
 		return (
 			<div className={styles.container}>
-				<div className={styles.charaPic}></div>
+				<img
+					className={styles.charaPic}
+					src={currentUser.photoURL}
+					onError={(e) =>
+						(e.currentTarget.src =
+							currentUser.displayName.slice(0))
+					}
+					alt=''
+				/>
 				<div className={styles.names}>
 					{showUserName}
 					{isPTag ? (
@@ -94,7 +108,22 @@ const UserProfilePeek = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.charaPicClosed}></div>
+			<input
+				// className={styles.input}
+				type='file'
+				name='avatar'
+				id='image-file'
+			/>
+			<img
+				className={styles.charaPicClosed}
+				src={currentUser.photoURL}
+				onError={(e) =>
+					(e.currentTarget.src =
+						currentUser.displayName.slice(0))
+				}
+				alt=''
+				onClick={updateProfilePic}
+			/>
 		</div>
 	);
 };
