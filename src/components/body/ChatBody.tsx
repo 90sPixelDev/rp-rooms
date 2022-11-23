@@ -43,7 +43,15 @@ const ChatBody = (props: Props) => {
 			setCurrentCh(docSnap.data().currentChapter);
 			const mssgArr = docSnap.data().messages;
 
-			setMessagesArray(mssgArr.map((msg: any) => msg));
+			setMessagesArray(
+				mssgArr.map(
+					(msg: any) =>
+						(msg = {
+							...msg,
+							timeSent: msg.timeSent.toDate(),
+						})
+				)
+			);
 		} else {
 			// doc.data() will be undefined in this case
 			console.log('No such document!');

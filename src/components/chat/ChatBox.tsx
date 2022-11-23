@@ -3,6 +3,7 @@ import React from 'react';
 interface Props {
 	charaName: string;
 	charaMssg: string;
+	timeSent: string;
 }
 type Styles = {
 	container: string;
@@ -26,6 +27,29 @@ const ChatBox = (props: Props) => {
 		timeText: 'italic text-[12px] text-purple-500',
 	};
 
+	const date = new Date(props.timeSent);
+
+	const getDateFormat = () => {
+		const year = String(date.getFullYear()).slice(-2);
+		const month = String(date.getMonth());
+		const day = String(date.getDate());
+
+		const dateFormat = [month, day, year].join('-');
+		return dateFormat;
+	};
+
+	const getTimeFormat = () => {
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+		const ampm = hours >= 12 ? 'pm' : 'am';
+
+		hours = hours % 12;
+		hours = hours ? hours : 12;
+		minutes = minutes < 10 ? 0 + minutes : minutes;
+		const strTime = hours + ':' + minutes + ' ' + ampm;
+		return strTime;
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.body}>
@@ -36,8 +60,8 @@ const ChatBox = (props: Props) => {
 				<p className={styles.chatBoxText}>{props.charaMssg}</p>
 			</div>
 			<div className={styles.timeWrapper}>
-				<p className={styles.timeText}>11-3-22</p>
-				<p className={styles.timeText}>6:30 pm</p>
+				<p className={styles.timeText}>{getDateFormat()}</p>
+				<p className={styles.timeText}>{getTimeFormat()}</p>
 			</div>
 		</div>
 	);

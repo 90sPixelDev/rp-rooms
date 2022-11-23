@@ -47,6 +47,7 @@ const ChatBoxContainer = (props: Props) => {
 							key={Math.random() * 9}
 							charaName={mssg.userName}
 							charaMssg={mssg.message}
+							timeSent={mssg.timeSent}
 						/>
 					))
 					.reverse()}
