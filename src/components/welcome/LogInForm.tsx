@@ -27,17 +27,17 @@ const LogInForm = (props: Props) => {
 	const styles: Styles = {
 		body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
 		container:
-			'bg-purple-400 max-w-[300px] max-h-[300px] min-h-[200px] min-w-[300px]  rounded-lg shadow-lg shadow-purple-900',
+			'bg-purple-400 min-h-[200px] min-w-[300px] rounded-lg shadow-lg shadow-purple-900',
 		title: 'text-lg text-center p-2 bg-purple-300 rounded-t-lg mb-4',
 		formContainer: 'flex flex-col',
 		userInput:
-			'p-1 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition',
+			'p-1 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition rounded-none',
 		passInput:
-			'p-1 mt-2 ml-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none  placeholder-purple-300 caret-purple-100 text-white transition',
-		text: ' text-center',
+			'p-1 mt-2 ml-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition rounded-none',
+		text: 'text-center',
 		textLink: 'underline text-purple-900 hover:text-purple-200',
 		errMssg: 'text-red-700 font-bold w-full text-center',
-		passSection: 'flex flex-row items-center ',
+		passSection: 'flex flex-row items-center',
 		eyeIconShow:
 			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 flow-root rounded-lg',
 		eyeIconHide:

@@ -43,17 +43,17 @@ const SignUpForm = (props: Props) => {
 		title: 'text-lg text-center p-2 bg-purple-300 rounded-t-lg mb-4',
 		formContainer: 'flex flex-col',
 		userInput:
-			'p-1 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition',
+			'p-1 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition rounded-none',
 		emailInput:
-			'p-1 mt-2 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition',
+			'p-1 mt-2 mx-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition rounded-none',
 		passInput:
-			'p-1 mt-2 ml-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none  placeholder-purple-300 caret-purple-100 text-white transition',
+			'p-1 mt-2 ml-14 bg-transparent border-b-2 border-purple-300/90 focus:border-white outline-none placeholder-purple-300 caret-purple-100 text-white transition rounded-none',
 		text: 'text-center',
 		textLink: 'underline text-purple-900 hover:text-purple-200',
 		errMssg: 'text-red-700 font-bold w-full text-center',
-		passSection: 'flex flex-row items-center ',
+		passSection: 'flex flex-row items-center',
 		eyeIconShow:
-			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 flow-root rounded-lg',
+			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 rounded-lg',
 		eyeIconHide:
 			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 rounded-lg',
 		icon: 'text-purple-200 h-10 w-10',
@@ -106,7 +106,9 @@ const SignUpForm = (props: Props) => {
 	const setUserInfo = async (userInfo: any, file: File) => {
 		const uid = userInfo.uid;
 
-		const storageRef = ref(storage, uid);
+		const storageRef = ref(storage, `users/${uid}/avatar`);
+
+		console.log(file);
 
 		const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -167,7 +169,7 @@ const SignUpForm = (props: Props) => {
 					currentTurn: '',
 					currentChapter: {
 						num: '0',
-						desc: 'A new beginning!',
+						desc: 'A New Beginning!',
 					},
 					user: arrayUnion(uid),
 					messages: [],
@@ -191,7 +193,7 @@ const SignUpForm = (props: Props) => {
 					currentTurn: '',
 					currentChapter: {
 						num: '0',
-						desc: 'A new beginning!',
+						desc: 'A New Beginning!',
 					},
 					user: arrayUnion(uid),
 					messages: [],
@@ -334,6 +336,7 @@ const SignUpForm = (props: Props) => {
 						type='file'
 						name='avatar'
 						id='image-file'
+						accept='image/png,image/jpeg,image/gif'
 					/>
 					<SignUpBtn />
 				</form>

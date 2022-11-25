@@ -32,11 +32,11 @@ const ChatInput = (props: Props) => {
 		container:
 			'overflow-hidden bg-purple-200 rounded-lg flex flex-col justify-around px-1',
 		textArea:
-			'h-[70%] w-[90%] h-fit resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0',
+			'h-[70%] w-[90%] resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0',
 		button: 'm-1 py-1 px-2 border-2 border-purple-500 bg-purple-300 hover:bg-purple-200',
 		bttnArea: 'bg-purple-200',
 		mssgArea:
-			'flex flex-row bg-purple-300 rounded-tr-lg rounded-tl-lg border-2 border-purple-400 h-fit',
+			'flex flex-row bg-purple-300 rounded-tr-xl rounded-tl-lg border-2 border-purple-400 h-[50%]',
 	};
 
 	const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
@@ -56,6 +56,10 @@ const ChatInput = (props: Props) => {
 	};
 
 	const sendMessage = async () => {
+		if (!tempTypedMssg.replace(/\s/g, '').length) {
+			setTempTypedMssg('');
+			return console.error('Invalid message!');
+		}
 		const uid = currentUser.uid;
 		const mssgFormat = {
 			message: tempTypedMssg,
