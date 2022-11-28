@@ -4,6 +4,7 @@ import { UserContext } from '../../context/AuthContext';
 import {
 	doc,
 	setDoc,
+	getDoc,
 	addDoc,
 	Timestamp,
 	arrayUnion,
@@ -17,6 +18,7 @@ import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
 
 interface Props {
 	roomSelectedInfo: string;
+	currentTab: string;
 	callRefreshMessages: (text: string) => void;
 }
 type Styles = {
@@ -60,18 +62,30 @@ const ChatInput = (props: Props) => {
 			setTempTypedMssg('');
 			return console.error('Invalid message!');
 		}
+		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
 		const uid = currentUser.uid;
+
+		let mssgChannel = 'chat';
+		let displayName = currentUser.displayName;
+		let avatar = currentUser.photoURL;
+		if (props.currentTab === 'story') {
+			const roomDoc = await getDoc(roomRef);
+			mssgChannel = 'story';
+			avatar = roomDoc.data()?.uid.charaPic;
+			displayName = roomDoc.data()?.uid.charaName;
+		}
+
 		const mssgFormat = {
 			message: tempTypedMssg,
+			photoURL: avatar,
 			email: currentUser.email,
-			userName: currentUser.displayName,
+			userName: displayName,
 			uid: uid,
 			timeSent: Timestamp.now(),
 		};
 
-		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
 		await updateDoc(roomRef, {
-			messages: arrayUnion({ ...mssgFormat }),
+			[mssgChannel]: arrayUnion({ ...mssgFormat }),
 		});
 		props.callRefreshMessages(props.roomSelectedInfo);
 		setTempTypedMssg('');

@@ -9,6 +9,7 @@ interface MessageInfo {
 	message: string;
 	uid: string;
 	timeSent: string;
+	photoURL: string;
 }
 type InitialMssgInfo = {
 	message: string;
@@ -16,6 +17,8 @@ type InitialMssgInfo = {
 interface Props {
 	roomTitle: string;
 	refresh: boolean;
+	currentTab: string;
+	changeTab: (tab: string) => void;
 }
 type Styles = {
 	body: string;
@@ -29,7 +32,6 @@ const ChatBody = (props: Props) => {
 	const [messagesArray, setMessagesArray] = useState<MessageInfo[]>([]);
 	const [currentCh, setCurrentCh] = useState<object>({});
 	const [isLoading, setIsLoading] = useState(true);
-	const [refresh, setRefresh] = useState(false);
 
 	const getRoomInfo = () => {
 		// TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters, as well as Room messages of course and then conver to need state formate and pass down as prop to children
@@ -41,7 +43,13 @@ const ChatBody = (props: Props) => {
 
 		if (docSnap.exists()) {
 			setCurrentCh(docSnap.data().currentChapter);
-			const mssgArr = docSnap.data().messages;
+			let mssgArr;
+			if (props.currentTab === 'chat') {
+				mssgArr = docSnap.data().chat;
+			}
+			if (props.currentTab === 'story') {
+				mssgArr = docSnap.data().story;
+			}
 
 			setMessagesArray(
 				mssgArr.map(
@@ -52,6 +60,7 @@ const ChatBody = (props: Props) => {
 						})
 				)
 			);
+			// console.log(mssgArr[0].uid);
 		} else {
 			// doc.data() will be undefined in this case
 			console.log('No such Room exists!');
@@ -60,7 +69,7 @@ const ChatBody = (props: Props) => {
 
 	useEffect(() => {
 		props.roomTitle && getMessages();
-	}, [props.roomTitle, props.refresh]);
+	}, [props.roomTitle, props.refresh, props.currentTab]);
 
 	useEffect(() => {
 		if (messagesArray[0] !== undefined) {
@@ -70,7 +79,11 @@ const ChatBody = (props: Props) => {
 
 	return (
 		<div className={styles.body}>
-			<RoomTopTitle currentChInfo={currentCh} />
+			<RoomTopTitle
+				currentChInfo={currentCh}
+				changeTab={props.changeTab}
+				currentTab={props.currentTab}
+			/>
 			<ChatBoxContainer
 				messages={messagesArray}
 				isLoading={isLoading}

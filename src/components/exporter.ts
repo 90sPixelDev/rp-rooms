@@ -19,12 +19,15 @@ export { default as LeftBar } from './sidebars/LeftBar';
 export { default as LeftBarTop } from './sidebars/LeftBarTop';
 
 export { default as RightBar } from './sidebars/RightBar';
+export { default as RightBarTop } from './sidebars/RightBarTop';
 export { default as EventsList } from './sidebars/EventsList';
 export { default as StoryEvent } from './sidebars/StoryEvent';
 
 export { default as ChatBody } from './body/ChatBody';
 export { default as ChatBoxContainer } from './body/ChatBoxContainer';
 export { default as RoomTopTitle } from './body/RoomTopTitle';
+export { default as ChattingTab } from './body/ChattingTab';
+export { default as StoryTimeTab } from './body/StoryTimeTab';
 export { default as ChatBox } from './chat/ChatBox';
 
 export { default as ChatInput } from './input/ChatInput';
@@ -35,6 +38,9 @@ export { default as UserControlsContainer } from './controls/UserControlsContain
 export { default as UserProfilePeek } from './controls/UserProfilePeek';
 export { default as LogOutControl } from './controls/LogOutControl';
 export { default as OptionsControl } from './controls/OptionsControl';
+export { default as RoomControlsContainer } from './controls/RoomControlsContainer';
+export { default as CharacterControls } from './controls/CharacterControls';
+
 export { default as TurnManager } from './controls/TurnManager';
 
 export { default as useRandomIDGenerator } from '../hooks/useRandomIDGenerator';

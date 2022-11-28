@@ -16,6 +16,7 @@ import {
 	UserControlsContainer,
 	LeftBar,
 	RightBar,
+	RoomControlsContainer,
 } from '../exporter';
 
 interface MessageInfo {
@@ -55,6 +56,11 @@ const ChatRooms = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isRBOpened, setRBIsOpened] = useState(false);
 	const [isLBOpened, setLBIsOpened] = useState(false);
+	const [currentTab, setCurrentTab] = useState('chat');
+
+	const changeTab = (tab: string) => {
+		setCurrentTab(tab);
+	};
 
 	const refreshMessages = (newRoomName: string) => {
 		setSelectedRoomTitle(newRoomName);
@@ -82,7 +88,7 @@ const ChatRooms = () => {
 
 	useEffect(() => {
 		GetRooms();
-	}, [update, isLoading]);
+	}, [update, isLoading, currentTab]);
 
 	useEffect(() => {
 		if (
@@ -111,6 +117,8 @@ const ChatRooms = () => {
 						<ChatBody
 							roomTitle={selectedRoomTitle}
 							refresh={update}
+							currentTab={currentTab}
+							changeTab={changeTab}
 						/>
 						<RightBar
 							toggleRightBar={toggleRightBar}
@@ -120,6 +128,10 @@ const ChatRooms = () => {
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
+							currentTab={currentTab}
+						/>
+						<RoomControlsContainer
+							roomTitle={selectedRoomTitle}
 						/>
 					</div>
 				);
@@ -135,6 +147,8 @@ const ChatRooms = () => {
 						<ChatBody
 							roomTitle={selectedRoomTitle}
 							refresh={update}
+							currentTab={currentTab}
+							changeTab={changeTab}
 						/>
 						<RightBar
 							toggleRightBar={toggleRightBar}
@@ -144,6 +158,10 @@ const ChatRooms = () => {
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
+							currentTab={currentTab}
+						/>
+						<RoomControlsContainer
+							roomTitle={selectedRoomTitle}
 						/>
 					</div>
 				);
@@ -159,6 +177,8 @@ const ChatRooms = () => {
 						<ChatBody
 							roomTitle={selectedRoomTitle}
 							refresh={update}
+							currentTab={currentTab}
+							changeTab={changeTab}
 						/>
 						<RightBar
 							toggleRightBar={toggleRightBar}
@@ -168,6 +188,10 @@ const ChatRooms = () => {
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
+							currentTab={currentTab}
+						/>
+						<RoomControlsContainer
+							roomTitle={selectedRoomTitle}
 						/>
 					</div>
 				);
@@ -183,6 +207,8 @@ const ChatRooms = () => {
 						<ChatBody
 							roomTitle={selectedRoomTitle}
 							refresh={update}
+							currentTab={currentTab}
+							changeTab={changeTab}
 						/>
 						<RightBar
 							toggleRightBar={toggleRightBar}
@@ -192,6 +218,10 @@ const ChatRooms = () => {
 						<ChatInput
 							roomSelectedInfo={selectedRoomTitle}
 							callRefreshMessages={refreshMessages}
+							currentTab={currentTab}
+						/>
+						<RoomControlsContainer
+							roomTitle={selectedRoomTitle}
 						/>
 					</div>
 				);

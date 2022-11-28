@@ -81,8 +81,15 @@ const RoomsSearch = (props: Props) => {
 							num: '0',
 							desc: 'A New Beginning!',
 						},
+						characters: {
+							[currentUser.uid]: {
+								charaPic: '',
+								charaName: 'New Character',
+							},
+						},
 						user: arrayUnion(currentUser.uid),
-						messages: [],
+						chat: [],
+						story: [],
 					},
 					{ merge: true }
 				);

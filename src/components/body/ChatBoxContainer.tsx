@@ -7,6 +7,7 @@ import { UserContext } from '../../context/AuthContext';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
 interface MessagesInfo {
+	photoURL: string;
 	userName: string;
 	message: string;
 	uid: string;
@@ -45,8 +46,9 @@ const ChatBoxContainer = (props: Props) => {
 					.map((mssg) => (
 						<ChatBox
 							key={Math.random() * 9}
-							charaName={mssg.userName}
-							charaMssg={mssg.message}
+							photoURL={mssg.photoURL}
+							displayName={mssg.userName}
+							mssgText={mssg.message}
 							timeSent={mssg.timeSent}
 						/>
 					))

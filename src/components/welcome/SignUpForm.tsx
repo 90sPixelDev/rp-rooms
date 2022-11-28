@@ -171,8 +171,15 @@ const SignUpForm = (props: Props) => {
 						num: '0',
 						desc: 'A New Beginning!',
 					},
+					characters: {
+						[uid]: {
+							charaPic: '',
+							charaName: 'New Character',
+						},
+					},
 					user: arrayUnion(uid),
-					messages: [],
+					chat: [],
+					story: [],
 				},
 				{ merge: true }
 			);
@@ -195,8 +202,15 @@ const SignUpForm = (props: Props) => {
 						num: '0',
 						desc: 'A New Beginning!',
 					},
+					characters: {
+						[uid]: {
+							charaPic: '',
+							charaName: 'New Character',
+						},
+					},
 					user: arrayUnion(uid),
-					messages: [],
+					chat: [],
+					story: [],
 				},
 				{ merge: true }
 			);

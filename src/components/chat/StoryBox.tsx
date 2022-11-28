@@ -1,20 +1,19 @@
 import React from 'react';
 
 interface Props {
-	photoURL: string;
-	displayName: string;
-	mssgText: string;
+	charaName: string;
+	charaMssg: string;
 	timeSent: string;
+	charaPic: string;
 }
 type Styles = {
 	container: string;
 	timeWrapper: string;
 	body: string;
-	mssgInfo: string;
-	displayName: string;
-	imgContainer: string;
-	img: string;
+	charaName: string;
 	topOfMssg: string;
+	img: string;
+	mssgInfo: string;
 	chatBoxText: string;
 	timeText: string;
 };
@@ -23,15 +22,13 @@ const ChatBox = (props: Props) => {
 	const styles: Styles = {
 		container: 'flex mb-2',
 		timeWrapper: 'flex flex-col ml-2',
-		body: 'flex flex-row bg-purple-300 h-fit w-fit shadow-md shadow-purple-800/50 rounded-xl',
-		imgContainer:
-			'flex flex-row min-w-[60px] max-w-[60px] min-h-[60px] max-h-[60px] p-2 items-center',
-		img: 'h-full w-full',
+		body: 'bg-purple-300 h-fit w-fit shadow-md shadow-purple-800/50 rounded-xl pb-1',
+		charaName: 'font-bold',
+		img: 'p-2',
 		mssgInfo: 'flex flex-col border-l-2 border-purple-400',
-		displayName: 'font-bold',
 		topOfMssg:
-			'flex flex-row justify-between bg-gradient-to-r from-purple-400 pt-1 pl-2 pr-2 rounded-tr-xl',
-		chatBoxText: 'mx-2 pb-1',
+			'flex flex-row justify-between bg-purple-400/50 pt-1 pl-2 pr-2 rounded-tr-xl',
+		chatBoxText: 'mx-2',
 		timeText: 'italic text-[12px] text-purple-500',
 	};
 
@@ -61,16 +58,15 @@ const ChatBox = (props: Props) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.body}>
-				<div className={styles.imgContainer}>
-					<img className={styles.img} src={props.photoURL} />
-				</div>
+				<img className={styles.img} src={props.charaPic} />
 				<div className={styles.mssgInfo}>
 					<div className={styles.topOfMssg}>
-						<p className={styles.displayName}>
-							{props.displayName}:
+						<p className={styles.charaName}>
+							{props.charaName}:
 						</p>
+						<p className='eventMarker'>Current Chapter</p>
 					</div>
-					<p className={styles.chatBoxText}>{props.mssgText}</p>
+					<p className={styles.chatBoxText}>{props.charaMssg}</p>
 				</div>
 			</div>
 			<div className={styles.timeWrapper}>

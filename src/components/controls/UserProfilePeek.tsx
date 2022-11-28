@@ -13,8 +13,10 @@ type Styles = {
 	userName: string;
 	nickName: string;
 	nickNameInput: string;
+	charaPicContainer: string;
 	charaPic: string;
 	charaPicClosed: string;
+	charaPicContainerClosed: string;
 };
 
 const UserProfilePeek = (props: Props) => {
@@ -24,10 +26,12 @@ const UserProfilePeek = (props: Props) => {
 		userName: 'font-bold',
 		nickName: 'underline cursor-pointer',
 		nickNameInput: 'italic w-[140px] outline-purple-500',
-		charaPic:
-			' bg-purple-700 w-[50px] h-[50px] rounded-lg ml-2 mt-2 transition',
-		charaPicClosed:
-			' bg-purple-700 w-[35px] h-[35px] rounded-lg mt-2 mx-auto transition',
+		charaPicContainer:
+			'flex flex-row bg-purple-700 w-[50px] h-[50px] rounded-lg ml-2 mt-2 transition overflow-hidden items-center',
+		charaPic: 'h-fit w-fit ',
+		charaPicClosed: 'h-fit w-fit',
+		charaPicContainerClosed:
+			'flex flex-row bg-purple-700 w-[35px] h-[35px] rounded-lg mt-2 mx-auto transition overflow-hidden items-center',
 	};
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -76,15 +80,17 @@ const UserProfilePeek = (props: Props) => {
 	if (props.isOpened)
 		return (
 			<div className={styles.container}>
-				<img
-					className={styles.charaPic}
-					src={currentUser.photoURL}
-					onError={(e) =>
-						(e.currentTarget.src =
-							currentUser.displayName.slice(0))
-					}
-					alt=''
-				/>
+				<div className={styles.charaPicContainer}>
+					<img
+						className={styles.charaPic}
+						src={currentUser.photoURL}
+						onError={(e) =>
+							(e.currentTarget.src =
+								currentUser.displayName.slice(0))
+						}
+						alt=''
+					/>
+				</div>
 				<div className={styles.names}>
 					{showUserName}
 					{isPTag ? (
@@ -108,16 +114,18 @@ const UserProfilePeek = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<img
-				className={styles.charaPicClosed}
-				src={currentUser.photoURL}
-				onError={(e) =>
-					(e.currentTarget.src =
-						currentUser.displayName.slice(0))
-				}
-				alt=''
-				onClick={updateProfilePic}
-			/>
+			<div className={styles.charaPicContainerClosed}>
+				<img
+					className={styles.charaPicClosed}
+					src={currentUser.photoURL}
+					onError={(e) =>
+						(e.currentTarget.src =
+							currentUser.displayName.slice(0))
+					}
+					alt=''
+					onClick={updateProfilePic}
+				/>
+			</div>
 			{/* <input
 				// className={styles.input}
 				type='file'
