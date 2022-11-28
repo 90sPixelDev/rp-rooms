@@ -20,6 +20,7 @@ type Props = {
 type Styles = {
 	chatBoxContainer: string;
 	loading: string;
+	noMessagesText: string;
 };
 
 const ChatBoxContainer = (props: Props) => {
@@ -27,6 +28,7 @@ const ChatBoxContainer = (props: Props) => {
 		chatBoxContainer:
 			'flex flex-col-reverse gap-2 mx-2 h-full overflow-y-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
 		loading: 'h-[50%] w-[50%] m-auto',
+		noMessagesText: 'text-center m-auto text-sm md:text-base',
 	};
 
 	const [refreshMssgs, setRefreshMssgs] = useState<boolean>(false);
@@ -34,10 +36,15 @@ const ChatBoxContainer = (props: Props) => {
 
 	useEffect(() => {
 		setRefreshMssgs((prevState) => !prevState);
-	}, [, props.messages]);
+	}, [props.messages]);
 
 	return (
 		<div className={styles.chatBoxContainer}>
+			{!props.isLoading && props.messages.length <= 0 && (
+				<p className={styles.noMessagesText}>
+					There are no messages here yet. Be the first!
+				</p>
+			)}
 			{props.isLoading && (
 				<img className={styles.loading} src={loadingAnim} />
 			)}

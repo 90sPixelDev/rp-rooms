@@ -8,7 +8,7 @@ interface MessageInfo {
 	userName: string;
 	message: string;
 	uid: string;
-	timeSent: string;
+	timeSent: any;
 	photoURL: string;
 }
 type InitialMssgInfo = {
@@ -29,7 +29,9 @@ const ChatBody = (props: Props) => {
 		body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col',
 	};
 
-	const [messagesArray, setMessagesArray] = useState<MessageInfo[]>([]);
+	const [messagesArray, setMessagesArray] = useState<MessageInfo[] | null>(
+		null
+	);
 	const [currentCh, setCurrentCh] = useState<object>({});
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -43,24 +45,17 @@ const ChatBody = (props: Props) => {
 
 		if (docSnap.exists()) {
 			setCurrentCh(docSnap.data().currentChapter);
-			let mssgArr;
-			if (props.currentTab === 'chat') {
-				mssgArr = docSnap.data().chat;
-			}
-			if (props.currentTab === 'story') {
-				mssgArr = docSnap.data().story;
-			}
+			const mssgArr = docSnap.data()[props.currentTab];
 
 			setMessagesArray(
 				mssgArr.map(
-					(msg: any) =>
+					(msg: MessageInfo) =>
 						(msg = {
 							...msg,
 							timeSent: msg.timeSent.toDate(),
 						})
 				)
 			);
-			// console.log(mssgArr[0].uid);
 		} else {
 			// doc.data() will be undefined in this case
 			console.log('No such Room exists!');
@@ -72,10 +67,10 @@ const ChatBody = (props: Props) => {
 	}, [props.roomTitle, props.refresh, props.currentTab]);
 
 	useEffect(() => {
-		if (messagesArray[0] !== undefined) {
+		if (messagesArray !== null) {
 			setIsLoading(false);
 		}
-	}, [messagesArray[0]]);
+	}, [messagesArray]);
 
 	return (
 		<div className={styles.body}>
@@ -85,7 +80,7 @@ const ChatBody = (props: Props) => {
 				currentTab={props.currentTab}
 			/>
 			<ChatBoxContainer
-				messages={messagesArray}
+				messages={messagesArray as MessageInfo[]}
 				isLoading={isLoading}
 			/>
 		</div>

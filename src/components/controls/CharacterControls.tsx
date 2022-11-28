@@ -32,29 +32,24 @@ const CharacterControls = (props: Props) => {
 
 	const [characterInfo, setCharacterInfo] = useState<Character | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 	const [isPTag, setPTag] = useState(true);
 
-	const validateNickname = async (
-		e: React.KeyboardEvent<HTMLInputElement>
-	) => {
-		const newNickname = e.currentTarget.value;
-		if (e.key === 'Enter') {
-			if (
-				newNickname !== ' ' &&
-				newNickname.length > 3 &&
-				newNickname.length < 17
-			) {
-				const roomRef = doc(db, 'rooms', props.roomTitle);
-				await updateDoc(doc(db, 'rooms', props.roomTitle), {
-					[`characters.${currentUser.uid}.charaName`]:
-						newNickname,
-				});
-				setPTag(true);
-				console.log('Updated character name!');
-			} else {
-				console.log('Nickname is not valid!');
-				setPTag(true);
-			}
+	const validateNickname = async (newNickname: string) => {
+		if (
+			newNickname !== ' ' &&
+			newNickname.length > 3 &&
+			newNickname.length < 17
+		) {
+			const roomRef = doc(db, 'rooms', props.roomTitle);
+			await updateDoc(doc(db, 'rooms', props.roomTitle), {
+				[`characters.${currentUser.uid}.charaName`]: newNickname,
+			});
+			setPTag(true);
+			setRefresh((prevState) => !prevState);
+		} else {
+			console.log(`%c${newNickname}`, 'color: red', ' is not valid!');
+			setPTag(true);
 		}
 	};
 
@@ -75,15 +70,12 @@ const CharacterControls = (props: Props) => {
 			props.roomTitle !== undefined &&
 			props.roomTitle !== ''
 		) {
-			console.log('roomTile is not Null');
-			console.log(props.roomTitle);
 			getCharaData();
 		}
-	}, [props.roomTitle]);
+	}, [props.roomTitle, refresh]);
+
 	useEffect(() => {
 		if (characterInfo !== null && characterInfo !== undefined) {
-			console.log('Characters is not null!');
-			console.log(characterInfo.charaName);
 			setIsLoading(false);
 		}
 	}, [characterInfo]);
@@ -110,7 +102,13 @@ const CharacterControls = (props: Props) => {
 					<input
 						className={styles.nickNameInput}
 						autoFocus
-						onKeyDown={(e) => validateNickname(e)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter')
+								validateNickname(e.currentTarget.value);
+						}}
+						onClick={(e) =>
+							validateNickname(e.currentTarget.value)
+						}
 						type='text'
 					/>
 				)}

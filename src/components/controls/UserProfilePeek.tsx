@@ -38,26 +38,25 @@ const UserProfilePeek = (props: Props) => {
 	const { currentUser } = useContext(UserContext);
 	const [isPTag, setPTag] = useState(true);
 
-	const validateNickname = async (
-		e: React.KeyboardEvent<HTMLInputElement>
-	) => {
-		const newNickname = e.currentTarget.value;
-		if (e.key === 'Enter') {
-			if (
-				newNickname !== ' ' &&
-				newNickname.length > 3 &&
-				newNickname.length < 17
-			) {
-				await updateProfile(currentUser, {
-					displayName: newNickname,
-				});
-				setPTag(true);
-				console.log('Updated nickname!');
-			} else {
-				console.log('Nickname is not valid!');
-				setPTag(true);
-			}
-		}
+	const validateNewNickname = async (newNickname: string) => {
+		if (
+			newNickname.length < 4 ||
+			newNickname.length > 17 ||
+			!newNickname.replace(/\s/g, '').length
+		) {
+			console.warn(
+				`%c${newNickname}`,
+				'color: red',
+				' is not a valid username! Username was not updated.'
+			);
+			setPTag(true);
+			return;
+		} else
+			await updateProfile(currentUser, {
+				displayName: newNickname,
+			});
+		setPTag(true);
+		console.log('Updated nickname!');
 	};
 
 	const showUserName = currentUser ? (
@@ -104,7 +103,17 @@ const UserProfilePeek = (props: Props) => {
 						<input
 							className={styles.nickNameInput}
 							autoFocus
-							onKeyDown={(e) => validateNickname(e)}
+							onKeyDown={(e) => {
+								if (e.code === 'Enter')
+									validateNewNickname(
+										e.currentTarget.value
+									);
+							}}
+							onClick={(e) =>
+								validateNewNickname(
+									e.currentTarget.value
+								)
+							}
 							type='text'
 						/>
 					)}

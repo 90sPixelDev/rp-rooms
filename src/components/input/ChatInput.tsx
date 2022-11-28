@@ -59,8 +59,13 @@ const ChatInput = (props: Props) => {
 
 	const sendMessage = async () => {
 		if (!tempTypedMssg.replace(/\s/g, '').length) {
+			console.warn(
+				`%c"${tempTypedMssg}"`,
+				'color: red',
+				' is not a valid message! Not submitted.'
+			);
 			setTempTypedMssg('');
-			return console.error('Invalid message!');
+			return;
 		}
 		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
 		const uid = currentUser.uid;
