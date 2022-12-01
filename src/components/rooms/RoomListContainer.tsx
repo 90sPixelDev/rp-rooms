@@ -31,7 +31,7 @@ const RoomListContainer = (props: Props) => {
 	};
 
 	useEffect(() => {
-		if (props.listOfRooms.length > 0 && highlightedRoom === '') {
+		if (props.listOfRooms && highlightedRoom === '') {
 			setHighLightedRoom(props.listOfRooms[0]);
 			setIsLoading(false);
 		}

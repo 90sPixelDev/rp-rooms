@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Room } from '../exporter';
 
 type Styles = {
@@ -23,6 +24,10 @@ const RoomContainer = (props: Props) => {
 		props.roomChanged(props.title);
 	};
 
+	const cleanRoomTitle = () => {
+		return props.title.replace(/\s+/g, '-');
+	};
+
 	if (
 		selectedRoomTitle === null ||
 		selectedRoomTitle === undefined ||
@@ -35,14 +40,16 @@ const RoomContainer = (props: Props) => {
 		<>
 			{selectedRoomTitle && (
 				<div className={styles.roomParent} onClick={selectRoom}>
-					<Room
-						selected={
-							props.title === selectedRoomTitle
-								? true
-								: false
-						}
-						title={props.title}
-					/>
+					<Link to={cleanRoomTitle()}>
+						<Room
+							selected={
+								props.title === selectedRoomTitle
+									? true
+									: false
+							}
+							title={props.title}
+						/>
+					</Link>
 				</div>
 			)}
 			{!selectedRoomTitle && <p>Selected Room Loading!</p>}

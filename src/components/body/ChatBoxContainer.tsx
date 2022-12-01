@@ -16,6 +16,7 @@ interface MessagesInfo {
 type Props = {
 	messages: MessagesInfo[];
 	isLoading: boolean;
+	currentTab: string;
 };
 type Styles = {
 	chatBoxContainer: string;
@@ -41,9 +42,7 @@ const ChatBoxContainer = (props: Props) => {
 	return (
 		<div className={styles.chatBoxContainer}>
 			{!props.isLoading && props.messages.length <= 0 && (
-				<p className={styles.noMessagesText}>
-					There are no messages here yet. Be the first!
-				</p>
+				<p className={styles.noMessagesText}>No messages yet!</p>
 			)}
 			{props.isLoading && (
 				<img className={styles.loading} src={loadingAnim} />

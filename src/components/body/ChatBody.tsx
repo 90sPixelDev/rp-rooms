@@ -82,6 +82,7 @@ const ChatBody = (props: Props) => {
 			<ChatBoxContainer
 				messages={messagesArray as MessageInfo[]}
 				isLoading={isLoading}
+				currentTab={props.currentTab}
 			/>
 		</div>
 	);

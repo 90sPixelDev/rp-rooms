@@ -3,7 +3,13 @@ import { useState, useEffect } from 'react';
 import { StreamChat } from 'stream-chat';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from './firebase.config';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+	BrowserRouter,
+	Routes,
+	Route,
+	Navigate,
+	redirect,
+} from 'react-router-dom';
 import { UserContext } from './context/AuthContext';
 
 import {
@@ -40,23 +46,30 @@ function App() {
 		} else return children;
 	};
 
+	const Redirect = ({ children }: any) => {
+		return currentUser ? (
+			<Navigate to='rooms' />
+		) : (
+			<Navigate to='login' />
+		);
+	};
+
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/'>
-					<Route
-						index
-						element={
-							<ProtectedRoute>
-								<div id='portal-container'>
-									<ChatRooms />
-								</div>
-							</ProtectedRoute>
-						}
-					/>
-					<Route path='login' element={<LogInForm />} />
-					<Route path='signup' element={<SignUpForm />} />
-				</Route>
+				<Route
+					path='/*'
+					element={
+						<ProtectedRoute>
+							<div id='portal-container'>
+								<ChatRooms />
+							</div>
+						</ProtectedRoute>
+					}
+				></Route>
+				<Route path='login' element={<LogInForm />} />
+				<Route path='signup' element={<SignUpForm />} />
+				<Route path='*' element={<Navigate to='/' replace />} />
 			</Routes>
 		</BrowserRouter>
 	);

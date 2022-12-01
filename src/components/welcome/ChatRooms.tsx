@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { UserContext } from '../../context/AuthContext';
 import {
 	collection,
@@ -50,7 +51,7 @@ const ChatRooms = () => {
 
 	const { currentUser } = useContext(UserContext);
 
-	const [userRooms, setUserRooms] = useState<string[]>([]);
+	const [userRooms, setUserRooms] = useState<string[] | null>(null);
 	const [selectedRoomTitle, setSelectedRoomTitle] = useState('');
 	const [update, setUpdate] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +102,7 @@ const ChatRooms = () => {
 			setSelectedRoomTitle(userRooms[0]);
 			setIsLoading(false);
 		}
-	}, [userRooms.length]);
+	}, [userRooms?.length]);
 
 	const renderSideBarsConditionally = () => {
 		switch (true) {
@@ -109,7 +110,7 @@ const ChatRooms = () => {
 				return (
 					<div className={styles.wrapperBOpen}>
 						<LeftBar
-							listOfRooms={userRooms}
+							listOfRooms={userRooms as string[]}
 							callRefreshMessages={refreshMessages}
 							toggleLeftBar={toggleLeftBar}
 							isOpened={isLBOpened}
@@ -137,39 +138,58 @@ const ChatRooms = () => {
 				);
 			case !isLBOpened && !isRBOpened:
 				return (
-					<div className={styles.wrapperClosed}>
-						<LeftBar
-							listOfRooms={userRooms}
-							callRefreshMessages={refreshMessages}
-							toggleLeftBar={toggleLeftBar}
-							isOpened={isLBOpened}
+					<Routes>
+						<Route
+							path='/rooms/*'
+							element={
+								<div className={styles.wrapperClosed}>
+									<LeftBar
+										listOfRooms={
+											userRooms as string[]
+										}
+										callRefreshMessages={
+											refreshMessages
+										}
+										toggleLeftBar={toggleLeftBar}
+										isOpened={isLBOpened}
+									/>
+									<ChatBody
+										roomTitle={selectedRoomTitle}
+										refresh={update}
+										currentTab={currentTab}
+										changeTab={changeTab}
+									/>
+									<RightBar
+										toggleRightBar={
+											toggleRightBar
+										}
+										isOpened={isRBOpened}
+									/>
+									<UserControlsContainer
+										isOpened={isLBOpened}
+									/>
+									<ChatInput
+										roomSelectedInfo={
+											selectedRoomTitle
+										}
+										callRefreshMessages={
+											refreshMessages
+										}
+										currentTab={currentTab}
+									/>
+									<RoomControlsContainer
+										roomTitle={selectedRoomTitle}
+									/>
+								</div>
+							}
 						/>
-						<ChatBody
-							roomTitle={selectedRoomTitle}
-							refresh={update}
-							currentTab={currentTab}
-							changeTab={changeTab}
-						/>
-						<RightBar
-							toggleRightBar={toggleRightBar}
-							isOpened={isRBOpened}
-						/>
-						<UserControlsContainer isOpened={isLBOpened} />
-						<ChatInput
-							roomSelectedInfo={selectedRoomTitle}
-							callRefreshMessages={refreshMessages}
-							currentTab={currentTab}
-						/>
-						<RoomControlsContainer
-							roomTitle={selectedRoomTitle}
-						/>
-					</div>
+					</Routes>
 				);
 			case !isLBOpened && isRBOpened:
 				return (
 					<div className={styles.wrapperROpen}>
 						<LeftBar
-							listOfRooms={userRooms}
+							listOfRooms={userRooms as string[]}
 							callRefreshMessages={refreshMessages}
 							toggleLeftBar={toggleLeftBar}
 							isOpened={isLBOpened}
@@ -199,7 +219,7 @@ const ChatRooms = () => {
 				return (
 					<div className={styles.wrapperLOpen}>
 						<LeftBar
-							listOfRooms={userRooms}
+							listOfRooms={userRooms as string[]}
 							callRefreshMessages={refreshMessages}
 							toggleLeftBar={toggleLeftBar}
 							isOpened={isLBOpened}
