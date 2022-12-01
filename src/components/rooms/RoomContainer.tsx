@@ -40,16 +40,14 @@ const RoomContainer = (props: Props) => {
 		<>
 			{selectedRoomTitle && (
 				<div className={styles.roomParent} onClick={selectRoom}>
-					<Link to={cleanRoomTitle()}>
-						<Room
-							selected={
-								props.title === selectedRoomTitle
-									? true
-									: false
-							}
-							title={props.title}
-						/>
-					</Link>
+					<Room
+						selected={
+							props.title === selectedRoomTitle
+								? true
+								: false
+						}
+						title={props.title}
+					/>
 				</div>
 			)}
 			{!selectedRoomTitle && <p>Selected Room Loading!</p>}

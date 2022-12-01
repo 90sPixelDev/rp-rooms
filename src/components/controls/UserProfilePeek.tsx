@@ -28,8 +28,8 @@ const UserProfilePeek = (props: Props) => {
 		nickNameInput: 'italic w-[140px] outline-purple-500',
 		charaPicContainer:
 			'flex flex-row bg-purple-700 min-w-[50px] max-w-[50px] min-h-[50px] max-h-[50px] rounded-lg ml-2 mt-2 transition overflow-hidden items-center',
-		charaPic: 'h-full w-full',
-		charaPicClosed: 'h-full w-full',
+		charaPic: 'h-fit w-fit',
+		charaPicClosed: 'h-fit w-fit m-auto',
 		charaPicContainerClosed:
 			'flex flex-row bg-purple-700 min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] rounded-lg mt-2 mx-auto transition overflow-hidden items-center',
 	};

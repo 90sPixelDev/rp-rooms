@@ -10,6 +10,7 @@ type Styles = {
 	container: string;
 	timeWrapper: string;
 	body: string;
+	leftSide: string;
 	mssgInfo: string;
 	displayName: string;
 	imgContainer: string;
@@ -22,17 +23,18 @@ type Styles = {
 const ChatBox = (props: Props) => {
 	const styles: Styles = {
 		container: 'flex mb-2',
-		timeWrapper: 'flex flex-col ml-2',
+		timeWrapper: 'flex flex-col items-end mr-1',
 		body: 'flex flex-row bg-purple-300 h-fit w-fit shadow-md shadow-purple-800/50 rounded-xl',
+		leftSide: 'flex flex-col justify-between',
 		imgContainer:
-			'flex flex-row min-w-[60px] max-w-[60px] min-h-[60px] max-h-[60px] p-2 items-center',
-		img: 'h-full w-full',
+			'flex flex-row min-w-[60px] max-w-[60px] min-h-[60px] max-h-[60px] m-2 items-center rounded-xl overflow-hidden',
+		img: 'h-fit w-fit mx-auto',
 		mssgInfo: 'flex flex-col border-l-2 border-purple-400',
 		displayName: 'font-bold',
 		topOfMssg:
 			'flex flex-row justify-between bg-gradient-to-r from-purple-400 pt-1 pl-2 pr-2 rounded-tr-xl',
 		chatBoxText: 'mx-2 pb-1',
-		timeText: 'italic text-[12px] text-purple-500',
+		timeText: 'italic text-[12px] text-purple-900',
 	};
 
 	const date = new Date(props.timeSent);
@@ -59,10 +61,42 @@ const ChatBox = (props: Props) => {
 	};
 
 	return (
+		// <div className={styles.container}>
+		// 	<div className={styles.body}>
+		// 		<div className={styles.imgContainer}>
+		// 			<img className={styles.img} src={props.photoURL} />
+		// 		</div>
+		// 		<div className={styles.mssgInfo}>
+		// 			<div className={styles.topOfMssg}>
+		// 				<p className={styles.displayName}>
+		// 					{props.displayName}:
+		// 				</p>
+		// 			</div>
+		// 			<p className={styles.chatBoxText}>{props.mssgText}</p>
+		// 		</div>
+		// 	</div>
+		// 	<div className={styles.timeWrapper}>
+		// 		<p className={styles.timeText}>{getDateFormat()}</p>
+		// 		<p className={styles.timeText}>{getTimeFormat()}</p>
+		// 	</div>
+		// </div>
 		<div className={styles.container}>
 			<div className={styles.body}>
-				<div className={styles.imgContainer}>
-					<img className={styles.img} src={props.photoURL} />
+				<div className={styles.leftSide}>
+					<div className={styles.imgContainer}>
+						<img
+							className={styles.img}
+							src={props.photoURL}
+						/>
+					</div>
+					<div className={styles.timeWrapper}>
+						<p className={styles.timeText}>
+							{getTimeFormat()}
+						</p>
+						<p className={styles.timeText}>
+							{getDateFormat()}
+						</p>
+					</div>
 				</div>
 				<div className={styles.mssgInfo}>
 					<div className={styles.topOfMssg}>
@@ -72,10 +106,6 @@ const ChatBox = (props: Props) => {
 					</div>
 					<p className={styles.chatBoxText}>{props.mssgText}</p>
 				</div>
-			</div>
-			<div className={styles.timeWrapper}>
-				<p className={styles.timeText}>{getDateFormat()}</p>
-				<p className={styles.timeText}>{getTimeFormat()}</p>
 			</div>
 		</div>
 	);

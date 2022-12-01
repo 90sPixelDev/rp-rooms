@@ -138,52 +138,33 @@ const ChatRooms = () => {
 				);
 			case !isLBOpened && !isRBOpened:
 				return (
-					<Routes>
-						<Route
-							path='/rooms/*'
-							element={
-								<div className={styles.wrapperClosed}>
-									<LeftBar
-										listOfRooms={
-											userRooms as string[]
-										}
-										callRefreshMessages={
-											refreshMessages
-										}
-										toggleLeftBar={toggleLeftBar}
-										isOpened={isLBOpened}
-									/>
-									<ChatBody
-										roomTitle={selectedRoomTitle}
-										refresh={update}
-										currentTab={currentTab}
-										changeTab={changeTab}
-									/>
-									<RightBar
-										toggleRightBar={
-											toggleRightBar
-										}
-										isOpened={isRBOpened}
-									/>
-									<UserControlsContainer
-										isOpened={isLBOpened}
-									/>
-									<ChatInput
-										roomSelectedInfo={
-											selectedRoomTitle
-										}
-										callRefreshMessages={
-											refreshMessages
-										}
-										currentTab={currentTab}
-									/>
-									<RoomControlsContainer
-										roomTitle={selectedRoomTitle}
-									/>
-								</div>
-							}
+					<div className={styles.wrapperClosed}>
+						<LeftBar
+							listOfRooms={userRooms as string[]}
+							callRefreshMessages={refreshMessages}
+							toggleLeftBar={toggleLeftBar}
+							isOpened={isLBOpened}
 						/>
-					</Routes>
+						<ChatBody
+							roomTitle={selectedRoomTitle}
+							refresh={update}
+							currentTab={currentTab}
+							changeTab={changeTab}
+						/>
+						<RightBar
+							toggleRightBar={toggleRightBar}
+							isOpened={isRBOpened}
+						/>
+						<UserControlsContainer isOpened={isLBOpened} />
+						<ChatInput
+							roomSelectedInfo={selectedRoomTitle}
+							callRefreshMessages={refreshMessages}
+							currentTab={currentTab}
+						/>
+						<RoomControlsContainer
+							roomTitle={selectedRoomTitle}
+						/>
+					</div>
 				);
 			case !isLBOpened && isRBOpened:
 				return (
