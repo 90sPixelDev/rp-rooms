@@ -9,6 +9,7 @@ interface Props {
 	title: string;
 	highlightedRoom: string;
 	roomChanged: (room: string) => void;
+	isOpened: boolean;
 }
 
 const RoomContainer = (props: Props) => {

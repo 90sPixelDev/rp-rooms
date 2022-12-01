@@ -28,7 +28,7 @@ const ChatBox = (props: Props) => {
 		leftSide: 'flex flex-col justify-between',
 		imgContainer:
 			'flex flex-row min-w-[60px] max-w-[60px] min-h-[60px] max-h-[60px] m-2 items-center rounded-xl overflow-hidden',
-		img: 'h-fit w-fit mx-auto',
+		img: 'h-full w-full object-contain',
 		mssgInfo: 'flex flex-col border-l-2 border-purple-400',
 		displayName: 'font-bold',
 		topOfMssg:
@@ -61,25 +61,6 @@ const ChatBox = (props: Props) => {
 	};
 
 	return (
-		// <div className={styles.container}>
-		// 	<div className={styles.body}>
-		// 		<div className={styles.imgContainer}>
-		// 			<img className={styles.img} src={props.photoURL} />
-		// 		</div>
-		// 		<div className={styles.mssgInfo}>
-		// 			<div className={styles.topOfMssg}>
-		// 				<p className={styles.displayName}>
-		// 					{props.displayName}:
-		// 				</p>
-		// 			</div>
-		// 			<p className={styles.chatBoxText}>{props.mssgText}</p>
-		// 		</div>
-		// 	</div>
-		// 	<div className={styles.timeWrapper}>
-		// 		<p className={styles.timeText}>{getDateFormat()}</p>
-		// 		<p className={styles.timeText}>{getTimeFormat()}</p>
-		// 	</div>
-		// </div>
 		<div className={styles.container}>
 			<div className={styles.body}>
 				<div className={styles.leftSide}>

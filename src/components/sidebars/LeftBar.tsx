@@ -27,6 +27,7 @@ const LeftBar = (props: Props) => {
 			<RoomListContainer
 				listOfRooms={props.listOfRooms}
 				callRefreshMessages={props.callRefreshMessages}
+				isOpened={props.isOpened}
 			/>
 		</section>
 	);

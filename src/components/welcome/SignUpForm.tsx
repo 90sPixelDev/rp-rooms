@@ -157,6 +157,12 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				doc(db, 'rooms', 'RP Rooms Community'),
 				{
+					characters: {
+						[uid]: {
+							charaPic: '',
+							charaName: 'New Character',
+						},
+					},
 					user: arrayUnion(uid),
 				},
 				{ merge: true }
@@ -188,6 +194,12 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				doc(db, 'rooms', 'Test Room'),
 				{
+					characters: {
+						[uid]: {
+							charaPic: '',
+							charaName: 'New Character',
+						},
+					},
 					user: arrayUnion(uid),
 				},
 				{ merge: true }

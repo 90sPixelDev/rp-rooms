@@ -67,6 +67,12 @@ const RoomsSearch = (props: Props) => {
 				await setDoc(
 					newRoomRef,
 					{
+						characters: {
+							[currentUser.uid]: {
+								charaPic: '',
+								charaName: 'New Character',
+							},
+						},
 						user: arrayUnion(currentUser.uid),
 					},
 					{ merge: true }
@@ -95,11 +101,10 @@ const RoomsSearch = (props: Props) => {
 				);
 			}
 			setIsFocused(false);
-
 			setInputText('');
 		} catch (err) {
 			setErr(true);
-			console.error(`Message: ${err}`);
+			console.error(err);
 			setInputText('');
 		}
 		props.callRefreshMessages(inputText);

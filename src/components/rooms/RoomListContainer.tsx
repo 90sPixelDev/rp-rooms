@@ -11,6 +11,7 @@ import RoomsSearch from './RoomsSearch';
 interface Props {
 	listOfRooms: string[];
 	callRefreshMessages: (text: string) => void;
+	isOpened: boolean;
 }
 type Styles = {
 	container: string;
@@ -48,6 +49,7 @@ const RoomListContainer = (props: Props) => {
 						title={room}
 						highlightedRoom={highlightedRoom}
 						roomChanged={roomSelectionHandler}
+						isOpened={props.isOpened}
 					/>
 				))
 			)}
