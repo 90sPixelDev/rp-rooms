@@ -30,7 +30,7 @@ type Styles = {
 	passSection: string;
 	eyeIconShow: string;
 	eyeIconHide: string;
-	input: string;
+	signUpPic: string;
 	icon: string;
 	profileBtn: string;
 };
@@ -57,7 +57,7 @@ const SignUpForm = (props: Props) => {
 		eyeIconHide:
 			'cursor-pointer hover:bg-[rgba(100,0,255,0.5)] p-2 rounded-lg',
 		icon: 'text-purple-200 h-10 w-10',
-		input: 'absolute z-[-1] opacity-0',
+		signUpPic: 'absolute z-[-1] opacity-0',
 		profileBtn:
 			'text-purple-200 hover:bg-purple-300/40 hover:text-white flex flex-row place-items-center justify-center gap-2 w-fit pr-1 mx-auto mt-4 rounded-lg',
 	};
@@ -69,6 +69,7 @@ const SignUpForm = (props: Props) => {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [emailValid, setEmailValid] = useState(false);
+	const [picInfo, setPicInfo] = useState('Add a profile picture');
 
 	const [pass, setPass] = useState('');
 
@@ -81,7 +82,7 @@ const SignUpForm = (props: Props) => {
 		const emailInput = e.currentTarget[1] as HTMLInputElement;
 		const passwordInput = e.currentTarget[2] as HTMLInputElement;
 		const avatarInput = e.currentTarget[3] as HTMLInputElement;
-		const avatarFile = avatarInput.files![0];
+		const avatarFile = avatarInput.files![0] as File;
 
 		// console.log(e.currentTarget)
 
@@ -135,11 +136,6 @@ const SignUpForm = (props: Props) => {
 				getDownloadURL(uploadTask.snapshot.ref).then(
 					async (downloadURL) => {
 						await updateProfile(userInfo, {
-							displayName: username,
-							photoURL: downloadURL,
-						});
-						await setDoc(doc(db, 'users', userInfo.uid), {
-							email: userInfo.email,
 							displayName: username,
 							photoURL: downloadURL,
 						});
@@ -242,6 +238,24 @@ const SignUpForm = (props: Props) => {
 		} else {
 			setEmailValid(false);
 		}
+	};
+
+	const updatePicInfo = (e: react.ChangeEvent<HTMLInputElement>) => {
+		// Get the selected file
+		const file = e.currentTarget.files![0];
+		// Get the file name and size
+		const { name: fileName, size } = file;
+		let fileNameShortened = fileName;
+		if (fileName.length > 20) {
+			fileNameShortened = fileName.substring(0, 20);
+			fileNameShortened = fileNameShortened.concat('...');
+			console.log(fileNameShortened);
+		}
+		// Convert size in bytes to kilo bytes
+		const fileSize = (size / 1000).toFixed(2);
+		// Set the text content
+		const fileNameAndSize = `${fileNameShortened} - ${fileSize}KB`;
+		setPicInfo(fileNameAndSize);
 	};
 
 	// const passwordConfirmShow = (
@@ -355,14 +369,18 @@ const SignUpForm = (props: Props) => {
 							className={styles.icon}
 							icon={solid('image-portrait')}
 						/>
-						Add a profile picture
+						{picInfo}
 					</label>
 					<input
-						className={styles.input}
+						className={styles.signUpPic}
 						type='file'
 						name='avatar'
 						id='image-file'
 						accept='image/png,image/jpeg,image/gif'
+						onChange={(e) => {
+							updatePicInfo(e);
+						}}
+						required
 					/>
 					<SignUpBtn />
 				</form>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterControls } from '../exporter';
+import { CharacterControls, RoomOptionsPeek } from '../exporter';
 
 interface Props {
 	roomTitle: string;
@@ -17,6 +17,7 @@ const RoomControlsContainer = (props: Props) => {
 	return (
 		<div className={styles.container}>
 			<CharacterControls roomTitle={props.roomTitle} />
+			<RoomOptionsPeek />
 		</div>
 	);
 };

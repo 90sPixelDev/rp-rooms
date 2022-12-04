@@ -40,6 +40,7 @@ export { default as LogOutControl } from './controls/LogOutControl';
 export { default as OptionsControl } from './controls/OptionsControl';
 export { default as RoomControlsContainer } from './controls/RoomControlsContainer';
 export { default as CharacterControls } from './controls/CharacterControls';
+export { default as RoomOptionsPeek } from './controls/RoomOptionsPeek';
 
 export { default as TurnManager } from './controls/TurnManager';
 
