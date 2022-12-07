@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../context/AuthContext';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { db, storage, auth } from '../../firebase.config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+
+import charaPicTest from '../../resources/test/test-chara-pic.jpeg';
 
 interface Props {
 	roomTitle: string;
@@ -19,20 +22,26 @@ type Styles = {
 	nameArea: string;
 	nickName: string;
 	nickNameInput: string;
+	picArea: string;
 	inputPic: string;
+	charaPicContainer: string;
+	charaPic: string;
 	charaProfileBtn: string;
 };
 
 const CharacterControls = (props: Props) => {
 	const styles: Styles = {
-		container: 'bg-purple-400 m-2 p-1 rounded-lg',
+		container: 'bg-purple-400 m-1 p-1 rounded-lg',
 		controlTitle: 'font-bold text-center',
 		nameArea: 'flex flex-row',
 		nickName: 'underline cursor-pointer ml-1 hover:text-purple-200',
 		nickNameInput: 'italic w-[140px] outline-purple-500 ml-1',
+		picArea: 'flex flex-row justify-evenly',
 		inputPic: 'absolute z-[-1] opacity-0',
+		charaPicContainer: 'bg-purple-600 h-[50px] w-[50px] rounded-lg',
+		charaPic: 'bg-purple-600 h-fill w-fill rounded-lg',
 		charaProfileBtn:
-			'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm',
+			'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -42,6 +51,7 @@ const CharacterControls = (props: Props) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
 	const [isPTag, setPTag] = useState(true);
+	const [charaPic, setCharaPic] = useState<string | undefined>(undefined);
 
 	const validateNickname = async (newNickname: string) => {
 		if (
@@ -70,6 +80,27 @@ const CharacterControls = (props: Props) => {
 		) {
 			setCharacterInfo(charaRef.data()?.characters[uid]);
 		}
+
+		const storageRef = ref(
+			storage,
+			`users/${uid}/${props.roomTitle}-CharacterPic`
+		);
+
+		getDownloadURL(storageRef)
+			.then((url) => {
+				updateDoc(doc(db, 'rooms', props.roomTitle), {
+					[`characters.${currentUser.uid}.charaPic`]: url,
+				});
+			})
+			.catch((error) => {
+				if (error.code === 'storage/object-not-found') {
+					if (!characterInfo?.charaPic) {
+						setDefaultCharaPic();
+					}
+					return Promise.resolve(false);
+				}
+				return error;
+			});
 	};
 
 	useEffect(() => {
@@ -93,6 +124,37 @@ const CharacterControls = (props: Props) => {
 			<p className={styles.controlTitle}>Character Info:</p>
 		</div>;
 	}
+
+	const setDefaultCharaPic = async () => {
+		const defaultCharaPic = ref(storage, 'resources/defaultCharaPic.jpg');
+		getDownloadURL(defaultCharaPic)
+			.then((url) => {
+				updateDoc(doc(db, 'rooms', props.roomTitle), {
+					[`characters.${currentUser.uid}.charaPic`]: url,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const updateCharaPic = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const storageRef = ref(
+			storage,
+			`users/${uid}/${props.roomTitle}-CharacterPic`
+		);
+
+		if (
+			e.currentTarget.files![0] == null ||
+			e.currentTarget.files![0] == undefined
+		) {
+			setDefaultCharaPic();
+		} else {
+			const file = e.currentTarget.files![0];
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			setRefresh((prevState) => !prevState);
+		}
+	};
 
 	if (props.isOpened)
 		return (
@@ -124,7 +186,7 @@ const CharacterControls = (props: Props) => {
 						/>
 					)}
 				</div>
-				<div>
+				<div className={styles.picArea}>
 					<label
 						htmlFor='image-file'
 						className={styles.charaProfileBtn}
@@ -139,7 +201,14 @@ const CharacterControls = (props: Props) => {
 						name='avatar'
 						id='image-file'
 						accept='image/png,image/jpeg,image/gif'
+						onChange={(e) => updateCharaPic(e)}
 					/>
+					<div className={styles.charaPicContainer}>
+						<img
+							className={styles.charaPic}
+							src={characterInfo?.charaPic}
+						/>
+					</div>
 				</div>
 			</div>
 		);

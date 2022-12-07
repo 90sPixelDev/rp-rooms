@@ -21,7 +21,7 @@ type Styles = {
 const RoomOptionsPeek = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'bg-purple-400 m-2 p-1 rounded-lg items-center flex flex-col',
+			'bg-purple-400 m-1 p-1 rounded-lg items-center flex flex-col',
 		roomText: 'text-center font-bold',
 		btnContainer: 'flex justify-evenly',
 		dangerZone: 'flex flex-col rounded-lg w-full',
