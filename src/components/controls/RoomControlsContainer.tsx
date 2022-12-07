@@ -11,7 +11,7 @@ type Styles = {
 const RoomControlsContainer = (props: Props) => {
 	const styles: Styles = {
 		container:
-			'flex flex-col justify-between bg-purple-300 w-[95%] h-[90%] m-auto rounded-lg min-h-fit overflow-hidden',
+			'flex flex-col justify-between bg-purple-300 w-[95%] h-[90%] m-auto rounded-lg min-h-fit overflow-hidden ',
 	};
 
 	return (

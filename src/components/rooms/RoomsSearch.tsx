@@ -35,7 +35,7 @@ const RoomsSearch = (props: Props) => {
 		backdrop:
 			'fixed bg-[rgba(0,0,0,0.5)] h-[100vh] w-[100vw] top-0 left-0 flex flex-col place-items-center justify-center',
 		inputBoxClosed:
-			'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 border-purple-600 w-8 z-3 m-auto',
+			'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 border-purple-600 w-8 z-3 m-auto cursor-pointer',
 		inputBoxClosedFocused:
 			'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-2 border-purple-600 w-fit z-3',
 		bar: 'flex flex-row justify-center',
@@ -64,6 +64,12 @@ const RoomsSearch = (props: Props) => {
 			const newRoomRef = doc(db, 'rooms', inputText);
 			const newRoomDoc = await getDoc(newRoomRef);
 			if (newRoomDoc.exists()) {
+				if (newRoomDoc.data().characters[currentUser.uid]) {
+					console.warn(
+						`You are already a part of Room ${inputText}`
+					);
+					return;
+				}
 				await setDoc(
 					newRoomRef,
 					{
