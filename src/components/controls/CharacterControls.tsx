@@ -2,9 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../context/AuthContext';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 interface Props {
 	roomTitle: string;
+	isOpened: boolean;
 }
 interface Character {
 	charaName: string;
@@ -16,6 +19,8 @@ type Styles = {
 	nameArea: string;
 	nickName: string;
 	nickNameInput: string;
+	inputPic: string;
+	charaProfileBtn: string;
 };
 
 const CharacterControls = (props: Props) => {
@@ -23,8 +28,11 @@ const CharacterControls = (props: Props) => {
 		container: 'bg-purple-400 m-2 p-1 rounded-lg',
 		controlTitle: 'font-bold text-center',
 		nameArea: 'flex flex-row',
-		nickName: 'underline cursor-pointer ml-1',
+		nickName: 'underline cursor-pointer ml-1 hover:text-purple-200',
 		nickNameInput: 'italic w-[140px] outline-purple-500 ml-1',
+		inputPic: 'absolute z-[-1] opacity-0',
+		charaProfileBtn:
+			'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -86,35 +94,57 @@ const CharacterControls = (props: Props) => {
 		</div>;
 	}
 
-	return (
-		<div className={styles.container}>
-			<p className={styles.controlTitle}>Character Info:</p>
-			<div className={styles.nameArea}>
-				<p>Name:</p>
-				{isPTag ? (
-					<p
-						className={styles.nickName}
-						onClick={() => setPTag(false)}
+	if (props.isOpened)
+		return (
+			<div className={styles.container}>
+				<p className={styles.controlTitle}>Character Info:</p>
+				<div className={styles.nameArea}>
+					<p>Name:</p>
+					{isPTag ? (
+						<p
+							className={styles.nickName}
+							onClick={() => setPTag(false)}
+						>
+							{characterInfo?.charaName}
+						</p>
+					) : (
+						<input
+							className={styles.nickNameInput}
+							autoFocus
+							onKeyDown={(e) => {
+								if (e.key === 'Enter')
+									validateNickname(
+										e.currentTarget.value
+									);
+							}}
+							onClick={(e) =>
+								validateNickname(e.currentTarget.value)
+							}
+							type='text'
+						/>
+					)}
+				</div>
+				<div>
+					<label
+						htmlFor='image-file'
+						className={styles.charaProfileBtn}
 					>
-						{characterInfo?.charaName}
-					</p>
-				) : (
+						<FontAwesomeIcon icon={solid('image-portrait')} />
+						{/* {picInfo} */}
+						Set Profile Picture
+					</label>
 					<input
-						className={styles.nickNameInput}
-						autoFocus
-						onKeyDown={(e) => {
-							if (e.key === 'Enter')
-								validateNickname(e.currentTarget.value);
-						}}
-						onClick={(e) =>
-							validateNickname(e.currentTarget.value)
-						}
-						type='text'
+						className={styles.inputPic}
+						type='file'
+						name='avatar'
+						id='image-file'
+						accept='image/png,image/jpeg,image/gif'
 					/>
-				)}
+				</div>
 			</div>
-		</div>
-	);
+		);
+
+	return <p>CO &rarr;</p>;
 };
 
 export default CharacterControls;

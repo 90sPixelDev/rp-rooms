@@ -133,6 +133,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -163,6 +164,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -193,6 +195,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -223,6 +226,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);

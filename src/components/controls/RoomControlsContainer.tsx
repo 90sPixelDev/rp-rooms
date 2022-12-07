@@ -3,6 +3,7 @@ import { CharacterControls, RoomOptionsPeek } from '../exporter';
 
 interface Props {
 	roomTitle: string;
+	isOpened: boolean;
 }
 type Styles = {
 	container: string;
@@ -16,8 +17,11 @@ const RoomControlsContainer = (props: Props) => {
 
 	return (
 		<div className={styles.container}>
-			<CharacterControls roomTitle={props.roomTitle} />
-			<RoomOptionsPeek />
+			<CharacterControls
+				roomTitle={props.roomTitle}
+				isOpened={props.isOpened}
+			/>
+			<RoomOptionsPeek isOpened={props.isOpened} />
 		</div>
 	);
 };
