@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import {
+	doc,
+	updateDoc,
+	arrayRemove,
+	deleteDoc,
+	getDoc,
+} from 'firebase/firestore';
+import { db } from '../../firebase.config';
+import { UserContext } from '../../context/AuthContext';
 
 interface Props {
 	isOpened: boolean;
+	roomTitle: string;
 }
 type Styles = {
 	container: string;
@@ -36,9 +46,49 @@ const RoomOptionsPeek = (props: Props) => {
 		roomOpText: 'text-sm m-1',
 	};
 
+	const { currentUser } = useContext(UserContext);
+	const [owner, setOwner] = useState<string | null>(null);
+
 	const doorOpenIcon = <FontAwesomeIcon icon={solid('door-open')} />;
 	const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
 	const roomOptionsIcon = <FontAwesomeIcon icon={solid('outdent')} />;
+
+	const leaveRoom = async () => {
+		const roomDoc = doc(db, 'rooms', props.roomTitle);
+		await updateDoc(roomDoc, {
+			user: arrayRemove(`${currentUser.uid}`),
+			characters: {
+				[currentUser.uid]: null,
+			},
+		});
+	};
+
+	const deleteRoom = async () => {
+		const roomDoc = doc(db, 'rooms', props.roomTitle);
+		const roomDocSnap = await getDoc(roomDoc);
+		const owner = roomDocSnap.data()?.owner.toString();
+		if (owner === currentUser.uid) {
+			await deleteDoc(roomDoc);
+		} else {
+			console.warn('You Do Not Have Permission To Delete This Room.');
+		}
+	};
+
+	const getOwnerData = async () => {
+		const roomDoc = doc(db, 'rooms', props.roomTitle);
+		const roomDocSnap = await getDoc(roomDoc);
+		setOwner(roomDocSnap.data()?.owner.toString());
+	};
+
+	useEffect(() => {
+		if (
+			props.roomTitle != null &&
+			props.roomTitle != undefined &&
+			props.roomTitle != ''
+		) {
+			getOwnerData();
+		}
+	}, [props.roomTitle]);
 
 	if (props.isOpened)
 		return (
@@ -50,10 +100,16 @@ const RoomOptionsPeek = (props: Props) => {
 				<div className={styles.dangerZone}>
 					<p className={styles.dangerZoneText}>Danger Zone:</p>
 					<div className={styles.btnContainer}>
-						<button className={styles.leaveRmBtn}>
+						<button
+							className={styles.leaveRmBtn}
+							onClick={leaveRoom}
+						>
 							{doorOpenIcon}Leave Room
 						</button>
-						<button className={styles.deleteRmBtn}>
+						<button
+							className={styles.deleteRmBtn}
+							onClick={deleteRoom}
+						>
 							{trashcanIcon}Delete Room
 						</button>
 					</div>
@@ -61,7 +117,7 @@ const RoomOptionsPeek = (props: Props) => {
 			</div>
 		);
 
-	return <p className={styles.roomOpText}>RO &rarr;</p>;
+	return <></>;
 };
 
 export default RoomOptionsPeek;

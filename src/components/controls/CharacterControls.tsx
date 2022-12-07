@@ -22,6 +22,7 @@ type Styles = {
 	nickNameInput: string;
 	picArea: string;
 	inputPic: string;
+	charaPicContainerClosed: string;
 	charaPicContainer: string;
 	charaPic: string;
 	charaProfileBtn: string;
@@ -37,6 +38,8 @@ const CharacterControls = (props: Props) => {
 		picArea: 'flex flex-row justify-evenly',
 		inputPic: 'absolute z-[-1] opacity-0',
 		charaPicContainer: 'bg-purple-600 h-[50px] w-[50px] rounded-lg',
+		charaPicContainerClosed:
+			'bg-purple-600 h-[35px] w-[35px] rounded-lg mx-auto mt-2',
 		charaPic: 'bg-purple-600 h-fill w-fill rounded-lg',
 		charaProfileBtn:
 			'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
@@ -91,12 +94,10 @@ const CharacterControls = (props: Props) => {
 			})
 			.catch((error) => {
 				if (error.code === 'storage/object-not-found') {
-					if (!characterInfo?.charaPic) {
-						setDefaultCharaPic();
-					}
-					return Promise.resolve(false);
+					setDefaultCharaPic();
+					return Promise.resolve();
 				}
-				return error;
+				return Promise.resolve();
 			});
 	};
 
@@ -210,7 +211,11 @@ const CharacterControls = (props: Props) => {
 			</div>
 		);
 
-	return <p>CO &rarr;</p>;
+	return (
+		<div className={styles.charaPicContainerClosed}>
+			<img className={styles.charaPic} src={characterInfo?.charaPic} />
+		</div>
+	);
 };
 
 export default CharacterControls;

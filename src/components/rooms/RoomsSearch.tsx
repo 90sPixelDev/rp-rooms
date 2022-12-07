@@ -87,6 +87,7 @@ const RoomsSearch = (props: Props) => {
 				await setDoc(
 					newRoomRef,
 					{
+						owner: [currentUser.uid],
 						roomTitle: inputText,
 						currentTurn: '',
 						currentChapter: {

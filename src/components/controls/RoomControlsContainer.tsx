@@ -21,7 +21,10 @@ const RoomControlsContainer = (props: Props) => {
 				roomTitle={props.roomTitle}
 				isOpened={props.isOpened}
 			/>
-			<RoomOptionsPeek isOpened={props.isOpened} />
+			<RoomOptionsPeek
+				isOpened={props.isOpened}
+				roomTitle={props.roomTitle}
+			/>
 		</div>
 	);
 };

@@ -167,6 +167,7 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				newRoomRef,
 				{
+					owner: [uid],
 					roomTitle: 'RP Rooms Community',
 					currentTurn: '',
 					currentChapter: {
@@ -204,6 +205,7 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				newRoomRef2,
 				{
+					owner: [uid],
 					roomTitle: 'Test Room',
 					currentTurn: '',
 					currentChapter: {
