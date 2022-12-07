@@ -40,13 +40,13 @@ type Styles = {
 const ChatRooms = () => {
 	const styles = {
 		wrapperROpen:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
 		wrapperLOpen:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[250px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[250px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
 		wrapperBOpen:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
 		wrapperClosed:
-			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute',
+			'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -133,6 +133,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -163,6 +164,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -193,6 +195,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);
@@ -223,6 +226,7 @@ const ChatRooms = () => {
 						/>
 						<RoomControlsContainer
 							roomTitle={selectedRoomTitle}
+							isOpened={isRBOpened}
 						/>
 					</div>
 				);

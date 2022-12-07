@@ -76,8 +76,8 @@ const ChatInput = (props: Props) => {
 		if (props.currentTab === 'story') {
 			const roomDoc = await getDoc(roomRef);
 			mssgChannel = 'story';
-			avatar = roomDoc.data()?.uid.charaPic;
-			displayName = roomDoc.data()?.uid.charaName;
+			avatar = roomDoc.data()?.characters[uid].charaPic;
+			displayName = roomDoc.data()?.characters[uid].charaName;
 		}
 
 		const mssgFormat = {

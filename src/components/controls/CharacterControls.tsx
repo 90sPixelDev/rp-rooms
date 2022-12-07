@@ -1,10 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../context/AuthContext';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { db, storage, auth } from '../../firebase.config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 interface Props {
 	roomTitle: string;
+	isOpened: boolean;
 }
 interface Character {
 	charaName: string;
@@ -16,15 +20,26 @@ type Styles = {
 	nameArea: string;
 	nickName: string;
 	nickNameInput: string;
+	picArea: string;
+	inputPic: string;
+	charaPicContainer: string;
+	charaPic: string;
+	charaProfileBtn: string;
 };
 
 const CharacterControls = (props: Props) => {
 	const styles: Styles = {
-		container: 'bg-purple-400 m-2 p-1 rounded-lg',
+		container: 'bg-purple-400 m-1 p-1 rounded-lg',
 		controlTitle: 'font-bold text-center',
 		nameArea: 'flex flex-row',
-		nickName: 'underline cursor-pointer ml-1',
+		nickName: 'underline cursor-pointer ml-1 hover:text-purple-200',
 		nickNameInput: 'italic w-[140px] outline-purple-500 ml-1',
+		picArea: 'flex flex-row justify-evenly',
+		inputPic: 'absolute z-[-1] opacity-0',
+		charaPicContainer: 'bg-purple-600 h-[50px] w-[50px] rounded-lg',
+		charaPic: 'bg-purple-600 h-fill w-fill rounded-lg',
+		charaProfileBtn:
+			'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
 	};
 
 	const { currentUser } = useContext(UserContext);
@@ -62,6 +77,27 @@ const CharacterControls = (props: Props) => {
 		) {
 			setCharacterInfo(charaRef.data()?.characters[uid]);
 		}
+
+		const storageRef = ref(
+			storage,
+			`users/${uid}/${props.roomTitle}-CharacterPic`
+		);
+
+		getDownloadURL(storageRef)
+			.then((url) => {
+				updateDoc(doc(db, 'rooms', props.roomTitle), {
+					[`characters.${currentUser.uid}.charaPic`]: url,
+				});
+			})
+			.catch((error) => {
+				if (error.code === 'storage/object-not-found') {
+					if (!characterInfo?.charaPic) {
+						setDefaultCharaPic();
+					}
+					return Promise.resolve(false);
+				}
+				return error;
+			});
 	};
 
 	useEffect(() => {
@@ -86,35 +122,95 @@ const CharacterControls = (props: Props) => {
 		</div>;
 	}
 
-	return (
-		<div className={styles.container}>
-			<p className={styles.controlTitle}>Character Info:</p>
-			<div className={styles.nameArea}>
-				<p>Name:</p>
-				{isPTag ? (
-					<p
-						className={styles.nickName}
-						onClick={() => setPTag(false)}
+	const setDefaultCharaPic = async () => {
+		const defaultCharaPic = ref(storage, 'resources/defaultCharaPic.jpg');
+		getDownloadURL(defaultCharaPic)
+			.then((url) => {
+				updateDoc(doc(db, 'rooms', props.roomTitle), {
+					[`characters.${currentUser.uid}.charaPic`]: url,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const updateCharaPic = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const storageRef = ref(
+			storage,
+			`users/${uid}/${props.roomTitle}-CharacterPic`
+		);
+
+		if (
+			e.currentTarget.files![0] == null ||
+			e.currentTarget.files![0] == undefined
+		) {
+			setDefaultCharaPic();
+		} else {
+			const file = e.currentTarget.files![0];
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			setRefresh((prevState) => !prevState);
+		}
+	};
+
+	if (props.isOpened)
+		return (
+			<div className={styles.container}>
+				<p className={styles.controlTitle}>Character Info:</p>
+				<div className={styles.nameArea}>
+					<p>Name:</p>
+					{isPTag ? (
+						<p
+							className={styles.nickName}
+							onClick={() => setPTag(false)}
+						>
+							{characterInfo?.charaName}
+						</p>
+					) : (
+						<input
+							className={styles.nickNameInput}
+							autoFocus
+							onKeyDown={(e) => {
+								if (e.key === 'Enter')
+									validateNickname(
+										e.currentTarget.value
+									);
+							}}
+							onClick={(e) =>
+								validateNickname(e.currentTarget.value)
+							}
+							type='text'
+						/>
+					)}
+				</div>
+				<div className={styles.picArea}>
+					<label
+						htmlFor='image-file'
+						className={styles.charaProfileBtn}
 					>
-						{characterInfo?.charaName}
-					</p>
-				) : (
+						<FontAwesomeIcon icon={solid('image-portrait')} />
+						{/* {picInfo} */}
+						Set Profile Picture
+					</label>
 					<input
-						className={styles.nickNameInput}
-						autoFocus
-						onKeyDown={(e) => {
-							if (e.key === 'Enter')
-								validateNickname(e.currentTarget.value);
-						}}
-						onClick={(e) =>
-							validateNickname(e.currentTarget.value)
-						}
-						type='text'
+						className={styles.inputPic}
+						type='file'
+						name='avatar'
+						id='image-file'
+						accept='image/png,image/jpeg,image/gif'
+						onChange={(e) => updateCharaPic(e)}
 					/>
-				)}
+					<div className={styles.charaPicContainer}>
+						<img
+							className={styles.charaPic}
+							src={characterInfo?.charaPic}
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
-	);
+		);
+
+	return <p>CO &rarr;</p>;
 };
 
 export default CharacterControls;

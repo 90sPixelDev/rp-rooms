@@ -20,7 +20,8 @@ const LogOutControl = (props: Props) => {
 			'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2 hover:text-purple-200 min-w-fit w-[7rem]',
 		text: 'm-auto',
 		icon: 'bg-purple-500 p-2 rounded-l-xl',
-		iconClosed: 'bg-purple-500 p-2 rounded-r-xl',
+		iconClosed:
+			'bg-purple-500 p-2 rounded-r-xl hover:text-purple-200 cursor-pointer',
 	};
 
 	if (props.isOpened)
