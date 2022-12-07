@@ -6,8 +6,6 @@ import { db, storage, auth } from '../../firebase.config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import charaPicTest from '../../resources/test/test-chara-pic.jpeg';
-
 interface Props {
 	roomTitle: string;
 	isOpened: boolean;
@@ -51,7 +49,6 @@ const CharacterControls = (props: Props) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [refresh, setRefresh] = useState(false);
 	const [isPTag, setPTag] = useState(true);
-	const [charaPic, setCharaPic] = useState<string | undefined>(undefined);
 
 	const validateNickname = async (newNickname: string) => {
 		if (
