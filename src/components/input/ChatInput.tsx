@@ -21,6 +21,11 @@ interface Props {
 	currentTab: string;
 	callRefreshMessages: (text: string) => void;
 }
+type charaTurn = {
+	charaName: {
+		turn: 0;
+	};
+};
 type Styles = {
 	container: string;
 	textArea: string;
@@ -42,6 +47,7 @@ const ChatInput = (props: Props) => {
 	};
 
 	const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
+	const [charaTurns, setCharaTurns] = useState<charaTurn[] | null>(null);
 	const { currentUser } = useContext(UserContext);
 
 	const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -94,6 +100,11 @@ const ChatInput = (props: Props) => {
 		});
 		props.callRefreshMessages(props.roomSelectedInfo);
 		setTempTypedMssg('');
+	};
+
+	const getCharaTurns = async () => {
+		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
+		const roomDoc = await getDoc(roomRef);
 	};
 
 	return (

@@ -150,13 +150,15 @@ const SignUpForm = (props: Props) => {
 		const docSnap2 = await getDoc(newRoomRef);
 
 		if (docSnap.exists()) {
+			const charaCount = Object.keys(docSnap.data().characters).length;
 			await setDoc(
-				doc(db, 'rooms', 'RP Rooms Community'),
+				newRoomRef,
 				{
 					characters: {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: charaCount.toString(),
 						},
 					},
 					user: arrayUnion(uid),
@@ -178,6 +180,8 @@ const SignUpForm = (props: Props) => {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: '0',
+							currentTurn: true,
 						},
 					},
 					user: arrayUnion(uid),
@@ -188,13 +192,17 @@ const SignUpForm = (props: Props) => {
 			);
 		}
 		if (docSnap2.exists()) {
+			const charaCount = Object.keys(
+				docSnap2.data().characters
+			).length;
 			await setDoc(
-				doc(db, 'rooms', 'Test Room'),
+				newRoomRef2,
 				{
 					characters: {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: charaCount.toString(),
 						},
 					},
 					user: arrayUnion(uid),
@@ -216,6 +224,8 @@ const SignUpForm = (props: Props) => {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: '0',
+							currentTurn: true,
 						},
 					},
 					user: arrayUnion(uid),

@@ -190,7 +190,6 @@ const CharacterControls = (props: Props) => {
 						className={styles.charaProfileBtn}
 					>
 						<FontAwesomeIcon icon={solid('image-portrait')} />
-						{/* {picInfo} */}
 						Set Profile Picture
 					</label>
 					<input

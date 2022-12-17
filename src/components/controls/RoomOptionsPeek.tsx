@@ -7,6 +7,7 @@ import {
 	arrayRemove,
 	deleteDoc,
 	getDoc,
+	deleteField,
 } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
@@ -53,13 +54,13 @@ const RoomOptionsPeek = (props: Props) => {
 	const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
 	const roomOptionsIcon = <FontAwesomeIcon icon={solid('outdent')} />;
 
+	const fieldToDelete = `characters.${currentUser.uid}`;
+
 	const leaveRoom = async () => {
 		const roomDoc = doc(db, 'rooms', props.roomTitle);
 		await updateDoc(roomDoc, {
 			user: arrayRemove(`${currentUser.uid}`),
-			characters: {
-				[currentUser.uid]: null,
-			},
+			[fieldToDelete]: deleteField(),
 		});
 	};
 
@@ -70,7 +71,9 @@ const RoomOptionsPeek = (props: Props) => {
 		if (owner === currentUser.uid) {
 			await deleteDoc(roomDoc);
 		} else {
-			console.warn('You Do Not Have Permission To Delete This Room.');
+			console.warn(
+				'You Do Not Have Authorization To Delete This Room.'
+			);
 		}
 	};
 
