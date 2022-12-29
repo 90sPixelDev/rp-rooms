@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 import {
@@ -21,10 +21,10 @@ interface Props {
 	currentTab: string;
 	callRefreshMessages: (text: string) => void;
 }
-type charaTurn = {
-	charaName: {
-		turn: 0;
-	};
+type chara = {
+	charaName: string;
+	currentTurn: boolean;
+	turn: string;
 };
 type Styles = {
 	container: string;
@@ -47,7 +47,7 @@ const ChatInput = (props: Props) => {
 	};
 
 	const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
-	const [charaTurns, setCharaTurns] = useState<charaTurn[] | null>(null);
+	const [charaMap, setCharaMap] = useState<chara[] | null>(null);
 	const { currentUser } = useContext(UserContext);
 
 	const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -102,15 +102,27 @@ const ChatInput = (props: Props) => {
 		setTempTypedMssg('');
 	};
 
-	const getCharaTurns = async () => {
+	const GetCharas = useCallback(async () => {
 		const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
 		const roomDoc = await getDoc(roomRef);
-	};
+
+		setCharaMap(roomDoc.data()?.characters);
+	}, [props.roomSelectedInfo]);
+
+	useEffect(() => {
+		if (
+			props.roomSelectedInfo != null &&
+			props.roomSelectedInfo != undefined &&
+			props.roomSelectedInfo != ''
+		) {
+			GetCharas();
+		}
+	}, [props.roomSelectedInfo]);
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.bttnArea}>
-				<TurnManager />
+				<TurnManager charaMap={charaMap} />
 				<ChatTypeButton />
 			</div>
 			<div className={styles.mssgArea}>

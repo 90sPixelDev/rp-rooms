@@ -70,9 +70,8 @@ const RoomsSearch = (props: Props) => {
 					);
 					return;
 				}
-				const charas = Object.entries(newRoomDoc.data().characters);
+				const charas = Object.keys(newRoomDoc.data().characters);
 				const charaCount = charas.length;
-				console.log(charas);
 				await setDoc(
 					newRoomRef,
 					{
@@ -81,6 +80,7 @@ const RoomsSearch = (props: Props) => {
 								charaPic: '',
 								charaName: 'New Character',
 								turn: charaCount.toString(),
+								currentTurn: false,
 							},
 						},
 						user: arrayUnion(currentUser.uid),
