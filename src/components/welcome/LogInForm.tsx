@@ -61,7 +61,6 @@ const LogInForm = (props: Props) => {
 		)
 			.then((userCredential) => {
 				const user = userCredential.user;
-				console.log(user.email);
 				navigate('/rooms');
 			})
 			.catch((err) => {

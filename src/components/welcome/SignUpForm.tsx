@@ -150,13 +150,17 @@ const SignUpForm = (props: Props) => {
 		const docSnap2 = await getDoc(newRoomRef);
 
 		if (docSnap.exists()) {
+			const charas = Object.keys(docSnap.data().characters);
+			const charaCount = charas.length;
 			await setDoc(
-				doc(db, 'rooms', 'RP Rooms Community'),
+				newRoomRef,
 				{
 					characters: {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: charaCount.toString(),
+							currentTurn: false,
 						},
 					},
 					user: arrayUnion(uid),
@@ -167,6 +171,7 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				newRoomRef,
 				{
+					owner: [uid],
 					roomTitle: 'RP Rooms Community',
 					currentTurn: '',
 					currentChapter: {
@@ -177,6 +182,8 @@ const SignUpForm = (props: Props) => {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: '0',
+							currentTurn: true,
 						},
 					},
 					user: arrayUnion(uid),
@@ -187,13 +194,17 @@ const SignUpForm = (props: Props) => {
 			);
 		}
 		if (docSnap2.exists()) {
+			const charas = Object.keys(docSnap2.data().characters);
+			const charaCount = charas.length;
 			await setDoc(
-				doc(db, 'rooms', 'Test Room'),
+				newRoomRef2,
 				{
 					characters: {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: charaCount.toString(),
+							currentTurn: false,
 						},
 					},
 					user: arrayUnion(uid),
@@ -204,6 +215,7 @@ const SignUpForm = (props: Props) => {
 			await setDoc(
 				newRoomRef2,
 				{
+					owner: [uid],
 					roomTitle: 'Test Room',
 					currentTurn: '',
 					currentChapter: {
@@ -214,6 +226,8 @@ const SignUpForm = (props: Props) => {
 						[uid]: {
 							charaPic: '',
 							charaName: 'New Character',
+							turn: '0',
+							currentTurn: true,
 						},
 					},
 					user: arrayUnion(uid),

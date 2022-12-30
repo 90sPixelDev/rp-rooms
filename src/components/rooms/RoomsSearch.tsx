@@ -44,10 +44,11 @@ const RoomsSearch = (props: Props) => {
 	const [room, setRoom] = useState(null as any);
 	const [inputText, setInputText] = useState('');
 	const [isSearching, setIsSearching] = useState(false);
-	const [searchedRooms, setSearchedRooms] = useState<string[]>([]);
+	const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
 	const [isFocused, setIsFocused] = useState(false);
 	const [isFocusedMini, setIsFocusedMini] = useState(false);
 	const [err, setErr] = useState(false);
+	const [roomsFound, setRoomsFound] = useState(true);
 
 	const { currentUser } = useContext(UserContext);
 
@@ -70,6 +71,8 @@ const RoomsSearch = (props: Props) => {
 					);
 					return;
 				}
+				const charas = Object.keys(newRoomDoc.data().characters);
+				const charaCount = charas.length;
 				await setDoc(
 					newRoomRef,
 					{
@@ -77,6 +80,8 @@ const RoomsSearch = (props: Props) => {
 							[currentUser.uid]: {
 								charaPic: '',
 								charaName: 'New Character',
+								turn: charaCount.toString(),
+								currentTurn: false,
 							},
 						},
 						user: arrayUnion(currentUser.uid),
@@ -87,6 +92,7 @@ const RoomsSearch = (props: Props) => {
 				await setDoc(
 					newRoomRef,
 					{
+						owner: [currentUser.uid],
 						roomTitle: inputText,
 						currentTurn: '',
 						currentChapter: {
@@ -97,6 +103,8 @@ const RoomsSearch = (props: Props) => {
 							[currentUser.uid]: {
 								charaPic: '',
 								charaName: 'New Character',
+								turn: '0',
+								currentTurn: true,
 							},
 						},
 						user: arrayUnion(currentUser.uid),
@@ -137,6 +145,7 @@ const RoomsSearch = (props: Props) => {
 			setErr(true);
 			console.error(`Message: ${err}`);
 		}
+		console.log(roomSearchList);
 	};
 
 	const unFocusRoomSearch = () => {
@@ -177,6 +186,7 @@ const RoomsSearch = (props: Props) => {
 						roomsSearched={searchedRooms}
 						addSelectedRoom={addRoom}
 						isOpened={props.isOpened}
+						searchingDone={roomsFound}
 					/>
 				)}
 			</section>
@@ -229,6 +239,7 @@ const RoomsSearch = (props: Props) => {
 					roomsSearched={searchedRooms}
 					addSelectedRoom={addRoom}
 					isOpened={props.isOpened}
+					searchingDone={roomsFound}
 				/>
 			)}
 		</section>

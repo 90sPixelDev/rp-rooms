@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-type Props = unknown;
+import loadingAnim from '../../resources/ui/loading-anim.svg';
+
+type chara = {
+	charaName: string;
+	currentTurn: boolean;
+	turn: string;
+};
+interface Props {
+	charaMap: chara[] | null;
+}
 type Styles = {
 	container: string;
 	currentChara: string;
 	characterName: string;
+	loadingAnim: string;
 };
 
 const TurnManager = (props: Props) => {
@@ -15,13 +25,68 @@ const TurnManager = (props: Props) => {
 			'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 m-auto border-2 border-purple-400',
 		characterName:
 			'flow-root min-w-fit min-h-fit bg-purple-100 rounded-full px-2 m-auto',
+		loadingAnim: 'm-auto w-6 h-6',
 	};
+
+	const [isLoading, setIsLoading] = useState(true);
+	const [charaList, setCharaList] = useState<chara[] | []>([]);
+
+	useEffect(() => {
+		setCharaList([]);
+		if (props.charaMap != null && props.charaMap != undefined) {
+			setCharaList(Object.values(props.charaMap).map((uid) => uid));
+			setIsLoading(false);
+		}
+	}, [props.charaMap]);
+
+	const renderRandomKey = (charaNameStr: string) => {
+		const randomNum = Math.random() * 3;
+		const key = `${charaNameStr}-${randomNum}`;
+		return key;
+	};
+
+	const determineCharaNameStyle = (chara: any) => {
+		if (chara[2]) {
+			return (
+				<p
+					className={styles.currentChara}
+					key={renderRandomKey(chara[1])}
+				>
+					{chara[1]}
+				</p>
+			);
+		} else
+			return (
+				<p
+					className={styles.characterName}
+					key={renderRandomKey(chara[1])}
+				>
+					{chara[1]}
+				</p>
+			);
+	};
+
+	const sortCharaList = () => {
+		const charaArr = charaList.map((chara) => [
+			chara.turn,
+			chara.charaName,
+			chara.currentTurn,
+		]);
+		const charaListSorted = charaArr.sort(
+			(a: any, b: any) => a[0] - b[0]
+		);
+		const charaListElem = charaListSorted.map((chara) =>
+			determineCharaNameStyle(chara)
+		);
+		return charaListElem;
+	};
+
+	if (!isLoading)
+		return <div className={styles.container}>{sortCharaList()}</div>;
 
 	return (
 		<div className={styles.container}>
-			<p className={styles.currentChara}>Abbi White</p>
-			<p className={styles.characterName}>Trent Luz</p>
-			<p className={styles.characterName}>Kiara Star</p>
+			<img className={styles.loadingAnim} src={loadingAnim} />
 		</div>
 	);
 };

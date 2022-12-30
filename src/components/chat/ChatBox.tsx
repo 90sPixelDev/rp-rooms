@@ -38,11 +38,14 @@ const ChatBox = (props: Props) => {
 	};
 
 	const date = new Date(props.timeSent);
+	console.log(date);
 
 	const getDateFormat = () => {
 		const year = String(date.getFullYear()).slice(-2);
-		const month = String(date.getMonth());
+		const month = String(date.getMonth() + 1);
 		const day = String(date.getDate());
+
+		console.log(month);
 
 		const dateFormat = [month, day, year].join('-');
 		return dateFormat;
