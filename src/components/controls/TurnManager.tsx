@@ -32,15 +32,17 @@ const TurnManager = (props: Props) => {
 	const [charaList, setCharaList] = useState<chara[] | []>([]);
 
 	useEffect(() => {
+		setCharaList([]);
 		if (props.charaMap != null && props.charaMap != undefined) {
 			setCharaList(Object.values(props.charaMap).map((uid) => uid));
 			setIsLoading(false);
 		}
 	}, [props.charaMap]);
 
-	const renderRandomKey = (key: string) => {
-		const randomNum = Math.round(Math.random() * 6);
-		return `${key}-${randomNum}`;
+	const renderRandomKey = (charaNameStr: string) => {
+		const randomNum = Math.random() * 3;
+		const key = `${charaNameStr}-${randomNum}`;
+		return key;
 	};
 
 	const determineCharaNameStyle = (chara: any) => {
