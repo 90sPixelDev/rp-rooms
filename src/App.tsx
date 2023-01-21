@@ -21,10 +21,6 @@ function App() {
         } else return children;
     };
 
-    const Redirect = ({ children }: any) => {
-        return currentUser ? <Navigate to="rooms" /> : <Navigate to="login" />;
-    };
-
     return (
         <BrowserRouter>
             <Routes>

@@ -1,7 +1,24 @@
 import * as React from 'react';
-import { RoomsResult } from '../utils/types';
+import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 
-export function useRooms(): RoomsResult {
-    const a = { something: 'test' };
-    return a;
+import { db } from '../firebase.config';
+import { UserContext } from '../context/AuthContext';
+import { RoomsResult } from './types';
+
+export default function useRooms(): RoomsResult {
+    const [userRooms, setUserRooms] = React.useState<string[] | null>(null);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    const { currentUser } = React.useContext(UserContext);
+
+    const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser.uid));
+
+    const fetchUserRoomsData = async () => {
+        setIsLoading(true);
+        const userRoomsDocs = await getDocs(userRoomsQuery);
+        setUserRooms(userRoomsDocs.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc.id));
+        setIsLoading(false);
+    };
+
+    return { rooms: userRooms, loading: isLoading, fetchUserRoomsData };
 }

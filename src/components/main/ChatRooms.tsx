@@ -1,10 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { UserContext } from '../../context/AuthContext';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import React, { useState, useEffect } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
-import { convertCompilerOptionsFromJson } from 'typescript';
+import useRooms from '../../hooks/useRooms';
 
 interface MessageInfo {
     userName: string;
@@ -35,15 +32,13 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
-    const { currentUser } = useContext(UserContext);
-
-    const [userRooms, setUserRooms] = useState<string[] | null>(null);
     const [selectedRoomTitle, setSelectedRoomTitle] = useState('');
     const [update, setUpdate] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
+
+    const { rooms, loading, fetchUserRoomsData } = useRooms();
 
     const changeTab = (tab: string) => {
         setCurrentTab(tab);
@@ -55,14 +50,8 @@ const ChatRooms = () => {
         setUpdate((prevState: boolean) => !prevState);
     };
 
-    const GetRooms = async () => {
-        const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser.uid));
-
-        const userRoomsData = await getDocs(userRoomsQuery);
-
-        setUserRooms(userRoomsData.docs.map((doc: any) => doc.id));
-
-        console.log('Ran GetRooms()');
+    const loadRooms = async () => {
+        await fetchUserRoomsData();
     };
 
     const toggleRightBar = () => {
@@ -73,19 +62,19 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        GetRooms();
-    }, [update, isLoading, currentTab]);
-
-    useEffect(() => {
+        if (rooms === null && loading) {
+            loadRooms();
+            console.log('Running!');
+        }
         if (
-            userRooms != undefined &&
-            userRooms != null &&
+            rooms != undefined &&
+            rooms != null &&
             (selectedRoomTitle == null || selectedRoomTitle == undefined || selectedRoomTitle == '')
         ) {
-            setSelectedRoomTitle(userRooms[0]);
-            setIsLoading(false);
+            setSelectedRoomTitle(rooms[0]);
+            console.log('Testing!');
         }
-    }, [userRooms?.length]);
+    }, [update, loading, currentTab, rooms]);
 
     const renderSideBarsConditionally = () => {
         switch (true) {
@@ -93,7 +82,7 @@ const ChatRooms = () => {
                 return (
                     <div className={styles.wrapperBOpen}>
                         <LeftBar
-                            listOfRooms={userRooms as string[]}
+                            listOfRooms={rooms as string[]}
                             callRefreshMessages={refreshMessages}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
@@ -118,7 +107,7 @@ const ChatRooms = () => {
                 return (
                     <div className={styles.wrapperClosed}>
                         <LeftBar
-                            listOfRooms={userRooms as string[]}
+                            listOfRooms={rooms as string[]}
                             callRefreshMessages={refreshMessages}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
@@ -143,7 +132,7 @@ const ChatRooms = () => {
                 return (
                     <div className={styles.wrapperROpen}>
                         <LeftBar
-                            listOfRooms={userRooms as string[]}
+                            listOfRooms={rooms as string[]}
                             callRefreshMessages={refreshMessages}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
@@ -168,7 +157,7 @@ const ChatRooms = () => {
                 return (
                     <div className={styles.wrapperLOpen}>
                         <LeftBar
-                            listOfRooms={userRooms as string[]}
+                            listOfRooms={rooms as string[]}
                             callRefreshMessages={refreshMessages}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
@@ -193,6 +182,8 @@ const ChatRooms = () => {
                 return <p>FATAL ERROR!</p>;
         }
     };
+
+    // return <></>;
 
     return <>{renderSideBarsConditionally()}</>;
 };
