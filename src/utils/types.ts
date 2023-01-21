@@ -1,3 +1,5 @@
-export type RoomsResult = {
-    something: string;
+export type RefreshData = {
+    selectedRoomTitle: string;
+    update: boolean;
+    refreshMessages: (newRoomTitle: string) => void;
 };

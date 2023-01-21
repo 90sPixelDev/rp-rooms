@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
 import useRooms from '../../hooks/useRooms';
+import { refresh } from '../../utils/update';
 
 interface MessageInfo {
     userName: string;
@@ -32,22 +33,15 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
-    const [selectedRoomTitle, setSelectedRoomTitle] = useState('');
-    const [update, setUpdate] = useState(false);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
 
     const { rooms, loading, fetchUserRoomsData } = useRooms();
+    const { selectedRoomTitle, update, refreshMessages } = refresh();
 
     const changeTab = (tab: string) => {
         setCurrentTab(tab);
-    };
-
-    const refreshMessages = (newRoomName: string) => {
-        setSelectedRoomTitle(newRoomName);
-
-        setUpdate((prevState: boolean) => !prevState);
     };
 
     const loadRooms = async () => {
@@ -62,18 +56,22 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        if (rooms === null && loading) {
-            loadRooms();
-            console.log('Running!');
-        }
-        if (
-            rooms != undefined &&
-            rooms != null &&
-            (selectedRoomTitle == null || selectedRoomTitle == undefined || selectedRoomTitle == '')
-        ) {
-            setSelectedRoomTitle(rooms[0]);
-            console.log('Testing!');
-        }
+        const unSub = () => {
+            if (rooms === null && loading) {
+                loadRooms();
+                console.log('Running!');
+            }
+            if (
+                rooms != undefined &&
+                rooms != null &&
+                (selectedRoomTitle == null || selectedRoomTitle == undefined || selectedRoomTitle == '')
+            ) {
+                refreshMessages(rooms[0]);
+                console.log('Testing!');
+            }
+        };
+
+        return unSub;
     }, [update, loading, currentTab, rooms]);
 
     const renderSideBarsConditionally = () => {
