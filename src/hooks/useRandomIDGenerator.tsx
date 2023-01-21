@@ -1,7 +1,5 @@
 import React from 'react';
 
-type Props = unknown;
-
 const useRandomIDGenerator = () => {
 	const numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 	const letters: string[] = [
@@ -48,19 +46,6 @@ const useRandomIDGenerator = () => {
 		}
 		return numbersSection;
 	};
-
-	// String.prototype.shuffle = function () {
-	// 	const a = this.split(''),
-	// 		n = a.length;
-
-	// 	for (let i = n - 1; i > 0; i--) {
-	// 		const j = Math.floor(Math.random() * (i + 1));
-	// 		const tmp = a[i];
-	// 		a[i] = a[j];
-	// 		a[j] = tmp;
-	// 	}
-	// 	return a.join('');
-	// };
 
 	const idString = randomletters() + randomNumbers();
 
