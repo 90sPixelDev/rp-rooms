@@ -1,6 +1,6 @@
 export type RoomsResult = {
     rooms: string[] | null;
-    loading: boolean;
+    roomsLoading: boolean;
     fetchUserRoomsData: () => Promise<void>;
     unsubscribe: () => void;
 };

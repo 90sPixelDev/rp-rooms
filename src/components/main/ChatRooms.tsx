@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
 import useRooms from '../../hooks/useRooms';
-import { refresh } from '../../utils/update';
+import { refreshUtils } from '../../utils/update';
 
 interface MessageInfo {
     userName: string;
@@ -22,7 +22,7 @@ type Styles = {
 };
 
 const ChatRooms = () => {
-    const styles = {
+    const styles: Styles = {
         wrapperROpen:
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
         wrapperLOpen:
@@ -33,12 +33,13 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
+    const [isLoading, setIsLoading] = useState(true);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
 
-    const { rooms, loading, fetchUserRoomsData, unsubscribe } = useRooms();
-    const { selectedRoomTitle, update, refreshMessages } = refresh();
+    const { rooms, fetchUserRoomsData, unsubscribe } = useRooms();
+    const { selectedRoomTitle, update, refreshMessages } = refreshUtils();
 
     const changeTab = (tab: string) => {
         setCurrentTab(tab);
@@ -46,6 +47,7 @@ const ChatRooms = () => {
 
     const loadRooms = async () => {
         await fetchUserRoomsData();
+        setIsLoading(false);
     };
 
     const toggleRightBar = () => {
@@ -57,7 +59,10 @@ const ChatRooms = () => {
 
     useEffect(() => {
         const unSub = () => {
-            if (rooms === null && loading) {
+            setIsLoading(true);
+            loadRooms();
+
+            if (rooms === null) {
                 loadRooms();
             }
             if (
@@ -70,7 +75,7 @@ const ChatRooms = () => {
         };
 
         return unSub;
-    }, [currentTab, loading, unsubscribe, update]);
+    }, [currentTab, update]);
 
     const renderSideBarsConditionally = () => {
         switch (true) {

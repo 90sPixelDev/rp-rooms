@@ -43,8 +43,8 @@ const CharacterControls = (props: Props) => {
         charaProfileBtn: 'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
     };
 
-    const { currentUser } = useContext(UserContext);
-    const uid = currentUser.uid;
+    const currentUser = useContext(UserContext);
+    const uid = currentUser?.uid;
 
     const [characterInfo, setCharacterInfo] = useState<Character | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +55,7 @@ const CharacterControls = (props: Props) => {
         if (newNickname !== ' ' && newNickname.length > 3 && newNickname.length < 17) {
             const roomRef = doc(db, 'rooms', props.roomTitle);
             await updateDoc(doc(db, 'rooms', props.roomTitle), {
-                [`characters.${currentUser.uid}.charaName`]: newNickname,
+                [`characters.${currentUser?.uid}.charaName`]: newNickname,
             });
             setPTag(true);
             setRefresh((prevState) => !prevState);
@@ -69,7 +69,7 @@ const CharacterControls = (props: Props) => {
         const roomRef = doc(db, 'rooms', props.roomTitle);
         const charaRef = await getDoc(roomRef);
         if (charaRef.data()?.characters !== undefined || charaRef.data()?.characters !== null) {
-            setCharacterInfo(charaRef.data()?.characters[uid]);
+            setCharacterInfo(charaRef.data()?.characters[uid as string]);
         }
 
         const storageRef = ref(storage, `users/${uid}/${props.roomTitle}`);
@@ -79,7 +79,7 @@ const CharacterControls = (props: Props) => {
                     getDownloadURL(res.items[0])
                         .then((url) => {
                             updateDoc(doc(db, 'rooms', props.roomTitle), {
-                                [`characters.${currentUser.uid}.charaPic`]: url,
+                                [`characters.${currentUser?.uid}.charaPic`]: url,
                             });
                         })
                         .catch((error) => {
@@ -131,7 +131,7 @@ const CharacterControls = (props: Props) => {
         getDownloadURL(defaultCharaPic)
             .then((url) => {
                 updateDoc(doc(db, 'rooms', props.roomTitle), {
-                    [`characters.${currentUser.uid}.charaPic`]: url,
+                    [`characters.${currentUser?.uid}.charaPic`]: url,
                 });
             })
             .catch((err) => {

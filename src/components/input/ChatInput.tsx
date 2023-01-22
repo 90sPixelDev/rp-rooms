@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore';
 
 import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
+import { refreshUtils } from '../../utils/update';
 
 interface Props {
     roomSelectedInfo: string;
@@ -37,15 +38,19 @@ type Styles = {
 const ChatInput = (props: Props) => {
     const styles: Styles = {
         container: 'overflow-hidden bg-purple-200 rounded-lg flex flex-col justify-around px-1',
-        textArea: 'h-[70%] w-[90%] resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0',
+        textArea:
+            'h-[80%] w-[90%] resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full',
         button: 'm-1 py-1 px-2 border-2 border-purple-500 bg-purple-300 hover:bg-purple-200',
         bttnArea: 'bg-purple-200',
-        mssgArea: 'flex flex-row bg-purple-300 rounded-tr-xl rounded-tl-lg border-2 border-purple-400 h-[50%]',
+        mssgArea:
+            'flex flex-row bg-purple-300 rounded-tr-xl rounded-tl-lg border-2 border-purple-400 min-h-[50%] h-fit',
     };
 
     const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
     const [charaMap, setCharaMap] = useState<chara[] | null>(null);
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useContext(UserContext);
+
+    const { refreshMessages } = refreshUtils();
 
     const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const typedText = e.target.value;
@@ -65,22 +70,22 @@ const ChatInput = (props: Props) => {
             return;
         }
         const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
-        const uid = currentUser.uid;
+        const uid = currentUser?.uid;
 
         let mssgChannel = 'chat';
-        let displayName = currentUser.displayName;
-        let avatar = currentUser.photoURL;
+        let displayName = currentUser?.displayName;
+        let avatar = currentUser?.photoURL;
         if (props.currentTab === 'story') {
             const roomDoc = await getDoc(roomRef);
             mssgChannel = 'story';
-            avatar = roomDoc.data()?.characters[uid].charaPic;
-            displayName = roomDoc.data()?.characters[uid].charaName;
+            avatar = roomDoc.data()?.characters[uid as string].charaPic;
+            displayName = roomDoc.data()?.characters[uid as string].charaName;
         }
 
         const mssgFormat = {
             message: tempTypedMssg,
             photoURL: avatar,
-            email: currentUser.email,
+            email: currentUser?.email,
             userName: displayName,
             uid: uid,
             timeSent: Timestamp.now(),
@@ -89,7 +94,7 @@ const ChatInput = (props: Props) => {
         await updateDoc(roomRef, {
             [mssgChannel]: arrayUnion({ ...mssgFormat }),
         });
-        props.callRefreshMessages(props.roomSelectedInfo);
+        refreshMessages(props.roomSelectedInfo);
         setTempTypedMssg('');
     };
 

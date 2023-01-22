@@ -4,6 +4,7 @@ import { getDocs, collection, arrayUnion, doc, getDoc, setDoc } from 'firebase/f
 import { RoomsDropDown } from '../exporter';
 import { UserContext } from '../../context/AuthContext';
 import { db } from '../../firebase.config';
+import { refreshUtils } from '../../utils/update';
 
 type Props = any;
 
@@ -38,15 +39,17 @@ const RoomsSearchClosed = (props: Props) => {
     const [isSearching, setIsSearching] = useState(false);
     const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [isFocused, setIsFocused] = useState(false);
-    const [isFocusedMini, setIsFocusedMini] = useState(true);
+    const [isFocusedMini, setIsFocusedMini] = useState(false);
     const [err, setErr] = useState(false);
     const [roomsFound, setRoomsFound] = useState(true);
 
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useContext(UserContext);
+
+    const { refreshMessages } = refreshUtils();
 
     const addRoom = async (inputText: string) => {
         console.log(
-            '%cAttempting to add Room ' + `%c${inputText}` + '%c to user...',
+            '%c◆ Attempting to add Room ' + `%c${inputText}` + '%c to user...',
             'color: pink',
             'color: yellow',
             'color: pink',
@@ -59,7 +62,7 @@ const RoomsSearchClosed = (props: Props) => {
             const newRoomRef = doc(db, 'rooms', inputText);
             const newRoomDoc = await getDoc(newRoomRef);
             if (newRoomDoc.exists()) {
-                if (newRoomDoc.data().characters[currentUser.uid]) {
+                if (newRoomDoc.data().characters[currentUser?.uid as string]) {
                     console.warn(`You are already a part of Room \"${inputText}\"`);
                     return;
                 }
@@ -69,14 +72,14 @@ const RoomsSearchClosed = (props: Props) => {
                     newRoomRef,
                     {
                         characters: {
-                            [currentUser.uid]: {
+                            [currentUser?.uid as string]: {
                                 charaPic: '',
                                 charaName: 'New Character',
                                 turn: charaCount.toString(),
                                 currentTurn: false,
                             },
                         },
-                        user: arrayUnion(currentUser.uid),
+                        user: arrayUnion(currentUser?.uid),
                     },
                     { merge: true },
                 );
@@ -84,7 +87,7 @@ const RoomsSearchClosed = (props: Props) => {
                 await setDoc(
                     newRoomRef,
                     {
-                        owner: [currentUser.uid],
+                        owner: [currentUser?.uid],
                         roomTitle: inputText,
                         currentTurn: '',
                         currentChapter: {
@@ -92,21 +95,21 @@ const RoomsSearchClosed = (props: Props) => {
                             desc: 'A New Beginning!',
                         },
                         characters: {
-                            [currentUser.uid]: {
+                            [currentUser?.uid as string]: {
                                 charaPic: '',
                                 charaName: 'New Character',
                                 turn: '0',
                                 currentTurn: true,
                             },
                         },
-                        user: arrayUnion(currentUser.uid),
+                        user: arrayUnion(currentUser?.uid),
                         chat: [],
                         story: [],
                     },
                     { merge: true },
                 );
             }
-            console.log('%cSuccesfully added user to Room', 'color: lightgreen');
+            console.log('%c✓ Succesfully added user to Room', 'color: lightgreen');
             setIsFocused(false);
             setInputText('');
         } catch (err) {
@@ -114,7 +117,7 @@ const RoomsSearchClosed = (props: Props) => {
             console.error(err);
             setInputText('');
         }
-        props.callRefreshMessages(inputText);
+        refreshMessages(inputText);
     };
 
     const unFocusRoomSearch = () => {
@@ -160,7 +163,7 @@ const RoomsSearchClosed = (props: Props) => {
                             type="text"
                             value={inputText}
                             onKeyDown={(e) => {
-                                if (e.code === 'Enter') props.addRoom(inputText);
+                                if (e.code === 'Enter') addRoom(inputText);
                             }}
                             onChange={onSearch}
                             onFocus={() => {
@@ -193,7 +196,7 @@ const RoomsSearchClosed = (props: Props) => {
                 type="text"
                 value={inputText}
                 onKeyDown={(e) => {
-                    if (e.code === 'Enter') props.addRoom(inputText);
+                    if (e.code === 'Enter') addRoom(inputText);
                 }}
                 onChange={onSearch}
                 onFocus={() => {
