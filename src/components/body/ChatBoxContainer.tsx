@@ -4,17 +4,11 @@ import { db } from '../../firebase.config';
 import { ChatBox } from '../exporter';
 import { UserContext } from '../../context/AuthContext';
 
+import { MessageInfo } from '../../hooks/types';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
-interface MessagesInfo {
-    photoURL: string;
-    userName: string;
-    message: string;
-    uid: string;
-    timeSent: string;
-}
 type Props = {
-    messages: MessagesInfo[];
+    messages: MessageInfo[];
     isLoading: boolean;
     currentTab: string;
 };
@@ -53,7 +47,7 @@ const ChatBoxContainer = (props: Props) => {
                             photoURL={mssg.photoURL}
                             displayName={mssg.userName}
                             mssgText={mssg.message}
-                            timeSent={mssg.timeSent}
+                            timeSent={mssg.timeSent as string}
                         />
                     ))
                     .reverse()}

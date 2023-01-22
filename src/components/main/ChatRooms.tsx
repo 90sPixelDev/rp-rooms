@@ -38,7 +38,7 @@ const ChatRooms = () => {
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
 
-    const { rooms, fetchUserRoomsData, unsubscribe } = useRooms();
+    const { rooms, fetchUserRoomsData } = useRooms();
     const { selectedRoomTitle, update, refreshMessages } = refreshUtils();
 
     const changeTab = (tab: string) => {
@@ -71,6 +71,7 @@ const ChatRooms = () => {
                 (selectedRoomTitle === null || selectedRoomTitle === undefined || selectedRoomTitle === '')
             ) {
                 refreshMessages(rooms[0]);
+                setIsLoading(false);
             }
         };
 

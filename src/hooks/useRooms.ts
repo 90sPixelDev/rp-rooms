@@ -21,13 +21,13 @@ export default function useRooms(): RoomsResult {
         console.log('Running Fetch Rooms!');
     };
 
-    const unsubscribe = () => {
-        onSnapshot(userRoomsQuery, (roomsSnapshot) => {
-            if (roomsSnapshot) {
-                console.log('SNAPSHOT!');
-            }
-        });
-    };
+    // const unsubscribe = () => {
+    //     onSnapshot(userRoomsQuery, (roomsSnapshot) => {
+    //         if (roomsSnapshot) {
+    //             console.log('SNAPSHOT!');
+    //         }
+    //     });
+    // };
 
-    return { rooms: userRooms, roomsLoading: isLoading, fetchUserRoomsData, unsubscribe };
+    return { rooms: userRooms, roomsLoading: isLoading, fetchUserRoomsData };
 }
