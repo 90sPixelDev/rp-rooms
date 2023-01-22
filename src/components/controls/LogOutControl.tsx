@@ -5,45 +5,42 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase.config';
 
 interface Props {
-	isOpened: boolean;
+    isOpened: boolean;
 }
 type Styles = {
-	container: string;
-	text: string;
-	icon: string;
-	iconClosed: string;
+    container: string;
+    text: string;
+    icon: string;
+    iconClosed: string;
 };
 
 const LogOutControl = (props: Props) => {
-	const styles: Styles = {
-		container:
-			'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2 hover:text-purple-200 min-w-fit w-[7rem]',
-		text: 'm-auto',
-		icon: 'bg-purple-500 p-2 rounded-l-xl',
-		iconClosed:
-			'bg-purple-500 p-2 rounded-r-xl hover:text-purple-200 cursor-pointer',
-	};
+    const styles: Styles = {
+        container: 'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2 hover:text-purple-200 min-w-fit w-[7rem]',
+        text: 'm-auto',
+        icon: 'bg-purple-500 p-2 rounded-l-xl',
+        iconClosed: 'bg-purple-500 p-2 rounded-r-xl hover:text-purple-200 cursor-pointer',
+    };
 
-	if (props.isOpened)
-		return (
-			<button
-				className={styles.container}
-				onClick={() => signOut(auth)}
-			>
-				<FontAwesomeIcon
-					icon={solid('arrow-right-from-bracket')}
-					className={styles.icon}
-				/>
-				<p className={styles.text}>Log Out</p>
-			</button>
-		);
-	return (
-		<FontAwesomeIcon
-			icon={solid('arrow-right-from-bracket')}
-			className={styles.iconClosed}
-			onClick={() => signOut(auth)}
-		/>
-	);
+    if (props.isOpened)
+        return (
+            <button
+                className={styles.container}
+                onClick={() => {
+                    signOut(auth);
+                }}
+            >
+                <FontAwesomeIcon icon={solid('arrow-right-from-bracket')} className={styles.icon} />
+                <p className={styles.text}>Log Out</p>
+            </button>
+        );
+    return (
+        <FontAwesomeIcon
+            icon={solid('arrow-right-from-bracket')}
+            className={styles.iconClosed}
+            onClick={() => signOut(auth)}
+        />
+    );
 };
 
 export default LogOutControl;

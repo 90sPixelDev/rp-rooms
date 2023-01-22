@@ -9,6 +9,7 @@ export { default as Room } from './rooms/Room';
 export { default as RoomContainer } from './rooms/RoomContainer';
 export { default as RoomListContainer } from './rooms/RoomListContainer';
 export { default as RoomsSearch } from './rooms/RoomsSearch';
+export { default as RoomsSearchOpened } from './rooms/RoomsSearch';
 export { default as CreateRoomBtn } from './rooms/CreateRoomBtn';
 export { default as RoomsDropDown } from './rooms/RoomsDropDown';
 export { default as DropDownItem } from './rooms/DropDownItem';

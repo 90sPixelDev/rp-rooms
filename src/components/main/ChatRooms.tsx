@@ -37,7 +37,7 @@ const ChatRooms = () => {
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
 
-    const { rooms, loading, fetchUserRoomsData } = useRooms();
+    const { rooms, loading, fetchUserRoomsData, unsubscribe } = useRooms();
     const { selectedRoomTitle, update, refreshMessages } = refresh();
 
     const changeTab = (tab: string) => {
@@ -59,20 +59,18 @@ const ChatRooms = () => {
         const unSub = () => {
             if (rooms === null && loading) {
                 loadRooms();
-                console.log('Running!');
             }
             if (
                 rooms != undefined &&
                 rooms != null &&
-                (selectedRoomTitle == null || selectedRoomTitle == undefined || selectedRoomTitle == '')
+                (selectedRoomTitle === null || selectedRoomTitle === undefined || selectedRoomTitle === '')
             ) {
                 refreshMessages(rooms[0]);
-                console.log('Testing!');
             }
         };
 
         return unSub;
-    }, [update, loading, currentTab, rooms]);
+    }, [currentTab, loading, unsubscribe, update]);
 
     const renderSideBarsConditionally = () => {
         switch (true) {

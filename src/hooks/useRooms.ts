@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData, onSnapshot } from 'firebase/firestore';
 
 import { db } from '../firebase.config';
 import { UserContext } from '../context/AuthContext';
@@ -13,6 +13,13 @@ export default function useRooms(): RoomsResult {
 
     const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser.uid));
 
+    const unsubscribe = React.useCallback(() => {
+        onSnapshot(userRoomsQuery, (roomsSnapshot) => {
+            if (roomsSnapshot) {
+            }
+        });
+    }, [userRoomsQuery]);
+
     const fetchUserRoomsData = async () => {
         setIsLoading(true);
         const userRoomsDocs = await getDocs(userRoomsQuery);
@@ -20,5 +27,5 @@ export default function useRooms(): RoomsResult {
         setIsLoading(false);
     };
 
-    return { rooms: userRooms, loading: isLoading, fetchUserRoomsData };
+    return { rooms: userRooms, loading: isLoading, fetchUserRoomsData, unsubscribe };
 }
