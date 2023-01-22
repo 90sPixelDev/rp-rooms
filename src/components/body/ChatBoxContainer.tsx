@@ -1,10 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
-import { ChatBox } from '../exporter';
-import { UserContext } from '../../context/AuthContext';
+// import { UserContext } from '../../context/AuthContext';
 
 import { MessageInfo } from '../../hooks/types';
+import { ChatBox } from '../exporter';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
 type Props = {
@@ -27,7 +25,7 @@ const ChatBoxContainer = (props: Props) => {
     };
 
     const [refreshMssgs, setRefreshMssgs] = useState<boolean>(false);
-    const currentUser = useContext(UserContext);
+    // const currentUser = useContext(UserContext);
 
     useEffect(() => {
         setRefreshMssgs((prevState) => !prevState);

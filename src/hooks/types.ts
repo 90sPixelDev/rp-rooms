@@ -1,10 +1,8 @@
-import { Timestamp } from 'firebase/firestore';
+import { DocumentData, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 
-export type RoomsResult = {
-    rooms: string[] | null;
-    roomsLoading: boolean;
-    fetchUserRoomsData: () => Promise<void>;
-    // unsubscribe: () => void;
+export type DataResult = {
+    data: QueryDocumentSnapshot<DocumentData>[] | null;
+    isLoading: boolean;
 };
 
 export interface MessageInfo {

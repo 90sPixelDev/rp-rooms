@@ -6,13 +6,6 @@ import { MessageInfo } from '../../hooks/types';
 import useMessages from '../../hooks/useMessages';
 import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
-// interface MessageInfo {
-//     userName: string;
-//     message: string;
-//     uid: string;
-//     timeSent: any;
-//     photoURL: string;
-// }
 interface Props {
     roomTitle: string;
     refresh: boolean;
@@ -28,23 +21,15 @@ const ChatBody = (props: Props) => {
         body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col',
     };
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const { getMessages, currentCh, messagesArray } = useMessages();
+    const { getMessages, isLoading, currentCh, messagesArray } = useMessages();
 
     const getRoomInfo = () => {
-        // TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters, as well as Room messages of course and then conver to need state formate and pass down as prop to children
+        // TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters and then convert to correct format and pass down as prop to children
     };
 
     useEffect(() => {
         props.roomTitle && getMessages(props.roomTitle, props.currentTab);
-    }, [props.roomTitle, props.refresh, props.currentTab]);
-
-    useEffect(() => {
-        if (messagesArray !== null) {
-            setIsLoading(false);
-        }
-    }, [messagesArray]);
+    }, [props.roomTitle, props.refresh, props.currentTab, isLoading]);
 
     return (
         <div className={styles.body}>

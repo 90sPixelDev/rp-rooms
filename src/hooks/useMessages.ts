@@ -7,6 +7,7 @@ import { MessageInfo } from './types';
 export default function useMessages() {
     const [messagesArray, setMessagesArray] = React.useState<MessageInfo[] | null>(null);
     const [currentCh, setCurrentCh] = React.useState<object>({});
+    const [isLoading, setIsLoading] = React.useState(true);
 
     const getMessages = async (roomTitle: string, currentTab: string) => {
         const roomRef = doc(db, 'rooms', roomTitle);
@@ -26,9 +27,15 @@ export default function useMessages() {
                 ),
             );
         } else {
-            console.log('No such Room exists!');
+            console.log(
+                '%cRoom' + `%c ${roomTitle} ` + '%cdoes not exist',
+                'color: red',
+                'color: yellow',
+                'color: red',
+            );
         }
+        setIsLoading(false);
     };
 
-    return { messagesArray, currentCh, getMessages };
+    return { messagesArray, isLoading, currentCh, getMessages };
 }

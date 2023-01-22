@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
 import useRooms from '../../hooks/useRooms';
-import { refreshUtils } from '../../utils/update';
+import { refreshUtils } from '../../utils/refreshUtils';
 
 interface MessageInfo {
     userName: string;
@@ -33,21 +33,24 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [rooms, setRooms] = useState<string[] | null>(null);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = useState('chat');
 
-    const { rooms, fetchUserRoomsData } = useRooms();
-    const { selectedRoomTitle, update, refreshMessages } = refreshUtils();
+    const { data, isLoading } = useRooms();
+    const { selectedRoomTitle, update, switchRoom } = refreshUtils();
 
     const changeTab = (tab: string) => {
         setCurrentTab(tab);
     };
 
     const loadRooms = async () => {
-        await fetchUserRoomsData();
-        setIsLoading(false);
+        if (data === null) {
+            // console.warn('Data is null');
+            return;
+        }
+        setRooms(data.map((doc) => doc.id));
     };
 
     const toggleRightBar = () => {
@@ -58,25 +61,13 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        const unSub = () => {
-            setIsLoading(true);
-            loadRooms();
+        loadRooms();
 
-            if (rooms === null) {
-                loadRooms();
-            }
-            if (
-                rooms != undefined &&
-                rooms != null &&
-                (selectedRoomTitle === null || selectedRoomTitle === undefined || selectedRoomTitle === '')
-            ) {
-                refreshMessages(rooms[0]);
-                setIsLoading(false);
-            }
-        };
-
-        return unSub;
-    }, [currentTab, update]);
+        if (selectedRoomTitle === '') {
+            console.log('Running refreshMessages!');
+            switchRoom(data?.[0].id as string);
+        } else switchRoom(selectedRoomTitle);
+    }, [data, isLoading, selectedRoomTitle]);
 
     const renderSideBarsConditionally = () => {
         switch (true) {
@@ -85,7 +76,7 @@ const ChatRooms = () => {
                     <div className={styles.wrapperBOpen}>
                         <LeftBar
                             listOfRooms={rooms as string[]}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
                         />
@@ -99,7 +90,7 @@ const ChatRooms = () => {
                         <UserControlsContainer isOpened={isLBOpened} />
                         <ChatInput
                             roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             currentTab={currentTab}
                         />
                         <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
@@ -110,7 +101,7 @@ const ChatRooms = () => {
                     <div className={styles.wrapperClosed}>
                         <LeftBar
                             listOfRooms={rooms as string[]}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
                         />
@@ -124,7 +115,7 @@ const ChatRooms = () => {
                         <UserControlsContainer isOpened={isLBOpened} />
                         <ChatInput
                             roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             currentTab={currentTab}
                         />
                         <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
@@ -135,7 +126,7 @@ const ChatRooms = () => {
                     <div className={styles.wrapperROpen}>
                         <LeftBar
                             listOfRooms={rooms as string[]}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
                         />
@@ -149,7 +140,7 @@ const ChatRooms = () => {
                         <UserControlsContainer isOpened={isLBOpened} />
                         <ChatInput
                             roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             currentTab={currentTab}
                         />
                         <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
@@ -160,7 +151,7 @@ const ChatRooms = () => {
                     <div className={styles.wrapperLOpen}>
                         <LeftBar
                             listOfRooms={rooms as string[]}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             toggleLeftBar={toggleLeftBar}
                             isOpened={isLBOpened}
                         />
@@ -174,7 +165,7 @@ const ChatRooms = () => {
                         <UserControlsContainer isOpened={isLBOpened} />
                         <ChatInput
                             roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={refreshMessages}
+                            callRefreshMessages={switchRoom}
                             currentTab={currentTab}
                         />
                         <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />

@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 
 import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
-import { refreshUtils } from '../../utils/update';
+import { refreshUtils } from '../../utils/refreshUtils';
 
 interface Props {
     roomSelectedInfo: string;
@@ -50,7 +50,7 @@ const ChatInput = (props: Props) => {
     const [charaMap, setCharaMap] = useState<chara[] | null>(null);
     const currentUser = useContext(UserContext);
 
-    const { refreshMessages } = refreshUtils();
+    const { switchRoom } = refreshUtils();
 
     const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const typedText = e.target.value;
@@ -94,7 +94,7 @@ const ChatInput = (props: Props) => {
         await updateDoc(roomRef, {
             [mssgChannel]: arrayUnion({ ...mssgFormat }),
         });
-        refreshMessages(props.roomSelectedInfo);
+        // switchRoom(props.roomSelectedInfo);
         setTempTypedMssg('');
     };
 

@@ -5,14 +5,19 @@ export function refreshUtils(): RefreshData {
     const [selectedRoomTitle, setSelectedRoomTitle] = React.useState('');
     const [update, setUpdate] = React.useState(false);
 
-    const refreshMessages = (newRoomName?: string) => {
+    const switchRoom = (newRoomName?: string) => {
         if (newRoomName !== undefined && newRoomName.length > 0) {
             setSelectedRoomTitle(newRoomName);
         } else setSelectedRoomTitle('');
 
-        console.log('%c◆ Refreshing Data...', 'color: lightblue');
-        setUpdate((prevState: boolean) => !prevState);
+        console.log(
+            '%c◆ Switching To' + `%c ${newRoomName} ` + '%cRoom...',
+            'color: lightblue',
+            'color: yellow',
+            'color: lightblue;',
+        );
+        setUpdate((prevState) => !prevState);
     };
 
-    return { selectedRoomTitle, update, refreshMessages };
+    return { selectedRoomTitle, update, switchRoom };
 }

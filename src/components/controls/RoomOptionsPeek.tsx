@@ -5,7 +5,7 @@ import { doc, updateDoc, arrayRemove, deleteDoc, getDoc, deleteField } from 'fir
 import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 
-import { refreshUtils } from '../../utils/update';
+import { refreshUtils } from '../../utils/refreshUtils';
 
 interface Props {
     isOpened: boolean;
@@ -41,7 +41,7 @@ const RoomOptionsPeek = (props: Props) => {
     const currentUser = useContext(UserContext);
     const [owner, setOwner] = useState<string | null>(null);
 
-    const { refreshMessages } = refreshUtils();
+    const { switchRoom } = refreshUtils();
 
     const doorOpenIcon = <FontAwesomeIcon icon={solid('door-open')} />;
     const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
@@ -57,19 +57,13 @@ const RoomOptionsPeek = (props: Props) => {
         });
     };
 
-    const test = (str?: string) => {
-        if (str !== undefined) {
-            console.log(str);
-        } else console.log('No STRING provided.');
-    };
-
     const deleteRoom = async () => {
         const roomDoc = doc(db, 'rooms', props.roomTitle);
         const roomDocSnap = await getDoc(roomDoc);
         const owner = roomDocSnap.data()?.owner.toString();
         if (owner === currentUser?.uid) {
             await deleteDoc(roomDoc);
-            // refreshMessages();
+            // switchRoom();
         } else {
             console.warn('You Do Not Have Authorization To Delete This Room.');
         }

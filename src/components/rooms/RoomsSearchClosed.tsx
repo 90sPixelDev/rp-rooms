@@ -4,7 +4,7 @@ import { getDocs, collection, arrayUnion, doc, getDoc, setDoc } from 'firebase/f
 import { RoomsDropDown } from '../exporter';
 import { UserContext } from '../../context/AuthContext';
 import { db } from '../../firebase.config';
-import { refreshUtils } from '../../utils/update';
+import { refreshUtils } from '../../utils/refreshUtils';
 
 type Props = any;
 
@@ -45,7 +45,16 @@ const RoomsSearchClosed = (props: Props) => {
 
     const currentUser = useContext(UserContext);
 
-    const { refreshMessages } = refreshUtils();
+    const { switchRoom } = refreshUtils();
+
+    const unFocusRoomSearch = () => {
+        setTimeout(() => {
+            setInputText('');
+            setSearchedRooms([]);
+            setIsFocusedMini(false);
+            setIsSearching(false);
+        }, 300);
+    };
 
     const addRoom = async (inputText: string) => {
         console.log(
@@ -110,23 +119,13 @@ const RoomsSearchClosed = (props: Props) => {
                 );
             }
             console.log('%c✓ Succesfully added user to Room', 'color: lightgreen');
-            setIsFocused(false);
-            setInputText('');
+            switchRoom(inputText);
+            unFocusRoomSearch();
         } catch (err) {
             setErr(true);
             console.error(err);
             setInputText('');
         }
-        refreshMessages(inputText);
-    };
-
-    const unFocusRoomSearch = () => {
-        setTimeout(() => {
-            setInputText('');
-            setSearchedRooms([]);
-            setIsFocusedMini(false);
-            setIsSearching(false);
-        }, 300);
     };
 
     const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
