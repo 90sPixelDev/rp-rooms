@@ -1,45 +1,39 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { LogInForm, SignUpForm } from '../exporter';
 
 interface WelcomeBG {
-	formBtnClicked: (params: any) => void;
+    formBtnClicked: (params: any) => void;
 }
 type Props = any;
 type Styles = {
-	body: string;
+    body: string;
 };
 
 const WelcomeBG = (props: Props) => {
-	const styles: Styles = {
-		body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
-	};
+    const styles: Styles = {
+        body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
+    };
 
-	const [isNewUser, setIsNewUser] = useState<boolean>(true);
+    const [isNewUser, setIsNewUser] = useState<boolean>(true);
 
-	const SignedIn = (user: any) => {
-		props.setUser(user);
-	};
+    const SignedIn = (user: any) => {
+        props.setUser(user);
+    };
 
-	const ChangeFormHandler = () => {
-		setIsNewUser(!isNewUser);
-	};
+    const ChangeFormHandler = () => {
+        setIsNewUser(!isNewUser);
+    };
 
-	return (
-		<div className={styles.body}>
-			{isNewUser ? (
-				<SignUpForm
-					formBtnClicked={ChangeFormHandler}
-					userSignedUp={SignedIn}
-				/>
-			) : (
-				<LogInForm
-					formBtnClicked={ChangeFormHandler}
-					userSignedIn={SignedIn}
-				/>
-			)}
-		</div>
-	);
+    return (
+        <div className={styles.body}>
+            {isNewUser ? (
+                <SignUpForm formBtnClicked={ChangeFormHandler} userSignedUp={SignedIn} />
+            ) : (
+                <LogInForm formBtnClicked={ChangeFormHandler} userSignedIn={SignedIn} />
+            )}
+        </div>
+    );
 };
 
 export default WelcomeBG;
