@@ -46,10 +46,7 @@ const ChatRooms = () => {
     };
 
     const loadRooms = async () => {
-        if (data === null) {
-            // console.warn('Data is null');
-            return;
-        }
+        if (data === null) return;
         setRooms(data.map((doc) => doc.id));
     };
 
@@ -61,13 +58,14 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        loadRooms();
+        if (data !== null && data !== undefined) {
+            loadRooms();
 
-        if (selectedRoomTitle === '') {
-            console.log('Running refreshMessages!');
-            switchRoom(data?.[0].id as string);
-        } else switchRoom(selectedRoomTitle);
-    }, [data, isLoading, selectedRoomTitle]);
+            if (selectedRoomTitle == '') {
+                switchRoom(data?.[0].id as string);
+            } else switchRoom(selectedRoomTitle);
+        }
+    }, [data, isLoading]);
 
     const renderSideBarsConditionally = () => {
         switch (true) {

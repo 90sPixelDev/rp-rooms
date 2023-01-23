@@ -21,14 +21,14 @@ const ChatBody = (props: Props) => {
         body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col',
     };
 
-    const { getMessages, isLoading, currentCh, messagesArray } = useMessages();
+    const { getUpdatedMessages, isLoading, currentCh, messagesArray } = useMessages();
 
     const getRoomInfo = () => {
         // TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters and then convert to correct format and pass down as prop to children
     };
 
     useEffect(() => {
-        props.roomTitle && getMessages(props.roomTitle, props.currentTab);
+        props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
     }, [props.roomTitle, props.refresh, props.currentTab, isLoading]);
 
     return (

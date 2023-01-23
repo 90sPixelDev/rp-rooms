@@ -9,7 +9,7 @@ export default function useMessages() {
     const [currentCh, setCurrentCh] = React.useState<object>({});
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const getMessages = async (roomTitle: string, currentTab: string) => {
+    const getUpdatedMessages = async (roomTitle: string, currentTab: string) => {
         const roomRef = doc(db, 'rooms', roomTitle);
         const docSnap = await getDoc(roomRef);
 
@@ -27,15 +27,16 @@ export default function useMessages() {
                 ),
             );
         } else {
-            console.log(
-                '%cRoom' + `%c ${roomTitle} ` + '%cdoes not exist',
-                'color: red',
+            console.warn(
+                '%c⚠ ' + '%cRoom' + `%c ${roomTitle} ` + '%cdoes not exist',
+                'color: yellow; font-size: 20px',
+                'color: orange',
                 'color: yellow',
-                'color: red',
+                'color: orange',
             );
         }
         setIsLoading(false);
     };
 
-    return { messagesArray, isLoading, currentCh, getMessages };
+    return { messagesArray, isLoading, currentCh, getUpdatedMessages };
 }

@@ -63,7 +63,7 @@ const RoomOptionsPeek = (props: Props) => {
         const owner = roomDocSnap.data()?.owner.toString();
         if (owner === currentUser?.uid) {
             await deleteDoc(roomDoc);
-            // switchRoom();
+            // switchRoom('');
         } else {
             console.warn('You Do Not Have Authorization To Delete This Room.');
         }

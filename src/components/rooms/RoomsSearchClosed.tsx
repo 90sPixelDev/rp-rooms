@@ -119,7 +119,7 @@ const RoomsSearchClosed = (props: Props) => {
                 );
             }
             console.log('%c✓ Succesfully added user to Room', 'color: lightgreen');
-            switchRoom(inputText);
+            // switchRoom(inputText);
             unFocusRoomSearch();
         } catch (err) {
             setErr(true);

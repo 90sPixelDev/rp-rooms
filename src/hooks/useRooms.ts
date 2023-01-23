@@ -15,7 +15,7 @@ export default function useRooms(): DataResult {
 
     const unsubscribe = () => {
         onSnapshot(userRoomsQuery, (roomsSnapshot) => {
-            console.log('%c◆ Refreshing Data...', 'color: lightblue');
+            console.log('%c◆ Refreshing Data...', 'color: pink');
             setData(roomsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc));
         });
         setIsLoading(false);
