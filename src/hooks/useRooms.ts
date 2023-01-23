@@ -22,7 +22,9 @@ export default function useRooms(): DataResult {
     };
 
     React.useEffect(() => {
-        return unsubscribe;
+        unsubscribe();
+
+        return () => unsubscribe();
     }, []);
 
     return { data, isLoading };
