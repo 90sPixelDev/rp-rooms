@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# RP Rooms
+A web chat app for a community of users who enjoy roleplaying their character in their own story with friends.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
 
-## Available Scripts
+- Direct messages between users
+- A turn manager on bottom to see order of character turns as well as whos turn it currently is
+- A "Your Turn" notification through email and/or (can be set off)
+- An event system where one can add a new chapter to the RP which is catalogued to the right bar
+- A dynamic room search on searching per character
+- Private "Locked" invite only rooms as well as public "Unlocked" one-click-to-add rooms
+- Customize theme to any color
+- Simple Default Light/Dark Mode
 
-In the project directory, you can run:
+### Task List
+- [x] Turn Manager Viewer
+- [ ] "Your Turn" notificatio
+- [ ] Direct Messaging
+- [ ] Private and Public Rooms
+- [ ] Event System
+- [x] Dynamic room search
+- [ ] Theme customization
+- [ ] Light/Dark mode
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Preview
+[RP Rooms](https://rp-rooms.vercel.app)
+![RP Rooms Screenshot](https://firebasestorage.googleapis.com/v0/b/rp-rooms.appspot.com/o/RP%20Rooms%20Screenshot.jpg?alt=media&token=14879d27-9d98-42cc-a10e-20a2a64888a4)
