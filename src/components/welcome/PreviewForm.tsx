@@ -1,8 +1,6 @@
 import React from 'react';
 
-type Props = any;
-
-const PreviewForm = (props: Props) => {
+const PreviewForm = () => {
     const styles = {
         container: 'fixed left-[50%] top-[3vh] translate-x-[-50%]',
         body: 'bg-purple-400 px-4 py-2 rounded-lg shadow-lg',
