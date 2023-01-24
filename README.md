@@ -25,4 +25,4 @@ A web chat app for a community of users who enjoy roleplaying their character in
 ## Preview
 [Check out RP Rooms Live by clicking here](https://rp-rooms.vercel.app)
 
-![RP Rooms Screenshot](https://firebasestorage.googleapis.com/v0/b/rp-rooms.appspot.com/o/RP%20Rooms%20Screenshot.jpg?alt=media&token=14879d27-9d98-42cc-a10e-20a2a64888a4)
+![RP Rooms Screenshot]()
