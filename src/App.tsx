@@ -20,7 +20,7 @@ function App() {
 
     const ProtectedRoute = ({ children }: Props) => {
         if (!currentUser) {
-            return <Navigate to="signup" />;
+            return <Navigate to="login" />;
         } else return children;
     };
 

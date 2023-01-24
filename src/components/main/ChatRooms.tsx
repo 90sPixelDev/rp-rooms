@@ -4,16 +4,6 @@ import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomCont
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
-interface MessageInfo {
-    userName: string;
-    message: string;
-    uid: string;
-    timeSent: string;
-    email: string;
-}
-type InitialMssgInfo = {
-    message: string;
-};
 type Styles = {
     wrapperROpen: string;
     wrapperLOpen: string;
@@ -61,7 +51,7 @@ const ChatRooms = () => {
         if (data !== null && data !== undefined) {
             loadRooms();
 
-            if (selectedRoomTitle == '') {
+            if (selectedRoomTitle === '') {
                 switchRoom(data?.[0].id as string);
             } else switchRoom(selectedRoomTitle);
         }

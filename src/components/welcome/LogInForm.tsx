@@ -52,8 +52,7 @@ const LogInForm = (props: Props) => {
         const passwordInput = e.currentTarget[1] as HTMLInputElement;
 
         signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-            .then((userCredential) => {
-                const user = userCredential.user;
+            .then(() => {
                 navigate('/');
             })
             .catch((err) => {

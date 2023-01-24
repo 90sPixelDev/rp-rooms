@@ -22,7 +22,7 @@ type Styles = {
 
 const ChatBox = (props: Props) => {
     const styles: Styles = {
-        container: 'flex mb-2',
+        container: 'flex mb-2 mr-4',
         timeWrapper: 'flex flex-col items-end mr-1',
         body: 'flex flex-row bg-purple-300 h-fit w-fit shadow-md shadow-purple-800/50 rounded-xl',
         leftSide: 'flex flex-col justify-between',
