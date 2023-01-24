@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './context/AuthContext';
-import { SignUpForm, LogInForm, ChatRooms } from './components/exporter';
+import { SignUpForm, LogInForm, ChatRooms, WelcomeBG } from './components/exporter';
 
 type Styles = {
     wrapper: string;
+};
+type Props = {
+    children: JSX.Element;
 };
 
 function App() {
@@ -15,9 +18,9 @@ function App() {
 
     const currentUser = useContext(UserContext);
 
-    const ProtectedRoute = ({ children }: any) => {
+    const ProtectedRoute = ({ children }: Props) => {
         if (!currentUser) {
-            return <Navigate to="/login" />;
+            return <Navigate to="signup" />;
         } else return children;
     };
 
@@ -34,8 +37,10 @@ function App() {
                         </ProtectedRoute>
                     }
                 ></Route>
-                <Route path="login" element={<LogInForm />} />
-                <Route path="signup" element={<SignUpForm />} />
+                <Route element={<WelcomeBG />}>
+                    <Route path="login" element={<LogInForm />} />
+                    <Route path="signup" element={<SignUpForm />} />
+                </Route>
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </BrowserRouter>

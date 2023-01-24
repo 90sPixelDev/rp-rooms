@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState } from 'react';
 import { UserContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { doc, setDoc, arrayUnion, collection, getDoc } from 'firebase/firestore';
+import { doc, setDoc, arrayUnion, getDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase.config';
 import { SignUpBtn } from '../exporter';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Outlet } from 'react-router-dom';
 
 type Props = any;
 type Styles = {
@@ -74,8 +74,6 @@ const SignUpForm = (props: Props) => {
         const passwordInput = e.currentTarget[2] as HTMLInputElement;
         const avatarInput = e.currentTarget[3] as HTMLInputElement;
         const avatarFile = avatarInput.files![0] as File;
-
-        // console.log(e.currentTarget)
 
         if (emailValid && username.length > 3 && avatarFile !== null) {
             const res = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
@@ -324,55 +322,57 @@ const SignUpForm = (props: Props) => {
     );
 
     return (
-        <div className={styles.body}>
-            <div className={styles.container}>
-                <h1 className={styles.title}>Sign Up</h1>
-                <form className={styles.formContainer} onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        className={styles.userInput}
-                        onChange={(e) => {
-                            setUsername((prevState) => (prevState = e.target.value));
-                        }}
-                        required
-                    />
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        className={styles.emailInput}
-                        onChange={(e) => {
-                            validateEmail(e);
-                        }}
-                        required
-                    />
-                    {showPassword ? passwordShow : passwordHide}
-                    <label htmlFor="image-file" className={styles.profileBtn}>
-                        <FontAwesomeIcon className={styles.icon} icon={solid('image-portrait')} />
-                        {picInfo}
-                    </label>
-                    <input
-                        className={styles.signUpPic}
-                        type="file"
-                        name="avatar"
-                        id="image-file"
-                        accept="image/png,image/jpeg,image/gif"
-                        onChange={(e) => {
-                            updatePicInfo(e);
-                        }}
-                        required
-                    />
-                    <SignUpBtn />
-                </form>
-                {err && <p className={styles.errMssg}>Oh no! Something went wrong!</p>}
-                <p className={styles.text}>
-                    Already a user ?{' '}
-                    <Link className={styles.textLink} to="/login">
-                        Log In!
-                    </Link>
-                </p>
+        <>
+            <div className={styles.body}>
+                <div className={styles.container}>
+                    <h1 className={styles.title}>Sign Up</h1>
+                    <form className={styles.formContainer} onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            className={styles.userInput}
+                            onChange={(e) => {
+                                setUsername((prevState) => (prevState = e.target.value));
+                            }}
+                            required
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className={styles.emailInput}
+                            onChange={(e) => {
+                                validateEmail(e);
+                            }}
+                            required
+                        />
+                        {showPassword ? passwordShow : passwordHide}
+                        <label htmlFor="image-file" className={styles.profileBtn}>
+                            <FontAwesomeIcon className={styles.icon} icon={solid('image-portrait')} />
+                            {picInfo}
+                        </label>
+                        <input
+                            className={styles.signUpPic}
+                            type="file"
+                            name="avatar"
+                            id="image-file"
+                            accept="image/png,image/jpeg,image/gif"
+                            onChange={(e) => {
+                                updatePicInfo(e);
+                            }}
+                            required
+                        />
+                        <SignUpBtn />
+                    </form>
+                    {err && <p className={styles.errMssg}>Oh no! Something went wrong!</p>}
+                    <p className={styles.text}>
+                        Already a user ?{' '}
+                        <Link className={styles.textLink} to="/login">
+                            Log In!
+                        </Link>
+                    </p>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

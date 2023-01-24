@@ -1,4 +1,5 @@
 export { default as WelcomeBG } from './welcome/WelcomeBG';
+export { default as PreviewForm } from './welcome/PreviewForm';
 export { default as LogInForm } from './welcome/LogInForm';
 export { default as SignUpForm } from './welcome/SignUpForm';
 export { default as LogInBtn } from './welcome/LogInBtn';
