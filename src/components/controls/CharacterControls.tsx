@@ -36,10 +36,10 @@ const CharacterControls = (props: Props) => {
         nickName: 'underline cursor-pointer ml-1 hover:text-purple-200',
         nickNameInput: 'italic w-[140px] outline-purple-500 ml-1',
         picArea: 'flex flex-row justify-evenly',
-        inputPic: 'absolute z-[-1] opacity-0',
-        charaPicContainer: 'bg-purple-600 h-[50px] w-[50px] rounded-lg',
+        inputPic: 'absolute z-[-1] opacity-0 h-0 w-0',
+        charaPicContainer: 'bg-purple-600 h-[50px] w-[50px] rounded-lg flex',
         charaPicContainerClosed: 'bg-purple-600 h-[35px] w-[35px] rounded-lg mx-auto mt-2',
-        charaPic: 'bg-purple-600 h-fill w-fill rounded-lg',
+        charaPic: 'bg-purple-600 h-fill w-fill rounded-lg m-auto',
         charaProfileBtn: 'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
     };
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Link, Outlet } from 'react-router-dom';
-import { auth } from '../../firebase.config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { LogInBtn } from '../exporter';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase.config';
 
 type Props = any;
 type Styles = {
@@ -91,7 +91,12 @@ const LogInForm = (props: Props) => {
             <div className={styles.body}>
                 <div className={styles.container}>
                     <h1 className={styles.title}>Log In</h1>
-                    <form className={styles.formContainer} onSubmit={handleLogIn}>
+                    <form
+                        className={styles.formContainer}
+                        onSubmit={(e) => {
+                            handleLogIn(e);
+                        }}
+                    >
                         <input type="email" placeholder="Email" className={styles.userInput} />
                         {showPassword ? passwordShow : passwordHide}
                         <LogInBtn />

@@ -5,13 +5,13 @@ import { getFirestore } from 'firebase/firestore';
 // import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-	authDomain: 'rp-rooms.firebaseapp.com',
-	projectId: 'rp-rooms',
-	storageBucket: 'rp-rooms.appspot.com',
-	messagingSenderId: '398235159157',
-	appId: process.env.REACT_APP_FIREBASE_APP_ID,
-	measurementId: 'G-QPF6XMEG76',
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: 'rp-rooms.firebaseapp.com',
+    projectId: 'rp-rooms',
+    storageBucket: 'rp-rooms.appspot.com',
+    messagingSenderId: '398235159157',
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: 'G-QPF6XMEG76',
 };
 
 // Initialize Firebase
