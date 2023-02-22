@@ -4,16 +4,6 @@ import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomCont
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
-interface MessageInfo {
-    userName: string;
-    message: string;
-    uid: string;
-    timeSent: string;
-    email: string;
-}
-type InitialMssgInfo = {
-    message: string;
-};
 type Styles = {
     wrapperROpen: string;
     wrapperLOpen: string;
@@ -61,122 +51,42 @@ const ChatRooms = () => {
         if (data !== null && data !== undefined) {
             loadRooms();
 
-            if (selectedRoomTitle == '') {
+            if (selectedRoomTitle === '') {
                 switchRoom(data?.[0].id as string);
             } else switchRoom(selectedRoomTitle);
         }
     }, [data, isLoading]);
 
-    const renderSideBarsConditionally = () => {
+    const sideBarRenderHandler = () => {
         switch (true) {
             case isLBOpened && isRBOpened:
-                return (
-                    <div className={styles.wrapperBOpen}>
-                        <LeftBar
-                            listOfRooms={rooms as string[]}
-                            callRefreshMessages={switchRoom}
-                            toggleLeftBar={toggleLeftBar}
-                            isOpened={isLBOpened}
-                        />
-                        <ChatBody
-                            roomTitle={selectedRoomTitle}
-                            refresh={update}
-                            currentTab={currentTab}
-                            changeTab={changeTab}
-                        />
-                        <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-                        <UserControlsContainer isOpened={isLBOpened} />
-                        <ChatInput
-                            roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={switchRoom}
-                            currentTab={currentTab}
-                        />
-                        <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-                    </div>
-                );
+                return styles.wrapperBOpen;
             case !isLBOpened && !isRBOpened:
-                return (
-                    <div className={styles.wrapperClosed}>
-                        <LeftBar
-                            listOfRooms={rooms as string[]}
-                            callRefreshMessages={switchRoom}
-                            toggleLeftBar={toggleLeftBar}
-                            isOpened={isLBOpened}
-                        />
-                        <ChatBody
-                            roomTitle={selectedRoomTitle}
-                            refresh={update}
-                            currentTab={currentTab}
-                            changeTab={changeTab}
-                        />
-                        <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-                        <UserControlsContainer isOpened={isLBOpened} />
-                        <ChatInput
-                            roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={switchRoom}
-                            currentTab={currentTab}
-                        />
-                        <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-                    </div>
-                );
+                return styles.wrapperClosed;
             case !isLBOpened && isRBOpened:
-                return (
-                    <div className={styles.wrapperROpen}>
-                        <LeftBar
-                            listOfRooms={rooms as string[]}
-                            callRefreshMessages={switchRoom}
-                            toggleLeftBar={toggleLeftBar}
-                            isOpened={isLBOpened}
-                        />
-                        <ChatBody
-                            roomTitle={selectedRoomTitle}
-                            refresh={update}
-                            currentTab={currentTab}
-                            changeTab={changeTab}
-                        />
-                        <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-                        <UserControlsContainer isOpened={isLBOpened} />
-                        <ChatInput
-                            roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={switchRoom}
-                            currentTab={currentTab}
-                        />
-                        <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-                    </div>
-                );
+                return styles.wrapperROpen;
             case isLBOpened && !isRBOpened:
-                return (
-                    <div className={styles.wrapperLOpen}>
-                        <LeftBar
-                            listOfRooms={rooms as string[]}
-                            callRefreshMessages={switchRoom}
-                            toggleLeftBar={toggleLeftBar}
-                            isOpened={isLBOpened}
-                        />
-                        <ChatBody
-                            roomTitle={selectedRoomTitle}
-                            refresh={update}
-                            currentTab={currentTab}
-                            changeTab={changeTab}
-                        />
-                        <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-                        <UserControlsContainer isOpened={isLBOpened} />
-                        <ChatInput
-                            roomSelectedInfo={selectedRoomTitle}
-                            callRefreshMessages={switchRoom}
-                            currentTab={currentTab}
-                        />
-                        <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-                    </div>
-                );
+                return styles.wrapperLOpen;
             default:
-                return <p>FATAL ERROR!</p>;
+                return styles.wrapperBOpen;
         }
     };
 
-    // return <></>;
-
-    return <>{renderSideBarsConditionally()}</>;
+    return (
+        <div className={sideBarRenderHandler()}>
+            <LeftBar
+                listOfRooms={rooms as string[]}
+                callRefreshMessages={switchRoom}
+                toggleLeftBar={toggleLeftBar}
+                isOpened={isLBOpened}
+            />
+            <ChatBody roomTitle={selectedRoomTitle} refresh={update} currentTab={currentTab} changeTab={changeTab} />
+            <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
+            <UserControlsContainer isOpened={isLBOpened} />
+            <ChatInput roomSelectedInfo={selectedRoomTitle} callRefreshMessages={switchRoom} currentTab={currentTab} />
+            <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
+        </div>
+    );
 };
 
 export default ChatRooms;
