@@ -1,42 +1,31 @@
 import * as React from 'react';
-import { doc, getDoc, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase.config';
+import { collection, getDocs, query, Timestamp } from 'firebase/firestore';
 
+import { db } from '../firebase.config';
 import { MessageInfo } from './types';
 
 export default function useMessages() {
-    const [messagesArray, setMessagesArray] = React.useState<MessageInfo[] | null>(null);
-    const [currentCh, setCurrentCh] = React.useState<object>({});
+    const [messagesArray, setMessagesArray] = React.useState<MessageInfo[] | []>([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
     const getUpdatedMessages = async (roomTitle: string, currentTab: string) => {
-        const roomRef = doc(db, 'rooms', roomTitle);
-        const docSnap = await getDoc(roomRef);
+        const roomTabMessages = query(collection(db, 'rooms', roomTitle, currentTab));
+        const docSnap = await getDocs(roomTabMessages);
 
-        if (docSnap.exists()) {
-            setCurrentCh(docSnap.data().currentChapter);
-            const mssgArr = docSnap.data()[currentTab];
+        console.log('%c◆ Refreshing Messages...', 'color: pink');
 
+        if (!docSnap.empty) {
             setMessagesArray(
-                mssgArr.map(
-                    (msg: MessageInfo) =>
-                        (msg = {
-                            ...msg,
-                            timeSent: (msg.timeSent as Timestamp).toDate(),
-                        }),
+                docSnap.docs.map(
+                    (msg: any) =>
+                        (msg = { id: msg.id, ...msg.data(), timeSent: (msg.data().timeSent as Timestamp).toDate() }),
                 ),
             );
         } else {
-            console.warn(
-                '%c⚠ ' + '%cRoom' + `%c ${roomTitle} ` + '%cdoes not exist',
-                'color: yellow; font-size: 20px',
-                'color: orange',
-                'color: yellow',
-                'color: orange',
-            );
+            setMessagesArray([]);
         }
         setIsLoading(false);
     };
 
-    return { messagesArray, isLoading, currentCh, getUpdatedMessages };
+    return { messagesArray, isLoading, getUpdatedMessages };
 }

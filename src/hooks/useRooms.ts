@@ -11,19 +11,20 @@ export default function useRooms(): DataResult {
 
     const currentUser = React.useContext(UserContext);
     if (currentUser) {
-        const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser?.uid));
-
-        const unsubscribe = () => {
-            onSnapshot(userRoomsQuery, (roomsSnapshot) => {
-                console.log('%c◆ Refreshing Data...', 'color: pink');
-                setData(roomsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc));
-            });
-            setIsLoading(false);
-        };
-
         React.useEffect(() => {
-            unsubscribe();
+            const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser?.uid));
 
+            const unsubscribe = () => {
+                onSnapshot(
+                    userRoomsQuery,
+                    (roomsSnapshot) => {
+                        console.log('%c◆ Refreshing Data...', 'color: pink');
+                        setData(roomsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc));
+                    },
+                    (err) => console.log(err),
+                );
+                setIsLoading(false);
+            };
             return () => unsubscribe();
         }, []);
     }

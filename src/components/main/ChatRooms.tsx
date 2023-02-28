@@ -26,13 +26,19 @@ const ChatRooms = () => {
     const [rooms, setRooms] = useState<string[] | null>(null);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
-    const [currentTab, setCurrentTab] = useState('chat');
+    const [currentTab, setCurrentTab] = React.useState('chat');
 
-    const { data, isLoading } = useRooms();
     const { selectedRoomTitle, update, switchRoom } = refreshUtils();
+    const { data } = useRooms();
 
-    const changeTab = (tab: string) => {
-        setCurrentTab(tab);
+    const switchTab = (newTab: string) => {
+        console.log(
+            '%c◆ Changed to ' + `%c ${newTab} ` + '%ctab!',
+            'color: lightblue',
+            'color: orange',
+            'color: lightblue;',
+        );
+        setCurrentTab(newTab);
     };
 
     const loadRooms = async () => {
@@ -55,7 +61,7 @@ const ChatRooms = () => {
                 switchRoom(data?.[0].id as string);
             } else switchRoom(selectedRoomTitle);
         }
-    }, [data, isLoading]);
+    }, [data]);
 
     const sideBarRenderHandler = () => {
         switch (true) {
@@ -80,7 +86,19 @@ const ChatRooms = () => {
                 toggleLeftBar={toggleLeftBar}
                 isOpened={isLBOpened}
             />
-            <ChatBody roomTitle={selectedRoomTitle} refresh={update} currentTab={currentTab} changeTab={changeTab} />
+            {/* {selectedRoomTitle === '' && (
+                <div>
+                    <p>LOADING</p>
+                </div>
+            )} */}
+            {selectedRoomTitle !== '' && (
+                <ChatBody
+                    roomTitle={selectedRoomTitle}
+                    refresh={update}
+                    currentTab={currentTab}
+                    switchTab={switchTab}
+                />
+            )}
             <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
             <UserControlsContainer isOpened={isLBOpened} />
             <ChatInput roomSelectedInfo={selectedRoomTitle} callRefreshMessages={switchRoom} currentTab={currentTab} />

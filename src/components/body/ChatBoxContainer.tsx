@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import { UserContext } from '../../context/AuthContext';
 
 import { MessageInfo } from '../../hooks/types';
 import { ChatBox } from '../exporter';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
 type Props = {
-    messages: MessageInfo[];
+    // messages: MessageInfo[];
+    messages: any[];
     isLoading: boolean;
     currentTab: string;
 };
@@ -25,11 +25,17 @@ const ChatBoxContainer = (props: Props) => {
     };
 
     const [refreshMssgs, setRefreshMssgs] = useState<boolean>(false);
-    // const currentUser = useContext(UserContext);
 
     useEffect(() => {
         setRefreshMssgs((prevState) => !prevState);
+        if (props.messages.length > 0) {
+            sortByTimeSent();
+        }
     }, [props.messages]);
+
+    const sortByTimeSent = () => {
+        props.messages.sort((a, b) => (a.timeSent as any) - (b.timeSent as any));
+    };
 
     return (
         <div className={styles.chatBoxContainer}>
@@ -41,7 +47,7 @@ const ChatBoxContainer = (props: Props) => {
                 props.messages
                     .map((mssg) => (
                         <ChatBox
-                            key={Math.random() * 9}
+                            key={mssg.id}
                             photoURL={mssg.photoURL}
                             displayName={mssg.userName}
                             mssgText={mssg.message}

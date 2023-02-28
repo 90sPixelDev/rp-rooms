@@ -58,7 +58,9 @@ const ChatInput = (props: Props) => {
     };
 
     const validateKeyPress = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.code === 'Enter' && e.ctrlKey) {
+        if (e.code === 'Enter' && e.shiftKey) {
+            return;
+        } else if (e.code === 'Enter' && !e.shiftKey) {
             sendMessage();
         }
     };
@@ -91,10 +93,12 @@ const ChatInput = (props: Props) => {
             timeSent: Timestamp.now(),
         };
 
-        await updateDoc(roomRef, {
-            [mssgChannel]: arrayUnion({ ...mssgFormat }),
+        const docRef = await addDoc(collection(db, 'rooms', props.roomSelectedInfo, mssgChannel), {
+            ...mssgFormat,
         });
-        // switchRoom(props.roomSelectedInfo);
+        console.log('Document written with ID: ', docRef.id);
+
+        switchRoom(props.roomSelectedInfo);
         setTempTypedMssg('');
     };
 

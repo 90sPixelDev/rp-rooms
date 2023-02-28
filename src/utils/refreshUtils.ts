@@ -3,6 +3,7 @@ import { RefreshData } from './types';
 
 export function refreshUtils(): RefreshData {
     const [selectedRoomTitle, setSelectedRoomTitle] = React.useState('');
+    const [currentTab, setCurrentTab] = React.useState('story');
     const [update, setUpdate] = React.useState(false);
 
     const switchRoom = (newRoomName?: string) => {
@@ -16,8 +17,18 @@ export function refreshUtils(): RefreshData {
             'color: yellow',
             'color: lightblue;',
         );
+
         setUpdate((prevState) => !prevState);
     };
 
-    return { selectedRoomTitle, update, switchRoom };
+    const switchTab = (newTab: string) => {
+        console.log(
+            '%c◆ Changed to ' + `%c ${newTab} ` + '%ctab!',
+            'color: lightblue',
+            'color: orange',
+            'color: lightblue;',
+        );
+    };
+
+    return { selectedRoomTitle, update, currentTab, switchTab, switchRoom };
 }

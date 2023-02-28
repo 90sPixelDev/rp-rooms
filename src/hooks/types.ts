@@ -9,6 +9,7 @@ export interface MessageInfo {
     userName: string;
     message: string;
     uid: string;
+    id: string;
     timeSent: Timestamp | Date | string;
     photoURL: string;
 }
