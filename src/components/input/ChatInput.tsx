@@ -44,13 +44,17 @@ const ChatInput = (props: Props) => {
         setTempTypedMssg(typedText);
     };
 
-    const validateKeyPress = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const validateKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.code === 'Enter' && e.shiftKey) {
             return;
         } else if (e.code === 'Enter' && !e.shiftKey) {
-            await sendMessage(tempTypedMssg, props.roomSelectedInfo, props.currentTab, currentUser);
-            setTempTypedMssg('');
+            SubmitMessage();
         }
+    };
+
+    const SubmitMessage = async () => {
+        await sendMessage(tempTypedMssg, props.roomSelectedInfo, props.currentTab, currentUser);
+        setTempTypedMssg('');
     };
 
     const GetCharas = useCallback(async () => {
@@ -79,7 +83,7 @@ const ChatInput = (props: Props) => {
                     onKeyDown={(e) => validateKeyPress(e)}
                     value={tempTypedMssg}
                 />
-                <ChatSend sendMssg={() => console.log('lol')} />
+                <ChatSend sendMssg={SubmitMessage} />
             </div>
         </div>
     );
