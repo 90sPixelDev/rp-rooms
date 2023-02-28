@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 type Styles = {
     wrapperROpen: string;
@@ -23,13 +24,13 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
-    const [rooms, setRooms] = useState<string[] | null>(null);
+    const [currentRoomInfo, setCurrentRoomInfo] = useState<DocumentData | null>(null);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
     const [currentTab, setCurrentTab] = React.useState('chat');
 
-    const { selectedRoomTitle, update, switchRoom } = refreshUtils();
-    const { data } = useRooms();
+    const { selectedRoomTitle, switchRoom } = refreshUtils();
+    const { data, isLoading } = useRooms();
 
     const switchTab = (newTab: string) => {
         console.log(
@@ -41,9 +42,11 @@ const ChatRooms = () => {
         setCurrentTab(newTab);
     };
 
-    const loadRooms = async () => {
-        if (data === null) return;
-        setRooms(data.map((doc) => doc.id));
+    const GetRoomData = async () => {
+        if (data === null || data === undefined) return;
+        const res = data.find((room) => room.id === selectedRoomTitle);
+
+        setCurrentRoomInfo(res?.data() as DocumentData);
     };
 
     const toggleRightBar = () => {
@@ -55,13 +58,13 @@ const ChatRooms = () => {
 
     useEffect(() => {
         if (data !== null && data !== undefined) {
-            loadRooms();
+            GetRoomData();
 
             if (selectedRoomTitle === '') {
                 switchRoom(data?.[0].id as string);
             } else switchRoom(selectedRoomTitle);
         }
-    }, [data]);
+    }, [data, isLoading]);
 
     const sideBarRenderHandler = () => {
         switch (true) {
@@ -81,27 +84,28 @@ const ChatRooms = () => {
     return (
         <div className={sideBarRenderHandler()}>
             <LeftBar
-                listOfRooms={rooms as string[]}
+                listOfRooms={data?.map((room) => room.id) as string[]}
                 callRefreshMessages={switchRoom}
                 toggleLeftBar={toggleLeftBar}
                 isOpened={isLBOpened}
             />
+            {selectedRoomTitle !== '' && (
+                <ChatBody
+                    dataLoading={isLoading}
+                    roomTitle={selectedRoomTitle}
+                    currentRoomInfo={currentRoomInfo as DocumentData}
+                    currentTab={currentTab}
+                    switchTab={switchTab}
+                />
+            )}
             {/* {selectedRoomTitle === '' && (
                 <div>
                     <p>LOADING</p>
                 </div>
             )} */}
-            {selectedRoomTitle !== '' && (
-                <ChatBody
-                    roomTitle={selectedRoomTitle}
-                    refresh={update}
-                    currentTab={currentTab}
-                    switchTab={switchTab}
-                />
-            )}
             <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
             <UserControlsContainer isOpened={isLBOpened} />
-            <ChatInput roomSelectedInfo={selectedRoomTitle} callRefreshMessages={switchRoom} currentTab={currentTab} />
+            <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
             <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
         </div>
     );

@@ -20,6 +20,7 @@
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.4.3",
         "react-scripts": "^5.0.1",
+        "react-uuid": "^2.0.0",
         "tailwind-scrollbar": "^2.0.1",
         "typescript": "^4.7.4",
         "universal-cookie": "^4.0.4",

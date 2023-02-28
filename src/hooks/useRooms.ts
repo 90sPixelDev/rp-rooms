@@ -12,7 +12,7 @@ export default function useRooms(): DataResult {
     const currentUser = React.useContext(UserContext);
     if (currentUser) {
         React.useEffect(() => {
-            const userRoomsQuery = query(collection(db, 'rooms'), where('user', 'array-contains', currentUser?.uid));
+            const userRoomsQuery = query(collection(db, 'rooms'), where('users', 'array-contains', currentUser?.uid));
 
             const unsubscribe = () => {
                 onSnapshot(

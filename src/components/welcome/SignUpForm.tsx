@@ -112,6 +112,7 @@ const SignUpForm = () => {
             },
             (error) => {
                 // Handle unsuccessful uploads
+                console.log(err);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
@@ -142,7 +143,7 @@ const SignUpForm = () => {
                             currentTurn: false,
                         },
                     },
-                    user: arrayUnion(uid),
+                    users: arrayUnion(uid),
                 },
                 { merge: true },
             );
@@ -165,9 +166,9 @@ const SignUpForm = () => {
                             currentTurn: true,
                         },
                     },
-                    user: arrayUnion(uid),
-                    chat: [],
-                    story: [],
+                    users: arrayUnion(uid),
+                    chat: {},
+                    story: {},
                 },
                 { merge: true },
             );
@@ -186,7 +187,7 @@ const SignUpForm = () => {
                             currentTurn: false,
                         },
                     },
-                    user: arrayUnion(uid),
+                    users: arrayUnion(uid),
                 },
                 { merge: true },
             );
@@ -209,9 +210,9 @@ const SignUpForm = () => {
                             currentTurn: true,
                         },
                     },
-                    user: arrayUnion(uid),
-                    chat: [],
-                    story: [],
+                    users: arrayUnion(uid),
+                    chat: {},
+                    story: {},
                 },
                 { merge: true },
             );

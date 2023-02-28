@@ -88,7 +88,7 @@ const RoomsSearchClosed = (props: Props) => {
                                 currentTurn: false,
                             },
                         },
-                        user: arrayUnion(currentUser?.uid),
+                        users: arrayUnion(currentUser?.uid),
                     },
                     { merge: true },
                 );
@@ -111,9 +111,9 @@ const RoomsSearchClosed = (props: Props) => {
                                 currentTurn: true,
                             },
                         },
-                        user: arrayUnion(currentUser?.uid),
-                        chat: [],
-                        story: [],
+                        users: arrayUnion(currentUser?.uid),
+                        chat: {},
+                        story: {},
                     },
                     { merge: true },
                 );

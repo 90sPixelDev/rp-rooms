@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { DocumentData, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { MessageInfo } from '../../hooks/types';
 import useMessages from '../../hooks/useMessages';
 
-import { UserContext } from '../../context/AuthContext';
-
 import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
 interface Props {
+    dataLoading: boolean;
     roomTitle: string;
-    refresh: boolean;
+    currentRoomInfo: DocumentData;
     currentTab: string;
     switchTab: (tab: string) => void;
 }
@@ -25,8 +24,6 @@ const ChatBody = (props: Props) => {
     };
     const [currentCh, setCurrentCh] = React.useState<object>({});
 
-    const currentUser = React.useContext(UserContext);
-
     const { isLoading, messagesArray, getUpdatedMessages } = useMessages();
 
     const UpdateRoomChapter = async () => {
@@ -39,11 +36,11 @@ const ChatBody = (props: Props) => {
     };
 
     useEffect(() => {
-        if (currentUser) {
-            props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
-            UpdateRoomChapter();
-        }
-    }, [props.roomTitle, props.currentTab, props.refresh]);
+        props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
+        UpdateRoomChapter();
+
+        console.log('Updating Messages!');
+    }, [props.roomTitle, props.currentTab, props.dataLoading]);
 
     return (
         <div className={styles.body}>

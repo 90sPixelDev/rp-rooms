@@ -1,26 +1,14 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
-import {
-    doc,
-    setDoc,
-    getDoc,
-    addDoc,
-    Timestamp,
-    arrayUnion,
-    query,
-    where,
-    collection,
-    updateDoc,
-} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
-import { refreshUtils } from '../../utils/refreshUtils';
+import { sendMessage } from '../../utils/sendMessage';
 
 interface Props {
     roomSelectedInfo: string;
     currentTab: string;
-    callRefreshMessages: (text: string) => void;
 }
 type chara = {
     charaName: string;
@@ -46,11 +34,10 @@ const ChatInput = (props: Props) => {
             'flex flex-row bg-purple-300 rounded-tr-xl rounded-tl-lg border-2 border-purple-400 min-h-[50%] h-fit',
     };
 
+    const currentUser = React.useContext(UserContext);
+
     const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
     const [charaMap, setCharaMap] = useState<chara[] | null>(null);
-    const currentUser = useContext(UserContext);
-
-    const { switchRoom } = refreshUtils();
 
     const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const typedText = e.target.value;
@@ -61,45 +48,9 @@ const ChatInput = (props: Props) => {
         if (e.code === 'Enter' && e.shiftKey) {
             return;
         } else if (e.code === 'Enter' && !e.shiftKey) {
-            sendMessage();
-        }
-    };
-
-    const sendMessage = async () => {
-        if (!tempTypedMssg.replace(/\s/g, '').length) {
-            console.warn(`%c"${tempTypedMssg}"`, 'color: red', ' is not a valid message! Not submitted.');
+            await sendMessage(tempTypedMssg, props.roomSelectedInfo, props.currentTab, currentUser);
             setTempTypedMssg('');
-            return;
         }
-        const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
-        const uid = currentUser?.uid;
-
-        let mssgChannel = 'chat';
-        let displayName = currentUser?.displayName;
-        let avatar = currentUser?.photoURL;
-        if (props.currentTab === 'story') {
-            const roomDoc = await getDoc(roomRef);
-            mssgChannel = 'story';
-            avatar = roomDoc.data()?.characters[uid as string].charaPic;
-            displayName = roomDoc.data()?.characters[uid as string].charaName;
-        }
-
-        const mssgFormat = {
-            message: tempTypedMssg,
-            photoURL: avatar,
-            email: currentUser?.email,
-            userName: displayName,
-            uid: uid,
-            timeSent: Timestamp.now(),
-        };
-
-        const docRef = await addDoc(collection(db, 'rooms', props.roomSelectedInfo, mssgChannel), {
-            ...mssgFormat,
-        });
-        console.log('Document written with ID: ', docRef.id);
-
-        switchRoom(props.roomSelectedInfo);
-        setTempTypedMssg('');
     };
 
     const GetCharas = useCallback(async () => {
@@ -128,7 +79,7 @@ const ChatInput = (props: Props) => {
                     onKeyDown={(e) => validateKeyPress(e)}
                     value={tempTypedMssg}
                 />
-                <ChatSend sendMssg={sendMessage} />
+                <ChatSend sendMssg={() => console.log('lol')} />
             </div>
         </div>
     );

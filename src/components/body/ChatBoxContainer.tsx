@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-import { MessageInfo } from '../../hooks/types';
 import { ChatBox } from '../exporter';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
+import { MessageInfo } from '../../hooks/types';
+import { Timestamp } from 'firebase/firestore';
 
 type Props = {
-    // messages: MessageInfo[];
-    messages: any[];
+    messages: MessageInfo[];
     isLoading: boolean;
     currentTab: string;
 };
@@ -24,18 +24,13 @@ const ChatBoxContainer = (props: Props) => {
         noMessagesText: 'text-center m-auto text-sm md:text-base',
     };
 
-    const [refreshMssgs, setRefreshMssgs] = useState<boolean>(false);
-
-    useEffect(() => {
-        setRefreshMssgs((prevState) => !prevState);
-        if (props.messages.length > 0) {
-            sortByTimeSent();
-        }
-    }, [props.messages]);
-
     const sortByTimeSent = () => {
         props.messages.sort((a, b) => (a.timeSent as any) - (b.timeSent as any));
     };
+
+    if (props.messages.length > 0) {
+        sortByTimeSent();
+    }
 
     return (
         <div className={styles.chatBoxContainer}>
@@ -51,7 +46,7 @@ const ChatBoxContainer = (props: Props) => {
                             photoURL={mssg.photoURL}
                             displayName={mssg.userName}
                             mssgText={mssg.message}
-                            timeSent={mssg.timeSent as string}
+                            timeSent={(mssg.timeSent as Timestamp).toDate().toString()}
                         />
                     ))
                     .reverse()}
