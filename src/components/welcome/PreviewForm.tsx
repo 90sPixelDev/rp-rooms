@@ -5,8 +5,8 @@ import { auth } from '../../firebase.config';
 
 const PreviewForm = () => {
     const styles = {
-        container: 'absolute left-[50%] top-[3vh] translate-x-[-50%]',
-        body: 'bg-purple-400 px-4 py-2 rounded-lg shadow-lg',
+        container: 'absolute left-[50%] top-[3vh] translate-x-[-50%] ',
+        body: 'bg-purple-400 px-4 py-2 rounded-lg shadow-lg shadow-purple-900',
         text: 'text-center text-white',
         button: 'bg-purple-700 py-1 px-2 rounded-lg my-2 flow-root mx-auto text-white hover:bg-purple-600',
     };

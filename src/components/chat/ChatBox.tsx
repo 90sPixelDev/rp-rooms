@@ -27,7 +27,7 @@ const ChatBox = (props: Props) => {
         body: 'flex flex-row bg-purple-300 h-fit w-fit shadow-md shadow-purple-800/50 rounded-xl',
         leftSide: 'flex flex-col justify-between',
         imgContainer:
-            'flex flex-row min-w-[60px] max-w-[60px] min-h-[60px] max-h-[60px] m-2 items-center rounded-xl overflow-hidden',
+            'flex flex-row lg:min-w-[60px] lg:max-w-[60px] lg:min-h-[60px] lg:max-h-[60px] min-w-[45px] max-w-[45px] min-h-[45px] max-h-[45px] m-2 items-center rounded-xl overflow-hidden bg-purple-300',
         img: 'h-full w-full object-contain',
         mssgInfo: 'flex flex-col border-l-2 border-purple-400',
         displayName: 'font-bold',

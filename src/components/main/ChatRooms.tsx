@@ -4,7 +4,11 @@ import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomCont
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
+import loadingAnim from '../../resources/ui/loading-anim.svg';
+
 type Styles = {
+    container: string;
+    loading: string;
     wrapperROpen: string;
     wrapperLOpen: string;
     wrapperBOpen: string;
@@ -13,6 +17,8 @@ type Styles = {
 
 const ChatRooms = () => {
     const styles: Styles = {
+        container: 'flex flex-col w-full h-full',
+        loading: 'w-[30%] m-auto',
         wrapperROpen:
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
         wrapperLOpen:
@@ -23,22 +29,11 @@ const ChatRooms = () => {
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
     };
 
-    const [rooms, setRooms] = useState<string[] | null>(null);
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
-    const [currentTab, setCurrentTab] = useState('chat');
 
     const { data, isLoading } = useRooms();
-    const { selectedRoomTitle, update, switchRoom } = refreshUtils();
-
-    const changeTab = (tab: string) => {
-        setCurrentTab(tab);
-    };
-
-    const loadRooms = async () => {
-        if (data === null) return;
-        setRooms(data.map((doc) => doc.id));
-    };
+    const { currentTab, switchTab, selectedRoomTitle, switchRoom } = refreshUtils();
 
     const toggleRightBar = () => {
         setRBIsOpened((prevState: boolean) => !prevState);
@@ -48,13 +43,13 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        if (data !== null && data !== undefined) {
-            loadRooms();
+        console.log('Data ' + data?.[0].id);
+        console.log('Room ' + selectedRoomTitle);
 
-            if (selectedRoomTitle === '') {
-                switchRoom(data?.[0].id as string);
-            } else switchRoom(selectedRoomTitle);
-        }
+        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading) {
+            console.log('Running!');
+            switchRoom(data?.[0].id as string);
+        } else switchRoom(selectedRoomTitle);
     }, [data, isLoading]);
 
     const sideBarRenderHandler = () => {
@@ -75,15 +70,28 @@ const ChatRooms = () => {
     return (
         <div className={sideBarRenderHandler()}>
             <LeftBar
-                listOfRooms={rooms as string[]}
+                listOfRooms={data?.map((room) => room.id) as string[]}
                 callRefreshMessages={switchRoom}
                 toggleLeftBar={toggleLeftBar}
                 isOpened={isLBOpened}
             />
-            <ChatBody roomTitle={selectedRoomTitle} refresh={update} currentTab={currentTab} changeTab={changeTab} />
+            {selectedRoomTitle !== '' && (
+                <ChatBody
+                    dataLoading={isLoading}
+                    roomTitle={selectedRoomTitle}
+                    currentTab={currentTab}
+                    switchTab={switchTab}
+                    callRefreshMessages={switchRoom}
+                />
+            )}
+            {selectedRoomTitle === '' && (
+                <div className={styles.container}>
+                    <img className={styles.loading} src={loadingAnim} />
+                </div>
+            )}
             <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
             <UserControlsContainer isOpened={isLBOpened} />
-            <ChatInput roomSelectedInfo={selectedRoomTitle} callRefreshMessages={switchRoom} currentTab={currentTab} />
+            <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
             <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
         </div>
     );

@@ -1,42 +1,28 @@
 import * as React from 'react';
-import { doc, getDoc, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase.config';
+import { doc, getDoc } from 'firebase/firestore';
 
+import { db } from '../firebase.config';
 import { MessageInfo } from './types';
 
 export default function useMessages() {
-    const [messagesArray, setMessagesArray] = React.useState<MessageInfo[] | null>(null);
-    const [currentCh, setCurrentCh] = React.useState<object>({});
+    const [messagesArray, setMessagesArray] = React.useState<MessageInfo[] | []>([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
     const getUpdatedMessages = async (roomTitle: string, currentTab: string) => {
-        const roomRef = doc(db, 'rooms', roomTitle);
-        const docSnap = await getDoc(roomRef);
+        const roomDoc = doc(db, 'rooms', roomTitle);
+        const roomInfoSnap = await getDoc(roomDoc);
 
-        if (docSnap.exists()) {
-            setCurrentCh(docSnap.data().currentChapter);
-            const mssgArr = docSnap.data()[currentTab];
+        console.log('%c◆ Refreshing Messages...', 'color: pink');
 
-            setMessagesArray(
-                mssgArr.map(
-                    (msg: MessageInfo) =>
-                        (msg = {
-                            ...msg,
-                            timeSent: (msg.timeSent as Timestamp).toDate(),
-                        }),
-                ),
-            );
+        if (roomInfoSnap.exists()) {
+            const messgsRef = roomInfoSnap.data()[currentTab];
+
+            setMessagesArray(Object.keys(messgsRef).map((mssg) => ({ id: mssg, ...messgsRef[mssg] })));
         } else {
-            console.warn(
-                '%c⚠ ' + '%cRoom' + `%c ${roomTitle} ` + '%cdoes not exist',
-                'color: yellow; font-size: 20px',
-                'color: orange',
-                'color: yellow',
-                'color: orange',
-            );
+            setMessagesArray([]);
         }
         setIsLoading(false);
     };
 
-    return { messagesArray, isLoading, currentCh, getUpdatedMessages };
+    return { messagesArray, isLoading, getUpdatedMessages };
 }

@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { MessageInfo } from '../../hooks/types';
 import useMessages from '../../hooks/useMessages';
+
 import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 
 interface Props {
+    dataLoading: boolean;
     roomTitle: string;
-    refresh: boolean;
     currentTab: string;
-    changeTab: (tab: string) => void;
+    switchTab: (tab: string) => void;
+    callRefreshMessages: (room: string) => void;
 }
 type Styles = {
     body: string;
@@ -20,22 +22,29 @@ const ChatBody = (props: Props) => {
     const styles: Styles = {
         body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col',
     };
+    const [currentCh, setCurrentCh] = React.useState<object>({});
 
-    const { getUpdatedMessages, isLoading, currentCh, messagesArray } = useMessages();
+    const { isLoading, messagesArray, getUpdatedMessages } = useMessages();
 
-    const getRoomInfo = () => {
-        // TODO getDocs of Room like Room Story Events, Room Characters, Room Chapters and then convert to correct format and pass down as prop to children
+    const UpdateRoomChapter = async () => {
+        const roomRef = doc(db, 'rooms', props.roomTitle);
+        const docSnap = await getDoc(roomRef);
+
+        if (docSnap.exists()) {
+            setCurrentCh(docSnap.data().currentChapter);
+        }
     };
 
     useEffect(() => {
         props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
-    }, [props.roomTitle, props.refresh, props.currentTab, isLoading]);
+        UpdateRoomChapter();
+    }, [props.roomTitle, props.currentTab, props.callRefreshMessages]);
 
     return (
         <div className={styles.body}>
             <RoomTopTitle
                 currentChInfo={currentCh}
-                changeTab={props.changeTab}
+                changeTab={props.switchTab}
                 currentTab={props.currentTab}
                 roomTitle={props.roomTitle}
             />

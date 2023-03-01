@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { getDocs, collection, arrayUnion, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getDocs, collection, query, orderBy, limit } from 'firebase/firestore';
 
 import { RoomsDropDown } from '../exporter';
-import { UserContext } from '../../context/AuthContext';
 import { db } from '../../firebase.config';
-import { refreshUtils } from '../../utils/refreshUtils';
+import useAddUserToRoom from '../../utils/useAddUserToRoom';
 
 type Props = any;
 
@@ -34,18 +33,14 @@ const RoomsSearchClosed = (props: Props) => {
         bar: 'flex flex-row justify-center',
     };
 
-    const [room, setRoom] = useState(null as any);
     const [inputText, setInputText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [isFocused, setIsFocused] = useState(false);
     const [isFocusedMini, setIsFocusedMini] = useState(false);
-    const [err, setErr] = useState(false);
     const [roomsFound, setRoomsFound] = useState(true);
 
-    const currentUser = useContext(UserContext);
-
-    const { switchRoom } = refreshUtils();
+    const { addRoom } = useAddUserToRoom();
 
     const unFocusRoomSearch = () => {
         setTimeout(() => {
@@ -56,97 +51,32 @@ const RoomsSearchClosed = (props: Props) => {
         }, 300);
     };
 
-    const addRoom = async (inputText: string) => {
-        console.log(
-            '%c◆ Attempting to add Room ' + `%c${inputText}` + '%c to user...',
-            'color: pink',
-            'color: yellow',
-            'color: pink',
-        );
-
-        try {
-            if (inputText.length <= 3 || !inputText.replace(/\s/g, '').length) {
-                throw new Error(`\"${inputText}\" is an invalid search!`);
-            }
-            const newRoomRef = doc(db, 'rooms', inputText);
-            const newRoomDoc = await getDoc(newRoomRef);
-            if (newRoomDoc.exists()) {
-                if (newRoomDoc.data().characters[currentUser?.uid as string]) {
-                    console.warn(`You are already a part of Room \"${inputText}\"`);
-                    return;
-                }
-                const charas = Object.keys(newRoomDoc.data().characters);
-                const charaCount = charas.length;
-                await setDoc(
-                    newRoomRef,
-                    {
-                        characters: {
-                            [currentUser?.uid as string]: {
-                                charaPic: '',
-                                charaName: 'New Character',
-                                turn: charaCount.toString(),
-                                currentTurn: false,
-                            },
-                        },
-                        user: arrayUnion(currentUser?.uid),
-                    },
-                    { merge: true },
-                );
-            } else {
-                await setDoc(
-                    newRoomRef,
-                    {
-                        owner: [currentUser?.uid],
-                        roomTitle: inputText,
-                        currentTurn: '',
-                        currentChapter: {
-                            num: '0',
-                            desc: 'A New Beginning!',
-                        },
-                        characters: {
-                            [currentUser?.uid as string]: {
-                                charaPic: '',
-                                charaName: 'New Character',
-                                turn: '0',
-                                currentTurn: true,
-                            },
-                        },
-                        user: arrayUnion(currentUser?.uid),
-                        chat: [],
-                        story: [],
-                    },
-                    { merge: true },
-                );
-            }
-            console.log('%c✓ Succesfully added user to Room', 'color: lightgreen');
-            // switchRoom(inputText);
-            unFocusRoomSearch();
-        } catch (err) {
-            setErr(true);
-            console.error(err);
-            setInputText('');
-        }
-    };
-
     const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const lowerInput = e.target.value.toLowerCase();
         setInputText((prevstate) => (prevstate = e.target.value));
         const roomSearchList: string[] = [];
 
-        lowerInput.length > 3 ? setIsSearching(true) : setIsSearching(false);
+        let allowSearch = false;
 
+        lowerInput.length > 3 ? setIsSearching(true) : setIsSearching(false);
+        lowerInput.length > 3 ? (allowSearch = true) : (allowSearch = false);
         try {
-            const roomSearch = await getDocs(collection(db, 'rooms'));
-            roomSearch.forEach((doc) => {
-                const lower = doc.data().roomTitle.toLowerCase();
-                if (lower.includes(lowerInput)) {
-                    roomSearchList.push(doc.data().roomTitle);
-                }
-                setSearchedRooms(roomSearchList.map((rt) => rt));
-            });
+            if (allowSearch) {
+                const roomsRef = collection(db, 'rooms');
+                const roomQuery = query(roomsRef, limit(30));
+                const roomSearch = await getDocs(roomQuery);
+
+                roomSearch.forEach((doc) => {
+                    const lower = doc.data().roomTitle.toLowerCase();
+                    console.log(doc.id);
+                    if (lower.includes(lowerInput)) {
+                        roomSearchList.push(doc.data().roomTitle);
+                    }
+                    setSearchedRooms(roomSearchList.map((rt) => rt));
+                });
+            }
         } catch (err) {
-            setErr(true);
             console.error(`Message: ${err}`);
         }
     };
@@ -161,8 +91,8 @@ const RoomsSearchClosed = (props: Props) => {
                             className={styles.inputBoxClosedFocused}
                             type="text"
                             value={inputText}
-                            onKeyDown={(e) => {
-                                if (e.code === 'Enter') addRoom(inputText);
+                            onKeyDown={async (e) => {
+                                if (e.code === 'Enter') if ((await addRoom(inputText)) === true) unFocusRoomSearch();
                             }}
                             onChange={onSearch}
                             onFocus={() => {
