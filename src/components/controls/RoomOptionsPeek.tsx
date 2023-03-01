@@ -41,8 +41,6 @@ const RoomOptionsPeek = (props: Props) => {
     const currentUser = useContext(UserContext);
     const [owner, setOwner] = useState<string | null>(null);
 
-    const { switchRoom } = refreshUtils();
-
     const doorOpenIcon = <FontAwesomeIcon icon={solid('door-open')} />;
     const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
     const roomOptionsIcon = <FontAwesomeIcon icon={solid('outdent')} />;

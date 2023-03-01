@@ -1,6 +1,6 @@
 export type RefreshData = {
-    selectedRoomTitle: string;
     currentTab: string;
-    // switchTab: (newTab: string) => void;
+    switchTab: (newTab: string) => void;
+    selectedRoomTitle: string;
     switchRoom: (newRoomTitle: string) => void;
 };

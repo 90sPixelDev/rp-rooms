@@ -34,7 +34,6 @@ const RoomsSearchClosed = (props: Props) => {
         bar: 'flex flex-row justify-center',
     };
 
-    const [room, setRoom] = useState(null as any);
     const [inputText, setInputText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
@@ -44,8 +43,6 @@ const RoomsSearchClosed = (props: Props) => {
     const [roomsFound, setRoomsFound] = useState(true);
 
     const currentUser = useContext(UserContext);
-
-    const { switchRoom } = refreshUtils();
 
     const unFocusRoomSearch = () => {
         setTimeout(() => {
@@ -119,7 +116,6 @@ const RoomsSearchClosed = (props: Props) => {
                 );
             }
             console.log('%c✓ Succesfully added user to Room', 'color: lightgreen');
-            // switchRoom(inputText);
             unFocusRoomSearch();
         } catch (err) {
             setErr(true);

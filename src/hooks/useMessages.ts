@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { collection, doc, getDoc, getDocs, query, Timestamp } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { db } from '../firebase.config';
 import { MessageInfo } from './types';

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { DocumentData, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { MessageInfo } from '../../hooks/types';
@@ -10,9 +10,9 @@ import { ChatBoxContainer, RoomTopTitle } from '../exporter';
 interface Props {
     dataLoading: boolean;
     roomTitle: string;
-    currentRoomInfo: DocumentData;
     currentTab: string;
     switchTab: (tab: string) => void;
+    callRefreshMessages: (room: string) => void;
 }
 type Styles = {
     body: string;
@@ -38,9 +38,7 @@ const ChatBody = (props: Props) => {
     useEffect(() => {
         props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
         UpdateRoomChapter();
-
-        console.log('Updating Messages!');
-    }, [props.roomTitle, props.currentTab, props.dataLoading]);
+    }, [props.roomTitle, props.currentTab, props.callRefreshMessages]);
 
     return (
         <div className={styles.body}>
