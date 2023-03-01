@@ -29,7 +29,7 @@ type Styles = {
 
 const SignUpForm = () => {
     const styles: Styles = {
-        body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
+        body: 'h-[100vh] w-[100vw] flex flex-col place-content-center place-items-center',
         container: 'bg-purple-400 min-h-[200px] min-w-[300px] rounded-lg shadow-lg shadow-purple-900',
         title: 'text-lg text-center p-2 bg-purple-300 rounded-t-lg mb-4',
         formContainer: 'flex flex-col',

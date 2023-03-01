@@ -1,33 +1,37 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ['./src/**/*.{js,jsx,ts,tsx}'],
-	theme: {
-		screens: {
-			'xsm': '350px',
-			// => @media (min-width: 640px) { ... }
+    content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    theme: {
+        screens: {
+            xsm: '350px',
+            // => @media (min-width: 640px) { ... }
 
-			'sm': '640px',
-			// => @media (min-width: 640px) { ... }
+            sm: '640px',
+            // => @media (min-width: 640px) { ... }
 
-			'md': '768px',
-			// => @media (min-width: 768px) { ... }
+            md: '768px',
+            // => @media (min-width: 768px) { ... }
 
-			'lg': '930px',
-			// => @media (min-width: 1024px) { ... }
+            lg: '930px',
+            // => @media (min-width: 1024px) { ... }
 
-			'xl': '1280px',
-			// => @media (min-width: 1280px) { ... }
+            xl: '1280px',
+            // => @media (min-width: 1280px) { ... }
 
-			'2xl': '1536px',
-			// => @media (min-width: 1536px) { ... }
-		},
-		extend: {},
-	},
-	plugins: [
-		// ...
-		require('tailwind-scrollbar'),
-	],
-	variants: {
-		scrollbar: ['rounded'],
-	},
+            '2xl': '1536px',
+            // => @media (min-width: 1536px) { ... }
+        },
+        extend: {
+            backgroundImage: {
+                welcomeBgImg: 'url("../public/assets/home-bg.png")',
+            },
+        },
+    },
+    plugins: [
+        // ...
+        require('tailwind-scrollbar'),
+    ],
+    variants: {
+        scrollbar: ['rounded'],
+    },
 };
