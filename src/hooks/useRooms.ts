@@ -27,6 +27,8 @@ export default function useRooms(): DataResult {
                 );
                 setIsLoading(false);
             };
+            unsubscribe();
+
             return () => unsubscribe();
         }, []);
     }
