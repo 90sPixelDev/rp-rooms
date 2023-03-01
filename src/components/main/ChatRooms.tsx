@@ -4,7 +4,11 @@ import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomCont
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
+import loadingAnim from '../../resources/ui/loading-anim.svg';
+
 type Styles = {
+    container: string;
+    loading: string;
     wrapperROpen: string;
     wrapperLOpen: string;
     wrapperBOpen: string;
@@ -13,6 +17,8 @@ type Styles = {
 
 const ChatRooms = () => {
     const styles: Styles = {
+        container: 'flex flex-col w-full h-full',
+        loading: 'w-[30%] m-auto',
         wrapperROpen:
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
         wrapperLOpen:
@@ -25,20 +31,9 @@ const ChatRooms = () => {
 
     const [isRBOpened, setRBIsOpened] = useState(false);
     const [isLBOpened, setLBIsOpened] = useState(false);
-    // const [currentTab, setCurrentTab] = React.useState('chat');
 
     const { data, isLoading } = useRooms();
     const { currentTab, switchTab, selectedRoomTitle, switchRoom } = refreshUtils();
-
-    // const switchTab = (newTab: string) => {
-    //     console.log(
-    //         '%c◆ Changed to ' + `%c ${newTab} ` + '%ctab!',
-    //         'color: lightblue',
-    //         'color: orange',
-    //         'color: lightblue;',
-    //     );
-    //     setCurrentTab(newTab);
-    // };
 
     const toggleRightBar = () => {
         setRBIsOpened((prevState: boolean) => !prevState);
@@ -89,11 +84,11 @@ const ChatRooms = () => {
                     callRefreshMessages={switchRoom}
                 />
             )}
-            {/* {selectedRoomTitle === '' && (
-                <div>
-                    <p>LOADING</p>
+            {selectedRoomTitle === '' && (
+                <div className={styles.container}>
+                    <img className={styles.loading} src={loadingAnim} />
                 </div>
-            )} */}
+            )}
             <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
             <UserControlsContainer isOpened={isLBOpened} />
             <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
