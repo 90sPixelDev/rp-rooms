@@ -8,8 +8,8 @@ import { UserContext } from '../../context/AuthContext';
 import { refreshUtils } from '../../utils/refreshUtils';
 
 interface Props {
-    isOpened: boolean;
     roomTitle: string;
+    isOpened: boolean;
 }
 type Styles = {
     container: string;
@@ -38,8 +38,9 @@ const RoomOptionsPeek = (props: Props) => {
         roomOpText: 'text-sm m-1',
     };
 
+    const { switchRoom } = refreshUtils();
+
     const currentUser = useContext(UserContext);
-    const [owner, setOwner] = useState<string | null>(null);
 
     const doorOpenIcon = <FontAwesomeIcon icon={solid('door-open')} />;
     const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
@@ -61,23 +62,11 @@ const RoomOptionsPeek = (props: Props) => {
         const owner = roomDocSnap.data()?.owner.toString();
         if (owner === currentUser?.uid) {
             await deleteDoc(roomDoc);
-            // switchRoom('');
+            switchRoom('');
         } else {
             console.warn('You Do Not Have Authorization To Delete This Room.');
         }
     };
-
-    const getOwnerData = async () => {
-        const roomDoc = doc(db, 'rooms', props.roomTitle);
-        const roomDocSnap = await getDoc(roomDoc);
-        setOwner(roomDocSnap.data()?.owner.toString());
-    };
-
-    useEffect(() => {
-        if (props.roomTitle != null && props.roomTitle != undefined && props.roomTitle != '') {
-            getOwnerData();
-        }
-    }, [props.roomTitle]);
 
     if (props.isOpened)
         return (

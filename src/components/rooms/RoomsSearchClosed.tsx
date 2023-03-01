@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { getDocs, collection, query, orderBy, limit } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { getDocs, collection, query, limit } from 'firebase/firestore';
 
 import { RoomsDropDown } from '../exporter';
 import { db } from '../../firebase.config';
-import useAddUserToRoom from '../../utils/useAddUserToRoom';
+import useAddUserToRoom from '../../hooks/useAddUserToRoom';
 
 type Props = any;
 
@@ -33,9 +33,9 @@ const RoomsSearchClosed = (props: Props) => {
         bar: 'flex flex-row justify-center',
     };
 
+    const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [inputText, setInputText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [isFocused, setIsFocused] = useState(false);
     const [isFocusedMini, setIsFocusedMini] = useState(false);
     const [roomsFound, setRoomsFound] = useState(true);
