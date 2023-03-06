@@ -30,12 +30,12 @@ const PreviewForm = () => {
 
     console.log(theme?.themeColor);
 
-    const test = `bg-${theme?.themeColor}-400 shadow-${theme?.themeColor}-900`;
-
     return (
         <div className={styles.container}>
-            <p className={`bg-${theme?.themeColor}-400`}>TEST</p>
-            <form className={styles.body} onSubmit={(e) => handlePreviewLogIn(e)}>
+            <form
+                className={styles.body + `bg-${theme?.themeColor}-400 shadow-${theme?.themeColor}-900`}
+                onSubmit={(e) => handlePreviewLogIn(e)}
+            >
                 <p className={styles.text}>Want to take a quick look on a guest account instead?</p>
                 <button className={styles.button + `bg-${theme?.themeColor}-700 hover:bg-${theme?.themeColor}-600`}>
                     Preview RP Rooms

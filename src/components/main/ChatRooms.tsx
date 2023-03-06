@@ -6,6 +6,8 @@ import { refreshUtils } from '../../utils/refreshUtils';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 import { ThemeContext } from '../../context/ThemeContext';
+import Modal from '../portals/Modal';
+import BaseModal from '../../modals/BaseModal';
 
 type Styles = {
     container: string;
@@ -67,35 +69,34 @@ const ChatRooms = () => {
     };
 
     return (
-        <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-500`}>
-            <p className={`bg-${theme?.themeColor as string}-500`} onClick={() => theme?.themeSwitch('emerald')}>
-                TEST
-            </p>
-            <LeftBar
-                listOfRooms={data?.map((room) => room.id) as string[]}
-                callRefreshMessages={switchRoom}
-                toggleLeftBar={toggleLeftBar}
-                isOpened={isLBOpened}
-            />
-            {selectedRoomTitle !== '' && (
-                <ChatBody
-                    dataLoading={isLoading}
-                    roomTitle={selectedRoomTitle}
-                    currentTab={currentTab}
-                    switchTab={switchTab}
+        <>
+            <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-500`}>
+                <LeftBar
+                    listOfRooms={data?.map((room) => room.id) as string[]}
                     callRefreshMessages={switchRoom}
+                    toggleLeftBar={toggleLeftBar}
+                    isOpened={isLBOpened}
                 />
-            )}
-            {selectedRoomTitle === '' && (
-                <div className={styles.container}>
-                    <img className={styles.loading} src={loadingAnim} />
-                </div>
-            )}
-            <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-            <UserControlsContainer isOpened={isLBOpened} />
-            <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
-            <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-        </div>
+                {selectedRoomTitle !== '' && (
+                    <ChatBody
+                        dataLoading={isLoading}
+                        roomTitle={selectedRoomTitle}
+                        currentTab={currentTab}
+                        switchTab={switchTab}
+                        callRefreshMessages={switchRoom}
+                    />
+                )}
+                {selectedRoomTitle === '' && (
+                    <div className={styles.container}>
+                        <img className={styles.loading} src={loadingAnim} />
+                    </div>
+                )}
+                <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
+                <UserControlsContainer isOpened={isLBOpened} />
+                <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
+                <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
+            </div>
+        </>
     );
 };
 

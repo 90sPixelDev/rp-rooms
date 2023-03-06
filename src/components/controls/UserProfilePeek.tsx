@@ -11,6 +11,10 @@ type Styles = {
     container: string;
     names: string;
     userName: string;
+    userNameShort: string;
+    userNameLong: string;
+    userNameTooLong: string;
+    userNameVeryLong: string;
     nickName: string;
     nickNameInput: string;
     charaPicContainer: string;
@@ -24,6 +28,10 @@ const UserProfilePeek = (props: Props) => {
         container: 'flex flex-row',
         names: 'ml-2 mt-2',
         userName: 'font-bold',
+        userNameShort: 'font-bold text-lg',
+        userNameLong: 'font-bold text-sm',
+        userNameTooLong: 'font-bold text-xs',
+        userNameVeryLong: 'font-bold text-[0.65rem]',
         nickName: 'underline cursor-pointer',
         nickNameInput: 'italic w-[140px] outline-purple-500',
         charaPicContainer:
@@ -51,8 +59,21 @@ const UserProfilePeek = (props: Props) => {
         console.log('Updated nickname!');
     };
 
+    const handleEmailTextSize = () => {
+        if (currentUser === null || currentUser.email === null) return styles.nickName;
+        if (currentUser?.email?.length > 14) {
+            return styles.userNameLong;
+        } else if (currentUser?.email?.length > 18) {
+            return styles.userNameTooLong;
+        } else if (currentUser?.email?.length > 22) {
+            return styles.userNameTooLong;
+        } else {
+            return styles.userNameShort;
+        }
+    };
+
     const showUserName = currentUser ? (
-        <p className={styles.userName} onClick={() => console.log(currentUser.displayName)}>
+        <p className={handleEmailTextSize()} onClick={() => console.log(currentUser.displayName)}>
             {currentUser.email}
         </p>
     ) : (
@@ -108,12 +129,6 @@ const UserProfilePeek = (props: Props) => {
                     onClick={updateProfilePic}
                 />
             </div>
-            {/* <input
-				// className={styles.input}
-				type='file'
-				name='avatar'
-				id='image-file'
-			/> */}
         </div>
     );
 };

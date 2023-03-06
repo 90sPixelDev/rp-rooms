@@ -47,6 +47,3 @@ export { default as RoomOptionsPeek } from './controls/RoomOptionsPeek';
 export { default as TurnManager } from './controls/TurnManager';
 
 export { default as useRandomIDGenerator } from '../hooks/useRandomIDGenerator';
-
-export { default as ReactPortal } from './portals/ReactPortal';
-export { default as Modal } from './portals/Modal';
