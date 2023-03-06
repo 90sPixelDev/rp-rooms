@@ -17,7 +17,7 @@ type Styles = {
 
 const OptionsControl = (props: Props) => {
     const styles: Styles = {
-        body: 'flex flex-row mr-[7%] bg-purple-400 rounded-lg pr-2 gap-1 place-items-center w-fit hover:text-purple-200 min-w-fit w-[7rem]',
+        body: 'flex flex-row mr-[7%] bg-purple-400 rounded-lg pr-2 gap-1 place-items-center w-fit hover:text-purple-200 min-w-fit w-[7rem] cursor-pointer',
         iconBody: 'bg-purple-500 rounded-l-lg px-2 py-2',
         iconBodyClosed: 'bg-purple-500 rounded-r-lg py-2 hover:text-purple-200 cursor-pointer flex flex-row',
         icon: 'mx-auto',

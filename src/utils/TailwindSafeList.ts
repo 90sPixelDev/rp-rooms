@@ -108,7 +108,7 @@
  * hover:bg-gray-600
  * hover:bg-blue-600
  * hover:bg-red-600
- * __________________________________________________
+ *
  * placeholder-purple-200
  * placeholder-red-200
  * placeholder-blue-200

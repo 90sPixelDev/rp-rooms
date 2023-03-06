@@ -70,7 +70,7 @@ const ChatRooms = () => {
 
     return (
         <>
-            <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-500`}>
+            <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-200`}>
                 <LeftBar
                     listOfRooms={data?.map((room) => room.id) as string[]}
                     callRefreshMessages={switchRoom}

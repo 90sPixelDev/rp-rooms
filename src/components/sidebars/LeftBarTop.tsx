@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-router-dom';
 
-import { RoomsSearch } from '../exporter';
+import RoomsSearchClosed from '../rooms/RoomsSearchClosed';
+import { RoomsSearchOpened } from '../exporter';
 
 interface Props {
     callRefreshMessages: (roomTitle: string) => void;
@@ -23,7 +24,7 @@ type Styles = {
 
 const LeftBarTop = (props: Props) => {
     const styles: Styles = {
-        container: 'flex flex-col gap-4 border-purple-100 bg-purple-300 rounded-br-lg transition',
+        container: 'flex flex-col gap-4 border-purple-100 bg-purple-300 rounded-br-lg transition max-h-[50%]',
         roomsTitle: 'text-center font-bold text-lg transition',
         top: 'flex flex-row place-items-stretch transition',
         homeLink: 'flex flex-row py-2 bg-purple-400 justify-center items-center gap-2 h-full w-full',
@@ -52,7 +53,8 @@ const LeftBarTop = (props: Props) => {
                         </button>
                     </div>
                 </div>
-                <RoomsSearch callRefreshMessages={props.callRefreshMessages} isOpened={props.isOpened} />
+                {props.isOpened && <RoomsSearchOpened callRefreshMessages={props.callRefreshMessages} />}
+                {!props.isOpened && <RoomsSearchClosed callRefreshMessages={props.callRefreshMessages} />}
             </section>
         );
     }
@@ -66,7 +68,8 @@ const LeftBarTop = (props: Props) => {
                     </button>
                 </div>
             </div>
-            <RoomsSearch callRefreshMessages={props.callRefreshMessages} isOpened={props.isOpened} />
+            {props.isOpened && <RoomsSearchOpened callRefreshMessages={props.callRefreshMessages} />}
+            {!props.isOpened && <RoomsSearchClosed callRefreshMessages={props.callRefreshMessages} />}
         </section>
     );
 };

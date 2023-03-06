@@ -5,7 +5,9 @@ import { RoomsDropDown } from '../exporter';
 import { db } from '../../firebase.config';
 import useAddUserToRoom from '../../hooks/useAddUserToRoom';
 
-type Props = any;
+type Props = {
+    callRefreshMessages: (roomTitle: string) => void;
+};
 
 type Styles = {
     section: string;
@@ -69,7 +71,6 @@ const RoomsSearchClosed = (props: Props) => {
 
                 roomSearch.forEach((doc) => {
                     const lower = doc.data().roomTitle.toLowerCase();
-                    console.log(doc.id);
                     if (lower.includes(lowerInput)) {
                         roomSearchList.push(doc.data().roomTitle);
                     }
@@ -108,7 +109,7 @@ const RoomsSearchClosed = (props: Props) => {
                             <RoomsDropDown
                                 roomsSearched={searchedRooms}
                                 addSelectedRoom={addRoom}
-                                isOpened={props.isOpened}
+                                isOpened={false}
                                 searchingDone={roomsFound}
                             />
                         )}
