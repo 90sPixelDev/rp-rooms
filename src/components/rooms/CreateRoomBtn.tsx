@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { ThemeContext } from '../../context/ThemeContext';
 
 type Props = any;
 type Styles = {
@@ -9,8 +10,10 @@ type Styles = {
 
 const CreateRoomBtn = (props: Props) => {
     const styles: Styles = {
-        btn: 'bg-purple-400 w-6 rounded-r-lg hover:text-purple-200 border-t-2 border-r-2 border-b-2 border-purple-600 min-w-[12%]',
+        btn: 'w-6 rounded-r-lg hover:text-purple-200 border-t-2 border-r-2 border-b-2 min-w-[12%] ',
     };
+
+    const theme = useContext(ThemeContext);
 
     const addRoomIcon = <FontAwesomeIcon icon={solid('plus')} />;
 
@@ -19,7 +22,10 @@ const CreateRoomBtn = (props: Props) => {
     };
 
     return (
-        <button className={styles.btn} onClick={addRoomBtnClicked}>
+        <button
+            className={styles.btn + `bg-${theme?.themeColor}-400 border-${theme?.themeColor}-600`}
+            onClick={addRoomBtnClicked}
+        >
             {addRoomIcon}
         </button>
     );

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
 import { ChattingTab, StoryTimeTab } from '../exporter';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     currentChInfo: Record<string, any>;
@@ -22,12 +23,13 @@ const RoomTopTitle = (props: Props) => {
     const styles: Styles = {
         container: 'flex flex-col',
         tabContainer: 'relative w-[70%] mx-auto',
-        tabTitle:
-            'bg-purple-300 h-fit w-[98%] py-1 rounded-b-2xl mx-auto drop-shadow-md shadow-purple-500 flex flex-row',
+        tabTitle: 'h-fit w-[98%] py-1 rounded-b-2xl mx-auto drop-shadow-md flex flex-row ',
         roomTitle: 'flow-root ml-2 font-bold w-fit min-h-[20px]',
         chTitle: 'flow-root ml-2 w-fit min-h-[20px]',
         loading: 'h-6 m-auto',
     };
+
+    const theme = useContext(ThemeContext);
 
     if (props.currentChInfo.num === '' || props.currentChInfo.num === null || props.currentChInfo.num === undefined) {
         return (
@@ -39,7 +41,7 @@ const RoomTopTitle = (props: Props) => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.tabTitle}>
+            <div className={styles.tabTitle + `bg-${theme?.themeColor}-300 shadow-${theme?.themeColor}-500`}>
                 <p className={styles.roomTitle}>{props.roomTitle}</p>
                 <p className={styles.chTitle}>
                     | {props.currentChInfo.num}: {props.currentChInfo.desc}

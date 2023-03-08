@@ -20,7 +20,6 @@ export { default as LeftBar } from './sidebars/LeftBar';
 export { default as LeftBarTop } from './sidebars/LeftBarTop';
 
 export { default as RightBar } from './sidebars/RightBar';
-export { default as RightBarTop } from './sidebars/RightBarTop';
 export { default as EventsList } from './sidebars/EventsList';
 export { default as StoryEvent } from './sidebars/StoryEvent';
 

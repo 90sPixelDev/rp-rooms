@@ -1,59 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Room } from '../exporter';
+import { ThemeContext } from '../../context/ThemeContext';
 
 type Styles = {
-	roomParent: string;
+    roomParent: string;
 };
 interface Props {
-	title: string;
-	highlightedRoom: string;
-	roomChanged: (room: string) => void;
-	isOpened: boolean;
+    title: string;
+    highlightedRoom: string;
+    roomChanged: (room: string) => void;
+    isOpened: boolean;
 }
 
 const RoomContainer = (props: Props) => {
-	const styles: Styles = {
-		roomParent: 'bg-purple-200 rounded-r-full flex flex-col mx-auto',
-	};
+    const styles: Styles = {
+        roomParent: 'rounded-r-full flex flex-col mx-auto ',
+    };
 
-	const [selectedRoomTitle, setSelectedRoomTitle] = useState<
-		string | null
-	>();
+    const theme = useContext(ThemeContext);
 
-	const selectRoom = () => {
-		props.roomChanged(props.title);
-	};
+    const [selectedRoomTitle, setSelectedRoomTitle] = useState<string | null>();
 
-	const cleanRoomTitle = () => {
-		return props.title.replace(/\s+/g, '-');
-	};
+    const selectRoom = () => {
+        props.roomChanged(props.title);
+    };
 
-	if (
-		selectedRoomTitle === null ||
-		selectedRoomTitle === undefined ||
-		selectedRoomTitle == ''
-	) {
-		setSelectedRoomTitle(props.highlightedRoom);
-	}
+    const cleanRoomTitle = () => {
+        return props.title.replace(/\s+/g, '-');
+    };
 
-	return (
-		<>
-			{selectedRoomTitle && (
-				<div className={styles.roomParent} onClick={selectRoom}>
-					<Room
-						selected={
-							props.title === selectedRoomTitle
-								? true
-								: false
-						}
-						title={props.title}
-					/>
-				</div>
-			)}
-			{!selectedRoomTitle && <p>Selected Room Loading!</p>}
-		</>
-	);
+    if (selectedRoomTitle === null || selectedRoomTitle === undefined || selectedRoomTitle == '') {
+        setSelectedRoomTitle(props.highlightedRoom);
+    }
+
+    return (
+        <>
+            {selectedRoomTitle && (
+                <div className={styles.roomParent + `bg-${theme?.themeColor}-200`} onClick={selectRoom}>
+                    <Room selected={props.title === selectedRoomTitle ? true : false} title={props.title} />
+                </div>
+            )}
+            {!selectedRoomTitle && <p>Selected Room Loading!</p>}
+        </>
+    );
 };
 
 export default RoomContainer;

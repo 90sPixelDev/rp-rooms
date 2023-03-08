@@ -6,8 +6,6 @@ import { refreshUtils } from '../../utils/refreshUtils';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 import { ThemeContext } from '../../context/ThemeContext';
-import Modal from '../portals/Modal';
-import BaseModal from '../../modals/BaseModal';
 
 type Styles = {
     container: string;
@@ -16,7 +14,6 @@ type Styles = {
     wrapperLOpen: string;
     wrapperBOpen: string;
     wrapperClosed: string;
-    // testTheme: string;
 };
 
 const ChatRooms = () => {

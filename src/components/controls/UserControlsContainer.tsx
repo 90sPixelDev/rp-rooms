@@ -9,8 +9,8 @@ interface Props {
 
 const UserControlsContainer = (props: Props) => {
     const mainStyles = {
-        container: 'flex flex-col justify-between bg-purple-300 w-[95%] h-[90%] m-auto rounded-lg min-h-fit',
-        containerClosed: 'flex flex-col justify-between bg-purple-300 w-[90%] h-[90%] my-auto rounded-r-lg min-h-fit',
+        container: 'flex flex-col justify-between w-[95%] h-[90%] m-auto rounded-lg min-h-fit ',
+        containerClosed: 'flex flex-col justify-between w-[90%] h-[90%] my-auto rounded-r-lg min-h-fit ',
         bottomSection: 'flex flex-col justify-between ml-2 mb-2 gap-2 w-[90%]',
         bottomSectionClosed: 'flex flex-col justify-between mb-2 gap-2 w-full',
     };
@@ -75,7 +75,7 @@ const UserControlsContainer = (props: Props) => {
     if (props.isOpened)
         return (
             <>
-                <div className={mainStyles.container}>
+                <div className={mainStyles.container + `bg-${theme?.themeColor}-300`}>
                     <UserProfilePeek isOpened={props.isOpened} />
                     <div className={mainStyles.bottomSection}>
                         <OptionsControl isOpened={props.isOpened} openOptions={openOptions} />
@@ -88,7 +88,7 @@ const UserControlsContainer = (props: Props) => {
 
     return (
         <>
-            <div className={mainStyles.containerClosed}>
+            <div className={mainStyles.containerClosed + `bg-${theme?.themeColor}-300`}>
                 <UserProfilePeek isOpened={props.isOpened} />
                 <div className={mainStyles.bottomSectionClosed}>
                     <OptionsControl isOpened={props.isOpened} openOptions={openOptions} />

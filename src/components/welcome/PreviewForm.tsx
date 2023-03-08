@@ -28,8 +28,6 @@ const PreviewForm = () => {
             });
     };
 
-    console.log(theme?.themeColor);
-
     return (
         <div className={styles.container}>
             <form

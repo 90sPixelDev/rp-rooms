@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import RoomContainer from './RoomContainer';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     listOfRooms: string[];
@@ -15,8 +16,10 @@ type Styles = {
 const RoomListContainer = (props: Props) => {
     const styles: Styles = {
         container:
-            'bg-purple-200 rounded-tr-lg overflow-y-auto overflow-x-hidden scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full h-full transition',
+            'rounded-tr-lg overflow-y-auto overflow-x-hidden scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full h-full transition ',
     };
+
+    const theme = useContext(ThemeContext);
 
     const [isLoading, setIsLoading] = useState(true);
     const [highlightedRoom, setHighLightedRoom] = useState('');
@@ -34,7 +37,7 @@ const RoomListContainer = (props: Props) => {
     }, [, props.listOfRooms]);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container + `bg-${theme?.themeColor}-200`}>
             {isLoading ? (
                 <img src={loadingAnim} />
             ) : (

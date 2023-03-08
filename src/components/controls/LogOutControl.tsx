@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase.config';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     isOpened: boolean;
@@ -16,28 +17,33 @@ type Styles = {
 
 const LogOutControl = (props: Props) => {
     const styles: Styles = {
-        container: 'flex flex-row gap-1 bg-purple-400 rounded-xl w-fit pr-2 hover:text-purple-200 min-w-fit w-[7rem]',
+        container: 'flex flex-row gap-1 rounded-xl w-fit pr-2 min-w-fit w-[7rem] ',
         text: 'm-auto',
-        icon: 'bg-purple-500 p-2 rounded-l-xl',
-        iconClosed: 'bg-purple-500 p-2 rounded-r-xl hover:text-purple-200 cursor-pointer',
+        icon: 'p-2 rounded-l-xl ',
+        iconClosed: 'p-2 rounded-r-xlcursor-pointer rounded-r-lg ',
     };
+
+    const theme = useContext(ThemeContext);
 
     if (props.isOpened)
         return (
             <button
-                className={styles.container}
+                className={styles.container + `bg-${theme?.themeColor}-400 hover:text-${theme?.themeColor}-200`}
                 onClick={() => {
                     signOut(auth);
                 }}
             >
-                <FontAwesomeIcon icon={solid('arrow-right-from-bracket')} className={styles.icon} />
+                <FontAwesomeIcon
+                    icon={solid('arrow-right-from-bracket')}
+                    className={styles.icon + `bg-${theme?.themeColor}-500`}
+                />
                 <p className={styles.text}>Log Out</p>
             </button>
         );
     return (
         <FontAwesomeIcon
             icon={solid('arrow-right-from-bracket')}
-            className={styles.iconClosed}
+            className={styles.iconClosed + `bg-${theme?.themeColor}-400 hover:text-${theme?.themeColor}-200`}
             onClick={() => signOut(auth)}
         />
     );
