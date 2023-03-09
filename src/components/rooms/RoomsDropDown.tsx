@@ -23,7 +23,7 @@ type Styles = {
 const RoomsDropDown = (props: Props) => {
     const styles: Styles = {
         containerOpened:
-            'absolute bg-purple-400 flex flex-col h-fit w-full top-[70%] border-2 border-purple-300 transition',
+            'bg-purple-400 flex flex-col border-2 border-purple-300 transition w-full overflow-y-scroll min-h-0 scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full',
         container: 'bg-purple-300 flex flex-col border-2 border-purple-200 transition ml-1 mr-1 rounded-b-lg',
         containerLoadingClosed:
             'fixed bg-[transparent] flex flex-col h-fit w-full top-[51%] border-2 border-purple-300 transition m-h-fit',

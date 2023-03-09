@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
+import { ThemeContext } from '../../context/ThemeContext';
 
 type Styles = {
     container: string;
@@ -20,21 +21,22 @@ const ChatRooms = () => {
         container: 'flex flex-col w-full h-full',
         loading: 'w-[30%] m-auto',
         wrapperROpen:
-            'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
+            'h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden ',
         wrapperLOpen:
-            'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[250px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
+            'h-[100vh] w-[100vw] grid grid-cols-[250px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden ',
         wrapperBOpen:
-            'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
+            'h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden ',
         wrapperClosed:
-            'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden',
+            'h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute overflow-hidden ',
     };
 
-    const [isRBOpened, setRBIsOpened] = useState(false);
-    const [isLBOpened, setLBIsOpened] = useState(false);
+    const theme = useContext(ThemeContext);
 
     const { data, isLoading } = useRooms();
     const { currentTab, switchTab, selectedRoomTitle, switchRoom } = refreshUtils();
 
+    const [isRBOpened, setRBIsOpened] = useState(false);
+    const [isLBOpened, setLBIsOpened] = useState(false);
     const toggleRightBar = () => {
         setRBIsOpened((prevState: boolean) => !prevState);
     };
@@ -43,12 +45,9 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        console.log('Data ' + data?.[0].id);
-        console.log('Room ' + selectedRoomTitle);
-
-        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading) {
-            console.log('Running!');
+        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading && data.length > 0) {
             switchRoom(data?.[0].id as string);
+        } else if (selectedRoomTitle === '') {
         } else switchRoom(selectedRoomTitle);
     }, [data, isLoading]);
 
@@ -68,14 +67,14 @@ const ChatRooms = () => {
     };
 
     return (
-        <div className={sideBarRenderHandler()}>
-            <LeftBar
-                listOfRooms={data?.map((room) => room.id) as string[]}
-                callRefreshMessages={switchRoom}
-                toggleLeftBar={toggleLeftBar}
-                isOpened={isLBOpened}
-            />
-            {selectedRoomTitle !== '' && (
+        <>
+            <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-200`}>
+                <LeftBar
+                    listOfRooms={data?.map((room) => room.id) as string[]}
+                    callRefreshMessages={switchRoom}
+                    toggleLeftBar={toggleLeftBar}
+                    isOpened={isLBOpened}
+                />
                 <ChatBody
                     dataLoading={isLoading}
                     roomTitle={selectedRoomTitle}
@@ -83,17 +82,17 @@ const ChatRooms = () => {
                     switchTab={switchTab}
                     callRefreshMessages={switchRoom}
                 />
-            )}
-            {selectedRoomTitle === '' && (
-                <div className={styles.container}>
-                    <img className={styles.loading} src={loadingAnim} />
-                </div>
-            )}
-            <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
-            <UserControlsContainer isOpened={isLBOpened} />
-            <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
-            <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
-        </div>
+                {/* {selectedRoomTitle === '' && (
+                    <div className={styles.container}>
+                        <img className={styles.loading} src={loadingAnim} />
+                    </div>
+                )} */}
+                <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
+                <UserControlsContainer isOpened={isLBOpened} />
+                <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
+                <RoomControlsContainer roomTitle={selectedRoomTitle} isOpened={isRBOpened} />
+            </div>
+        </>
     );
 };
 

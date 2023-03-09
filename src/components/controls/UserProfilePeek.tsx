@@ -3,6 +3,7 @@ import { User } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
 
 import { UserContext } from '../../context/AuthContext';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     isOpened: boolean;
@@ -11,6 +12,10 @@ type Styles = {
     container: string;
     names: string;
     userName: string;
+    userNameShort: string;
+    userNameLong: string;
+    userNameTooLong: string;
+    userNameVeryLong: string;
     nickName: string;
     nickNameInput: string;
     charaPicContainer: string;
@@ -24,18 +29,24 @@ const UserProfilePeek = (props: Props) => {
         container: 'flex flex-row',
         names: 'ml-2 mt-2',
         userName: 'font-bold',
+        userNameShort: 'font-bold text-lg',
+        userNameLong: 'font-bold text-sm',
+        userNameTooLong: 'font-bold text-xs',
+        userNameVeryLong: 'font-bold text-[0.65rem]',
         nickName: 'underline cursor-pointer',
         nickNameInput: 'italic w-[140px] outline-purple-500',
         charaPicContainer:
-            'flex flex-row bg-purple-700 min-w-[50px] max-w-[50px] min-h-[50px] max-h-[50px] rounded-lg ml-2 mt-2 transition overflow-hidden',
+            'flex flex-row min-w-[50px] max-w-[50px] min-h-[50px] max-h-[50px] rounded-lg ml-2 mt-2 transition overflow-hidden ',
         charaPic: 'h-full w-full object-contain',
         charaPicClosed: 'h-full w-full object-contain',
         charaPicContainerClosed:
-            'flex flex-row bg-purple-700 min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] rounded-lg mt-2 mx-auto transition overflow-hidden items-center',
+            'flex flex-row min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] rounded-lg mt-2 mx-auto transition overflow-hidden items-center ',
     };
 
-    const [isLoading, setIsLoading] = useState(true);
+    const theme = useContext(ThemeContext);
     const currentUser = useContext(UserContext);
+
+    const [isLoading, setIsLoading] = useState(true);
     const [isPTag, setPTag] = useState(true);
 
     const validateNewNickname = async (newNickname: string) => {
@@ -51,8 +62,21 @@ const UserProfilePeek = (props: Props) => {
         console.log('Updated nickname!');
     };
 
+    const handleEmailTextSize = () => {
+        if (currentUser === null || currentUser.email === null) return styles.nickName;
+        if (currentUser?.email?.length > 14) {
+            return styles.userNameLong;
+        } else if (currentUser?.email?.length > 18) {
+            return styles.userNameTooLong;
+        } else if (currentUser?.email?.length > 22) {
+            return styles.userNameTooLong;
+        } else {
+            return styles.userNameShort;
+        }
+    };
+
     const showUserName = currentUser ? (
-        <p className={styles.userName} onClick={() => console.log(currentUser.displayName)}>
+        <p className={handleEmailTextSize()} onClick={() => console.log(currentUser.displayName)}>
             {currentUser.email}
         </p>
     ) : (
@@ -68,7 +92,7 @@ const UserProfilePeek = (props: Props) => {
     if (props.isOpened)
         return (
             <div className={styles.container}>
-                <div className={styles.charaPicContainer}>
+                <div className={styles.charaPicContainer + `bg-${theme?.themeColor}-700`}>
                     <img
                         className={styles.charaPic}
                         src={currentUser?.photoURL as string}
@@ -99,7 +123,7 @@ const UserProfilePeek = (props: Props) => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.charaPicContainerClosed}>
+            <div className={styles.charaPicContainerClosed + `bg-${theme?.themeColor}-700`}>
                 <img
                     className={styles.charaPicClosed}
                     src={currentUser?.photoURL as string}
@@ -108,12 +132,6 @@ const UserProfilePeek = (props: Props) => {
                     onClick={updateProfilePic}
                 />
             </div>
-            {/* <input
-				// className={styles.input}
-				type='file'
-				name='avatar'
-				id='image-file'
-			/> */}
         </div>
     );
 };

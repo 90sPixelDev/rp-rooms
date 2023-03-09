@@ -8,6 +8,7 @@ import { Timestamp } from 'firebase/firestore';
 type Props = {
     messages: MessageInfo[];
     isLoading: boolean;
+    roomTitle: string;
     currentTab: string;
 };
 type Styles = {
@@ -46,6 +47,8 @@ const ChatBoxContainer = (props: Props) => {
                             photoURL={mssg.photoURL}
                             displayName={mssg.userName}
                             mssgText={mssg.message}
+                            uid={mssg.uid}
+                            roomTitle={props.roomTitle}
                             timeSent={(mssg.timeSent as Timestamp).toDate().toString()}
                         />
                     ))

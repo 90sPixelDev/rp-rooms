@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { LeftBarTop, RoomListContainer } from '../exporter';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     listOfRooms: string[];
@@ -14,11 +15,13 @@ type Styles = {
 
 const LeftBar = (props: Props) => {
     const styles: Styles = {
-        container: 'flex flex-col gap-2 bg-purple-100',
+        container: 'flex flex-col gap-2 ',
     };
 
+    const theme = useContext(ThemeContext);
+
     return (
-        <section className={styles.container}>
+        <section className={styles.container + `bg-${theme?.themeColor}-100`}>
             <LeftBarTop
                 callRefreshMessages={props.callRefreshMessages}
                 toggleLeftBar={props.toggleLeftBar}

@@ -5,39 +5,34 @@ import { doc, getDoc } from 'firebase/firestore';
 
 import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
 import { sendMessage } from '../../utils/sendMessage';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     roomSelectedInfo: string;
     currentTab: string;
 }
-type chara = {
+
+type CharaInfo = {
     charaName: string;
+    charaPic: string;
     currentTurn: boolean;
     turn: string;
 };
-type Styles = {
-    container: string;
-    textArea: string;
-    button: string;
-    bttnArea: string;
-    mssgArea: string;
-};
 
 const ChatInput = (props: Props) => {
-    const styles: Styles = {
-        container: 'overflow-hidden bg-purple-200 rounded-lg flex flex-col justify-around px-1',
+    const styles = {
+        container: 'overflow-hidden rounded-lg flex flex-col justify-around px-1 ',
         textArea:
-            'h-[80%] w-[90%] resize-none sd mx-1 my-auto caret-purple-500 outline-purple-500 rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full',
-        button: 'm-1 py-1 px-2 border-2 border-purple-500 bg-purple-300 hover:bg-purple-200',
-        bttnArea: 'bg-purple-200',
-        mssgArea:
-            'flex flex-row bg-purple-300 rounded-tr-xl rounded-tl-lg border-2 border-purple-400 min-h-[50%] h-fit',
+            'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
+        bttnArea: ' ',
+        mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[50%] h-fit ',
     };
 
+    const theme = React.useContext(ThemeContext);
     const currentUser = React.useContext(UserContext);
 
     const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
-    const [charaMap, setCharaMap] = useState<chara[] | null>(null);
+    const [charaMap, setCharaMap] = useState<CharaInfo[] | null>(null);
 
     const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const typedText = e.target.value;
@@ -64,6 +59,52 @@ const ChatInput = (props: Props) => {
         setCharaMap(roomDoc.data()?.characters);
     }, [props.roomSelectedInfo]);
 
+    const checkCharacters = () => {
+        if (currentUser !== null && charaMap !== null) {
+            type Chara = keyof typeof charaMap;
+            const uid = currentUser.uid as Chara;
+
+            const chara = charaMap[uid];
+
+            if (!(chara as CharaInfo).currentTurn && props.currentTab === 'story') return true;
+            else return false;
+        }
+        return true;
+    };
+
+    const placeHolderText = () => {
+        if (currentUser == null || charaMap === null) return;
+        type Chara = keyof typeof charaMap;
+        const uid = currentUser.uid as Chara;
+
+        const chara = charaMap[uid];
+        let currentTurnChara = {};
+        let numOfTurnsAway = 0;
+
+        for (const val of Object.values(charaMap)) {
+            if (val.currentTurn === true) {
+                currentTurnChara = val;
+            }
+        }
+
+        const numChara = parseFloat((chara as CharaInfo).turn);
+        const numCurrentTurnChara = parseFloat((currentTurnChara as CharaInfo).turn);
+
+        if (numChara < numCurrentTurnChara) {
+            const top = charaMap.length - numCurrentTurnChara;
+            numOfTurnsAway = top + numChara;
+        } else if (numChara < numCurrentTurnChara) {
+            const top = charaMap.length - numChara;
+            numOfTurnsAway = top + numCurrentTurnChara;
+        }
+
+        if (checkCharacters() && numOfTurnsAway === 0)
+            return 'It is not your turn yet in the story.\n-> You are the next turn.';
+        else if (checkCharacters() && numOfTurnsAway !== 0)
+            return `It is not your turn yet in the story.\n-> ${numOfTurnsAway} turn left.`;
+        else return '';
+    };
+
     useEffect(() => {
         if (props.roomSelectedInfo != null && props.roomSelectedInfo != undefined && props.roomSelectedInfo != '') {
             GetCharas();
@@ -71,19 +112,23 @@ const ChatInput = (props: Props) => {
     }, [props.roomSelectedInfo]);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.bttnArea}>
+        <div className={styles.container + `bg-${theme?.themeColor}-200`}>
+            <div className={styles.bttnArea + `bg-${theme?.themeColor}-200`}>
                 <TurnManager charaMap={charaMap} />
                 <ChatTypeButton />
             </div>
-            <div className={styles.mssgArea}>
+            <div className={styles.mssgArea + `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-400 `}>
                 <textarea
-                    className={styles.textArea}
+                    className={styles.textArea + `caret-${theme?.themeColor}-500 outline-${theme?.themeColor}-500`}
+                    name="Message Input"
+                    maxLength={300}
+                    placeholder={placeHolderText()}
                     onChange={(e) => updateText(e)}
                     onKeyDown={(e) => validateKeyPress(e)}
                     value={tempTypedMssg}
+                    disabled={checkCharacters()}
                 />
-                <ChatSend sendMssg={SubmitMessage} />
+                <ChatSend sendMssg={SubmitMessage} disabled={checkCharacters()} />
             </div>
         </div>
     );

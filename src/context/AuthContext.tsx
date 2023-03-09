@@ -6,6 +6,8 @@ type Props = {
     children?: React.ReactNode;
 };
 
+export const UserContext = createContext<User | null>(null);
+
 export const AuthContextProvider = ({ children }: Props) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -21,5 +23,3 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     return <UserContext.Provider value={currentUser}>{children}</UserContext.Provider>;
 };
-
-export const UserContext = createContext<User | null>(null);

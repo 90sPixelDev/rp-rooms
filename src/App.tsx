@@ -3,15 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './context/AuthContext';
 import { SignUpForm, LogInForm, ChatRooms, WelcomeBG } from './components/exporter';
 
-type Styles = {
-    wrapper: string;
-};
 type Props = {
     children: JSX.Element;
 };
 
 function App() {
-    const styles: Styles = {
+    const styles = {
         wrapper:
             'bg-purple-200 h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[85%_minmax(50px,_350px)] absolute',
     };
@@ -31,9 +28,7 @@ function App() {
                     path="/"
                     element={
                         <ProtectedRoute>
-                            <div id="portal-container">
-                                <ChatRooms />
-                            </div>
+                            <ChatRooms />
                         </ProtectedRoute>
                     }
                 ></Route>

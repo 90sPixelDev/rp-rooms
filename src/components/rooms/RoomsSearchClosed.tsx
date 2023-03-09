@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { getDocs, collection, query, orderBy, limit } from 'firebase/firestore';
+import { getDocs, collection, query, limit } from 'firebase/firestore';
 
 import { RoomsDropDown } from '../exporter';
 import { db } from '../../firebase.config';
-import useAddUserToRoom from '../../utils/useAddUserToRoom';
+import useAddUserToRoom from '../../hooks/useAddUserToRoom';
+import { ThemeContext } from '../../context/ThemeContext';
 
-type Props = any;
+type Props = {
+    callRefreshMessages: (roomTitle: string) => void;
+};
 
 type Styles = {
     section: string;
@@ -28,14 +31,16 @@ const RoomsSearchClosed = (props: Props) => {
             'fixed bg-[rgba(0,0,0,0.5)] h-[100vh] w-[100vw] top-0 left-0 flex flex-col place-items-center justify-center z-5',
         inputDropDownHolder: 'w-[50vw] h-[50vh] flex flex-col',
         inputBoxClosed:
-            'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 border-purple-600 w-8 z-3 m-auto cursor-pointer',
+            'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 w-8 z-3 m-auto cursor-pointer ',
         inputBoxClosedFocused: 'flow-root p-1 rounded-lg outline-none caret-purple-500 border-2 border-purple-600 z-3',
         bar: 'flex flex-row justify-center',
     };
 
+    const theme = useContext(ThemeContext);
+
+    const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [inputText, setInputText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [isFocused, setIsFocused] = useState(false);
     const [isFocusedMini, setIsFocusedMini] = useState(false);
     const [roomsFound, setRoomsFound] = useState(true);
@@ -69,7 +74,6 @@ const RoomsSearchClosed = (props: Props) => {
 
                 roomSearch.forEach((doc) => {
                     const lower = doc.data().roomTitle.toLowerCase();
-                    console.log(doc.id);
                     if (lower.includes(lowerInput)) {
                         roomSearchList.push(doc.data().roomTitle);
                     }
@@ -108,7 +112,7 @@ const RoomsSearchClosed = (props: Props) => {
                             <RoomsDropDown
                                 roomsSearched={searchedRooms}
                                 addSelectedRoom={addRoom}
-                                isOpened={props.isOpened}
+                                isOpened={false}
                                 searchingDone={roomsFound}
                             />
                         )}
@@ -121,7 +125,7 @@ const RoomsSearchClosed = (props: Props) => {
     return (
         <section className={styles.section}>
             <input
-                className={styles.inputBoxClosed}
+                className={styles.inputBoxClosed + `border-${theme?.themeColor}-600`}
                 type="text"
                 value={inputText}
                 onKeyDown={(e) => {

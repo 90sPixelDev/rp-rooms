@@ -9,7 +9,7 @@ type Styles = {
 
 const WelcomeBG = () => {
     const styles: Styles = {
-        body: 'bg-purple-100 h-[100vh] w-[100vw] flex flex-col',
+        body: 'absolute h-[100vh] w-[100vw] flex flex-col bg-welcomeBgImg bg-cover',
     };
 
     return (

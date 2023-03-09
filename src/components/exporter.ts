@@ -9,8 +9,7 @@ export { default as ChatRooms } from './main/ChatRooms';
 export { default as Room } from './rooms/Room';
 export { default as RoomContainer } from './rooms/RoomContainer';
 export { default as RoomListContainer } from './rooms/RoomListContainer';
-export { default as RoomsSearch } from './rooms/RoomsSearch';
-export { default as RoomsSearchOpened } from './rooms/RoomsSearch';
+export { default as RoomsSearchOpened } from './rooms/RoomsSearchOpened';
 export { default as CreateRoomBtn } from './rooms/CreateRoomBtn';
 export { default as RoomsDropDown } from './rooms/RoomsDropDown';
 export { default as DropDownItem } from './rooms/DropDownItem';
@@ -21,7 +20,6 @@ export { default as LeftBar } from './sidebars/LeftBar';
 export { default as LeftBarTop } from './sidebars/LeftBarTop';
 
 export { default as RightBar } from './sidebars/RightBar';
-export { default as RightBarTop } from './sidebars/RightBarTop';
 export { default as EventsList } from './sidebars/EventsList';
 export { default as StoryEvent } from './sidebars/StoryEvent';
 
@@ -47,6 +45,3 @@ export { default as RoomOptionsPeek } from './controls/RoomOptionsPeek';
 export { default as TurnManager } from './controls/TurnManager';
 
 export { default as useRandomIDGenerator } from '../hooks/useRandomIDGenerator';
-
-export { default as ReactPortal } from './portals/ReactPortal';
-export { default as Modal } from './portals/Modal';
