@@ -21,7 +21,7 @@ type CharaInfo = {
 
 const ChatInput = (props: Props) => {
     const styles = {
-        container: 'overflow-hidden rounded-lg flex flex-col justify-around px-1 ',
+        container: 'rounded-lg flex flex-col justify-around px-1 ',
         textArea:
             'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
         bttnArea: ' ',

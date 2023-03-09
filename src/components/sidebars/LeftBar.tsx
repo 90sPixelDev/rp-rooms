@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 
 import { LeftBarTop, RoomListContainer } from '../exporter';
 import { ThemeContext } from '../../context/ThemeContext';
+import { Transition } from '@headlessui/react';
 
 interface Props {
     listOfRooms: string[];
@@ -21,18 +22,29 @@ const LeftBar = (props: Props) => {
     const theme = useContext(ThemeContext);
 
     return (
-        <section className={styles.container + `bg-${theme?.themeColor}-100`}>
-            <LeftBarTop
-                callRefreshMessages={props.callRefreshMessages}
-                toggleLeftBar={props.toggleLeftBar}
-                isOpened={props.isOpened}
-            />
-            <RoomListContainer
-                listOfRooms={props.listOfRooms}
-                callRefreshMessages={props.callRefreshMessages}
-                isOpened={props.isOpened}
-            />
-        </section>
+        <Transition
+            show={true}
+            as={Fragment}
+            enter="transition-opacity duration-150"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-150"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+        >
+            <section className={styles.container + `bg-${theme?.themeColor}-100`}>
+                <LeftBarTop
+                    callRefreshMessages={props.callRefreshMessages}
+                    toggleLeftBar={props.toggleLeftBar}
+                    isOpened={props.isOpened}
+                />
+                <RoomListContainer
+                    listOfRooms={props.listOfRooms}
+                    callRefreshMessages={props.callRefreshMessages}
+                    isOpened={props.isOpened}
+                />
+            </section>
+        </Transition>
     );
 };
 
