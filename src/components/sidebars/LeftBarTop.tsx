@@ -30,7 +30,7 @@ const LeftBarTop = (props: Props) => {
         top: 'flex flex-row place-items-stretch transition',
         homeLink: 'flex flex-row py-2 justify-center items-center gap-2 h-full w-full ',
         icon: '',
-        arrBtnOpen: 'h-full w-full border-2 border-purple-600 transition ',
+        arrBtnOpen: 'h-full w-full border-2 border-purple-600 transition rounded-br-2xl ',
         arrBtnClose: 'px-2 h-full w-full border-2 hover:bg-purple-600 transition ',
         topClosed: 'flex flex-row transition w-full',
     };

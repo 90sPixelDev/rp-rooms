@@ -26,18 +26,27 @@ const ChatBody = (props: Props) => {
 
     const { isLoading, messagesArray, getUpdatedMessages } = useMessages();
 
-    const UpdateRoomChapter = async () => {
-        const roomRef = doc(db, 'rooms', props.roomTitle);
-        const docSnap = await getDoc(roomRef);
+    const UpdateRoomChapter = async (defaultInfo = '') => {
+        if (defaultInfo === '-') {
+            const info = {
+                num: '0',
+                desc: 'No Room Selected',
+            };
+            setCurrentCh(info);
+        } else {
+            const roomRef = doc(db, 'rooms', props.roomTitle);
+            const docSnap = await getDoc(roomRef);
 
-        if (docSnap.exists()) {
-            setCurrentCh(docSnap.data().currentChapter);
+            if (docSnap.exists()) {
+                setCurrentCh(docSnap.data().currentChapter);
+            }
         }
     };
 
     useEffect(() => {
-        props.roomTitle && getUpdatedMessages(props.roomTitle, props.currentTab);
-        UpdateRoomChapter();
+        getUpdatedMessages(props.roomTitle, props.currentTab);
+        if (props.roomTitle !== '') UpdateRoomChapter();
+        else UpdateRoomChapter('-');
     }, [props.roomTitle, props.currentTab, props.callRefreshMessages]);
 
     return (

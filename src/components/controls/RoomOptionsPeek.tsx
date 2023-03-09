@@ -6,6 +6,7 @@ import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 
 import { refreshUtils } from '../../utils/refreshUtils';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     roomTitle: string;
@@ -26,7 +27,7 @@ type Styles = {
 
 const RoomOptionsPeek = (props: Props) => {
     const styles: Styles = {
-        container: 'bg-purple-400 m-1 p-1 rounded-lg items-center flex flex-col',
+        container: 'm-1 p-1 rounded-lg items-center flex flex-col ',
         roomText: 'text-center font-bold',
         btnContainer: 'flex justify-evenly',
         dangerZone: 'flex flex-col rounded-lg w-full',
@@ -34,13 +35,14 @@ const RoomOptionsPeek = (props: Props) => {
         deleteRmBtn: 'bg-red-500 p-1 rounded-lg w-fit text-sm hover:bg-red-400',
         leaveRmBtn: 'hover:bg-red-200 p-1 rounded-lg bg-red-300 w-fit text-sm',
         doorOpenIcon: 'm-auto',
-        roomOptionsBtn: 'bg-purple-500 rounded-lg p-1 w-fit hover:text-purple-200',
+        roomOptionsBtn: 'rounded-lg p-1 w-fit ',
         roomOpText: 'text-sm m-1',
     };
 
-    const { switchRoom } = refreshUtils();
-
+    const theme = useContext(ThemeContext);
     const currentUser = useContext(UserContext);
+
+    const { switchRoom } = refreshUtils();
 
     const doorOpenIcon = <FontAwesomeIcon icon={solid('door-open')} />;
     const trashcanIcon = <FontAwesomeIcon icon={solid('trash-can')} />;
@@ -70,9 +72,15 @@ const RoomOptionsPeek = (props: Props) => {
 
     if (props.isOpened)
         return (
-            <div className={styles.container}>
+            <div className={styles.container + `bg-${theme?.themeColor}-400`}>
                 <p className={styles.roomText}>Room:</p>
-                <button className={styles.roomOptionsBtn}>{roomOptionsIcon}Room Options</button>
+                <button
+                    className={
+                        styles.roomOptionsBtn + `bg-${theme?.themeColor}-500 hover:text-${theme?.themeColor}-200`
+                    }
+                >
+                    {roomOptionsIcon}Room Options
+                </button>
                 <div className={styles.dangerZone}>
                     <p className={styles.dangerZoneText}>Danger Zone:</p>
                     <div className={styles.btnContainer}>

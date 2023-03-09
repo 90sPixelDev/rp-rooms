@@ -40,8 +40,8 @@ const CharacterControls = (props: Props) => {
         inputPic: 'absolute z-[-1] opacity-0 h-0 w-0',
         charaPicContainer: 'h-[50px] w-[50px] rounded-lg flex ',
         charaPicContainerClosed: 'h-[35px] w-[35px] rounded-lg mx-auto mt-2 flex ',
-        charaPic: 'bg-purple-600 h-fill w-fill rounded-lg m-auto',
-        charaProfileBtn: 'hover:text-purple-600 bg-purple-300 p-1 rounded-lg cursor-pointer text-sm h-fit my-auto',
+        charaPic: 'h-fill w-fill rounded-lg m-auto ',
+        charaProfileBtn: 'p-1 rounded-lg cursor-pointer text-sm h-fit my-auto ',
     };
 
     const theme = useContext(ThemeContext);
@@ -144,10 +144,10 @@ const CharacterControls = (props: Props) => {
     const updateCharaPic = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const storageRef = ref(storage, `users/${uid}/${props.roomTitle}/CharacterPic`);
 
-        if (e.currentTarget.files![0] == null || e.currentTarget.files![0] == undefined) {
+        if (e.currentTarget.files === null || e.currentTarget.files === undefined) {
             setDefaultCharaPic();
         } else {
-            const file = e.currentTarget.files![0];
+            const file = e.currentTarget.files[0];
             await uploadBytesResumable(storageRef, file);
             setRefresh((prevState) => !prevState);
         }
@@ -161,7 +161,7 @@ const CharacterControls = (props: Props) => {
                     <p>Name:</p>
                     {isPTag ? (
                         <p
-                            className={styles.nickName + `hover:text-${theme?.themeColor}-600`}
+                            className={styles.nickName + `hover:text-${theme?.themeColor}-700`}
                             onClick={() => setPTag(false)}
                         >
                             {characterInfo?.charaName}
@@ -179,7 +179,12 @@ const CharacterControls = (props: Props) => {
                     )}
                 </div>
                 <div className={styles.picArea}>
-                    <label htmlFor="image-file" className={styles.charaProfileBtn}>
+                    <label
+                        htmlFor="image-file"
+                        className={
+                            styles.charaProfileBtn + `bg-${theme?.themeColor}-300 hover:text-${theme?.themeColor}-700 `
+                        }
+                    >
                         <FontAwesomeIcon icon={solid('image-portrait')} />
                         Set Profile Picture
                     </label>
@@ -200,7 +205,7 @@ const CharacterControls = (props: Props) => {
 
     return (
         <div className={styles.charaPicContainerClosed + `bg-${theme?.themeColor}-600`}>
-            <img className={styles.charaPic} src={characterInfo?.charaPic} />
+            <img className={styles.charaPic + `bg-${theme?.themeColor}-600`} src={characterInfo?.charaPic} />
         </div>
     );
 };

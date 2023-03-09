@@ -1,8 +1,9 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { Fragment, useContext, useRef, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { ThemeContext } from '../../context/ThemeContext';
+import { Transition } from '@headlessui/react';
 
 interface Props {
     photoURL: string;
@@ -20,10 +21,10 @@ const ChatBox = (props: Props) => {
             'absolute flex flex-col z-3 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
         topInfoBox: 'flex flex-row justify-between bg-gradient-to-r ',
         userInfo: 'my-auto ml-2',
-        infoBoxX: 'px-2 py-1 rounded-tr-lg text-white ',
-        infoBoxBody: 'flex flex-row w-full p-2',
-        userSide: 'w-full border-r-4 ',
-        charaSide: 'w-full ',
+        infoBoxX: 'px-2 py-1 rounded-tr-lg border-2 text-white ',
+        infoBoxBody: 'flex flex-row w-full h-full p-2 text-sm',
+        userSide: 'w-full ',
+        charaSide: 'w-full h-full flex flex-col justify-between ',
         timeWrapper: 'flex flex-col items-end mr-1',
         body: 'flex flex-row h-fit w-fit shadow-md rounded-xl ',
         leftSide: 'flex flex-col justify-between',
@@ -40,9 +41,13 @@ const ChatBox = (props: Props) => {
     const theme = useContext(ThemeContext);
     const mssgBoxRef = useRef(null);
 
-    const [isHoveringOverUser, setIsHoveringOverUser] = useState(false);
+    const [displayBoxVisible, setDisplayBoxVisible] = useState(false);
     const [infoBoxPos, setInfoBoxPos] = useState({ top: '0px', left: '0px' });
-    const [userInfo, setUserInfo] = useState({ chatName: 'chatName', charaName: 'charaName' });
+    const [userInfo, setUserInfo] = useState<{ chatName: string; charaName: string; dateJoinedRoom: string | Date }>({
+        chatName: 'chatName',
+        charaName: 'charaName',
+        dateJoinedRoom: '00-00-0000',
+    });
 
     const date = new Date(props.timeSent);
 
@@ -78,10 +83,64 @@ const ChatBox = (props: Props) => {
 
         const chara = roomDoc.data()?.characters[props.uid];
 
-        setUserInfo({ chatName: props.displayName, charaName: chara.charaName });
-
-        setIsHoveringOverUser(true);
+        setUserInfo({
+            chatName: props.displayName,
+            charaName: chara.charaName,
+            dateJoinedRoom: chara.dateJoined.toDate().toDateString(),
+        });
+        setDisplayBoxVisible(true);
     };
+
+    const infoBox = (
+        <Transition
+            show={displayBoxVisible}
+            // as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+            // className={'relative'}
+        >
+            <div
+                className={styles.infoBoxContainer + `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`}
+                // style={infoBoxPos}
+            >
+                <div className={styles.topInfoBox + `from-${theme?.themeColor}-300`}>
+                    <p className={styles.userInfo}>User Info</p>
+                    <button
+                        className={
+                            styles.infoBoxX +
+                            `bg-${theme?.themeColor}-700 hover:bg-${theme?.themeColor}-400 border-${theme?.themeColor}-700`
+                        }
+                        onClick={() => setDisplayBoxVisible(false)}
+                    >
+                        X
+                    </button>
+                </div>
+                <div className={styles.infoBoxBody}>
+                    <div className={styles.userSide}>
+                        <p className={`ml-1 font-bold border-b-2 border-${theme?.themeColor}-700`}>
+                            {userInfo.chatName}
+                        </p>
+                    </div>
+                    <div
+                        className={`mx-1 h-full w-1 bg-gradient-to-b from-${theme?.themeColor}-400 via-${theme?.themeColor}-300 to-${theme?.themeColor}-400`}
+                    />
+                    <div className={styles.charaSide}>
+                        <p className={`ml-1 font-bold border-b-2 border-${theme?.themeColor}-700`}>
+                            {userInfo.charaName}
+                        </p>
+                        <div>
+                            <p className={`ml-1 font-bold border-t-2 border-${theme?.themeColor}-700`}>Joined Room:</p>
+                            <p className={'ml-1'}>{userInfo.dateJoinedRoom as string}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+    );
 
     return (
         <div className={styles.container} ref={mssgBoxRef}>
@@ -97,41 +156,12 @@ const ChatBox = (props: Props) => {
                 </div>
                 <div className={styles.mssgInfo + `border-${theme?.themeColor}-400`}>
                     <div className={styles.topOfMssg + `from-${theme?.themeColor}-400`}>
-                        <p className={styles.displayName} onClick={(e) => displayInfoBox(e)}>
-                            {props.displayName}:
-                        </p>
-                        {isHoveringOverUser && (
-                            <div
-                                className={
-                                    styles.infoBoxContainer +
-                                    `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`
-                                }
-                                style={infoBoxPos}
-                            >
-                                <div className={styles.topInfoBox + `from-${theme?.themeColor}-300`}>
-                                    <p className={styles.userInfo}>User Info</p>
-                                    <button
-                                        className={styles.infoBoxX + `bg-${theme?.themeColor}-700`}
-                                        onClick={() => setIsHoveringOverUser(false)}
-                                    >
-                                        X
-                                    </button>
-                                </div>
-                                <div className={styles.infoBoxBody}>
-                                    <div
-                                        className={
-                                            styles.userSide +
-                                            `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-500`
-                                        }
-                                    >
-                                        <p className={'ml-1'}>{userInfo.chatName}</p>
-                                    </div>
-                                    <div className={styles.charaSide + `bg-${theme?.themeColor}-300`}>
-                                        <p className={'ml-1'}>{userInfo.charaName}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        <div>
+                            <p className={styles.displayName} onClick={(e) => displayInfoBox(e)}>
+                                {props.displayName}:
+                            </p>
+                            {infoBox}
+                        </div>
                     </div>
                     <p className={styles.chatBoxText}>{props.mssgText}</p>
                 </div>

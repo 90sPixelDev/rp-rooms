@@ -142,6 +142,15 @@
  * hover:text-blue-600
  * hover:text-red-600
  *
+ * hover:text-purple-700
+ * hover:text-rose-700
+ * hover:text-sky-700
+ * hover:text-emerald-700
+ * hover:text-orange-700
+ * hover:text-gray-700
+ * hover:text-blue-700
+ * hover:text-red-700
+ *
  * placeholder-purple-200
  * placeholder-red-200
  * placeholder-blue-200
@@ -177,6 +186,15 @@
  * border-emerald-200
  * border-sky-200
  * border-rose-200
+ *
+ * border-purple-300
+ * border-red-300
+ * border-blue-300
+ * border-gray-300
+ * border-orange-300
+ * border-emerald-300
+ * border-sky-300
+ * border-rose-300
  *
  * border-purple-400
  * border-red-400
@@ -249,6 +267,32 @@
  * outline-emerald-500
  * outline-sky-500
  * outline-rose-500
+ *
+ * from-purple-400
+ * via-purple-300
+ * to-purple-400
+ * from-red-400
+ * via-red-300
+ * to-red-400
+ * from-blue-400
+ * via-blue-300
+ * to-blue-400
+ * from-gray-400
+ * via-gray-300
+ * to-gray-400
+ * from-orange-400
+ * via-orange-300
+ * to-orange-400
+ * from-emerald-400
+ * via-emerald-300
+ * to-emerald-400
+ * from-sky-400
+ * via-sky-300
+ * to-sky-400
+ * from-rose-400
+ * via-rose-300
+ * to-rose-400
+ *
  **/
 
 export {};

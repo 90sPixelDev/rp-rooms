@@ -61,7 +61,7 @@ const RightBar = (props: Props) => {
                 <button
                     className={
                         styles.arrBtnOpen +
-                        `bg-${theme?.themeColor}-400  hover:text-${theme?.themeColor}-200 border-${theme?.themeColor}-600`
+                        `bg-${theme?.themeColor}-400  hover:bg-${theme?.themeColor}-600 border-${theme?.themeColor}-600`
                     }
                     onClick={props.toggleRightBar}
                 >

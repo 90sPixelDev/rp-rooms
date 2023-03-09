@@ -23,7 +23,7 @@ const ChatInput = (props: Props) => {
     const styles = {
         container: 'overflow-hidden rounded-lg flex flex-col justify-around px-1 ',
         textArea:
-            'h-[90%] w-[90%] resize-none sd mx-1 my-auto outline-purple-500 rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
+            'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
         bttnArea: ' ',
         mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[50%] h-fit ',
     };
@@ -119,7 +119,7 @@ const ChatInput = (props: Props) => {
             </div>
             <div className={styles.mssgArea + `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-400 `}>
                 <textarea
-                    className={styles.textArea + `caret-${theme?.themeColor}-500`}
+                    className={styles.textArea + `caret-${theme?.themeColor}-500 outline-${theme?.themeColor}-500`}
                     name="Message Input"
                     maxLength={300}
                     placeholder={placeHolderText()}

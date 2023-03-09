@@ -45,8 +45,9 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading) {
+        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading && data.length > 0) {
             switchRoom(data?.[0].id as string);
+        } else if (selectedRoomTitle === '') {
         } else switchRoom(selectedRoomTitle);
     }, [data, isLoading]);
 
@@ -74,20 +75,18 @@ const ChatRooms = () => {
                     toggleLeftBar={toggleLeftBar}
                     isOpened={isLBOpened}
                 />
-                {selectedRoomTitle !== '' && (
-                    <ChatBody
-                        dataLoading={isLoading}
-                        roomTitle={selectedRoomTitle}
-                        currentTab={currentTab}
-                        switchTab={switchTab}
-                        callRefreshMessages={switchRoom}
-                    />
-                )}
-                {selectedRoomTitle === '' && (
+                <ChatBody
+                    dataLoading={isLoading}
+                    roomTitle={selectedRoomTitle}
+                    currentTab={currentTab}
+                    switchTab={switchTab}
+                    callRefreshMessages={switchRoom}
+                />
+                {/* {selectedRoomTitle === '' && (
                     <div className={styles.container}>
                         <img className={styles.loading} src={loadingAnim} />
                     </div>
-                )}
+                )} */}
                 <RightBar toggleRightBar={toggleRightBar} isOpened={isRBOpened} />
                 <UserControlsContainer isOpened={isLBOpened} />
                 <ChatInput roomSelectedInfo={selectedRoomTitle} currentTab={currentTab} />
