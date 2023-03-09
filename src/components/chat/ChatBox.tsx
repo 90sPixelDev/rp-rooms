@@ -139,9 +139,9 @@ const ChatBox = (props: Props) => {
             as={Fragment}
             enter="transition duration-500"
             enterFrom="opacity-0 -translate-x-10"
-            enterTo="opacity-100 translate-x-0"
+            enterTo="opacity-100"
             leave="transition duration-250"
-            leaveFrom="opacity-100 translate-x-0"
+            leaveFrom="opacity-100"
             leaveTo="opacity-0 -translate-x-10"
         >
             <div className={styles.container} ref={mssgBoxRef}>

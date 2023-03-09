@@ -13,7 +13,7 @@ type Styles = {
 
 const ChattingTab = (props: Props) => {
     const styles: Styles = {
-        container: 'absolute right-[60%] border-b-2 border-r-2 border-l-2 rounded-b-lg px-2 text-sm md:text-base ',
+        container: 'absolute right-[60%] border-b-2 border-r-2 border-l-2 rounded-b-lg px-2 text-sm md:text-base z-5 ',
         containerSelected:
             'absolute right-[60%] border-b-2 border-r-2 border-l-2 rounded-b-lg px-2 text-sm md:text-base ',
     };
