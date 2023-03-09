@@ -18,7 +18,7 @@ const ChatBox = (props: Props) => {
     const styles = {
         container: 'flex flex-col mb-2 mr-4',
         infoBoxContainer:
-            'absolute flex flex-col z-3 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
+            'absolute flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
         topInfoBox: 'flex flex-row justify-between bg-gradient-to-r ',
         userInfo: 'my-auto ml-2',
         infoBoxX: 'px-2 py-1 rounded-tr-lg border-2 text-white ',
@@ -42,7 +42,6 @@ const ChatBox = (props: Props) => {
     const mssgBoxRef = useRef(null);
 
     const [displayBoxVisible, setDisplayBoxVisible] = useState(false);
-    const [infoBoxPos, setInfoBoxPos] = useState({ top: '0px', left: '0px' });
     const [userInfo, setUserInfo] = useState<{ chatName: string; charaName: string; dateJoinedRoom: string | Date }>({
         chatName: 'chatName',
         charaName: 'charaName',
@@ -72,11 +71,6 @@ const ChatBox = (props: Props) => {
         return strTime;
     };
 
-    const displayInfoBox = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
-        setInfoBoxPos({ top: `${e.clientY}px`, left: `${e.clientX}px` });
-        getUserInfo();
-    };
-
     const getUserInfo = async () => {
         const roomRef = doc(db, 'rooms', props.roomTitle);
         const roomDoc = await getDoc(roomRef);
@@ -94,19 +88,15 @@ const ChatBox = (props: Props) => {
     const infoBox = (
         <Transition
             show={displayBoxVisible}
-            // as={Fragment}
+            as={Fragment}
             enter="transition ease-out duration-200"
             enterFrom="opacity-0"
             enterTo="opacity-100"
             leave="transition ease-in duration-150"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            // className={'relative'}
         >
-            <div
-                className={styles.infoBoxContainer + `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`}
-                // style={infoBoxPos}
-            >
+            <div className={styles.infoBoxContainer + `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`}>
                 <div className={styles.topInfoBox + `from-${theme?.themeColor}-300`}>
                     <p className={styles.userInfo}>User Info</p>
                     <button
@@ -143,30 +133,42 @@ const ChatBox = (props: Props) => {
     );
 
     return (
-        <div className={styles.container} ref={mssgBoxRef}>
-            <div className={styles.body + `shadow-${theme?.themeColor}-800/50 bg-${theme?.themeColor}-300`}>
-                <div className={styles.leftSide}>
-                    <div className={styles.imgContainer + `bg-${theme?.themeColor}-300`}>
-                        <img className={styles.img} src={props.photoURL} />
-                    </div>
-                    <div className={styles.timeWrapper}>
-                        <p className={styles.timeText + `text-${theme?.themeColor}-900`}>{getTimeFormat()}</p>
-                        <p className={styles.timeText}>{getDateFormat()}</p>
-                    </div>
-                </div>
-                <div className={styles.mssgInfo + `border-${theme?.themeColor}-400`}>
-                    <div className={styles.topOfMssg + `from-${theme?.themeColor}-400`}>
-                        <div>
-                            <p className={styles.displayName} onClick={(e) => displayInfoBox(e)}>
-                                {props.displayName}:
-                            </p>
-                            {infoBox}
+        <Transition
+            show={true}
+            appear={true}
+            as={Fragment}
+            enter="transition duration-500"
+            enterFrom="opacity-0 -translate-x-10"
+            enterTo="opacity-100 translate-x-0"
+            leave="transition duration-250"
+            leaveFrom="opacity-100 translate-x-0"
+            leaveTo="opacity-0 -translate-x-10"
+        >
+            <div className={styles.container} ref={mssgBoxRef}>
+                <div className={styles.body + `shadow-${theme?.themeColor}-800/50 bg-${theme?.themeColor}-300`}>
+                    <div className={styles.leftSide}>
+                        <div className={styles.imgContainer + `bg-${theme?.themeColor}-300`}>
+                            <img className={styles.img} src={props.photoURL} />
+                        </div>
+                        <div className={styles.timeWrapper}>
+                            <p className={styles.timeText + `text-${theme?.themeColor}-900`}>{getTimeFormat()}</p>
+                            <p className={styles.timeText}>{getDateFormat()}</p>
                         </div>
                     </div>
-                    <p className={styles.chatBoxText}>{props.mssgText}</p>
+                    <div className={styles.mssgInfo + `border-${theme?.themeColor}-400`}>
+                        <div className={styles.topOfMssg + `from-${theme?.themeColor}-400`}>
+                            <div>
+                                <p className={styles.displayName} onClick={(e) => getUserInfo()}>
+                                    {props.displayName}:
+                                </p>
+                                {infoBox}
+                            </div>
+                        </div>
+                        <p className={styles.chatBoxText}>{props.mssgText}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Transition>
     );
 };
 
