@@ -21,11 +21,12 @@ type Styles = {
 
 const RoomTopTitle = (props: Props) => {
     const styles: Styles = {
-        container: 'flex flex-col',
+        container: 'flex flex-col min-w-0 ',
         tabContainer: 'relative w-[70%] mx-auto',
-        tabTitle: 'h-fit w-[98%] py-1 rounded-b-2xl mx-auto drop-shadow-md flex flex-row ',
-        roomTitle: 'flow-root ml-2 font-bold w-fit min-h-[20px]',
-        chTitle: 'flow-root ml-2 w-fit min-h-[20px]',
+        tabTitle:
+            'h-[30px] w-[98%] py-1 rounded-b-2xl mx-auto drop-shadow-md flex flex-row overflow-x-hidden flex-nowrap ',
+        roomTitle: 'flow-root ml-2 font-bold w-fit min-h-[20px] whitespace-nowrap ',
+        chTitle: 'flow-root ml-2 w-fit min-h-[20px] whitespace-nowrap ',
         loading: 'h-6 m-auto',
     };
 

@@ -14,6 +14,7 @@ interface Props {
 }
 type Styles = {
     container: string;
+    topArea: string;
     roomText: string;
     btnContainer: string;
     dangerZone: string;
@@ -28,6 +29,7 @@ type Styles = {
 const RoomOptionsPeek = (props: Props) => {
     const styles: Styles = {
         container: 'm-1 p-1 rounded-lg items-center flex flex-col ',
+        topArea: 'flex flex-row items-center justify-around w-full ',
         roomText: 'text-center font-bold',
         btnContainer: 'flex justify-evenly',
         dangerZone: 'flex flex-col rounded-lg w-full',
@@ -73,14 +75,16 @@ const RoomOptionsPeek = (props: Props) => {
     if (props.isOpened)
         return (
             <div className={styles.container + `bg-${theme?.themeColor}-400`}>
-                <p className={styles.roomText}>Room:</p>
-                <button
-                    className={
-                        styles.roomOptionsBtn + `bg-${theme?.themeColor}-500 hover:text-${theme?.themeColor}-200`
-                    }
-                >
-                    {roomOptionsIcon}Room Options
-                </button>
+                <div className={styles.topArea}>
+                    <p className={styles.roomText}>Room:</p>
+                    <button
+                        className={
+                            styles.roomOptionsBtn + `bg-${theme?.themeColor}-500 hover:text-${theme?.themeColor}-200`
+                        }
+                    >
+                        {roomOptionsIcon}Room Options
+                    </button>
+                </div>
                 <div className={styles.dangerZone}>
                     <p className={styles.dangerZoneText}>Danger Zone:</p>
                     <div className={styles.btnContainer}>

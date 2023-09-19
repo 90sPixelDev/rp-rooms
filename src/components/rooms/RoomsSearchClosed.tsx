@@ -32,7 +32,7 @@ const RoomsSearchClosed = (props: Props) => {
         inputDropDownHolder: 'w-[50vw] h-[50vh] flex flex-col',
         inputBoxClosed:
             'flow-root p-1 rounded-lg outline-none caret-purple-500 mb-4 border-b-2 border-t-2 w-8 z-3 m-auto cursor-pointer ',
-        inputBoxClosedFocused: 'flow-root p-1 rounded-lg outline-none caret-purple-500 border-2 border-purple-600 z-3',
+        inputBoxClosedFocused: 'flow-root p-1 rounded-lg outline-none border-2 z-3 ',
         bar: 'flex flex-row justify-center',
     };
 
@@ -92,7 +92,10 @@ const RoomsSearchClosed = (props: Props) => {
                     <div className={styles.inputDropDownHolder}>
                         <input
                             autoFocus
-                            className={styles.inputBoxClosedFocused}
+                            className={
+                                styles.inputBoxClosedFocused +
+                                `caret-${theme?.themeColor}-500 border-${theme?.themeColor}-600`
+                            }
                             type="text"
                             value={inputText}
                             onKeyDown={async (e) => {

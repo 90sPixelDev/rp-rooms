@@ -293,6 +293,41 @@
  * via-rose-300
  * to-rose-400
  *
+ * --------------------------------------------------------
+ * scrollbar-thumb-purple-400
+ * scrollbar-thumb-red-400
+ * scrollbar-thumb-blue-400
+ * scrollbar-thumb-gray-400
+ * scrollbar-thumb-orange-400
+ * scrollbar-thumb-emerald-400
+ * scrollbar-thumb-sky-400
+ *
+ * scrollbar-track-purple-300
+ * scrollbar-track-red-300
+ * scrollbar-track-blue-300
+ * scrollbar-track-gray-300
+ * scrollbar-track-orange-300
+ * scrollbar-track-emerald-300
+ * scrollbar-track-sky-300
+ *
+ * ---------------------------------------------------------
+ *
+ * caret-purple-500
+ * caret-red-500
+ * caret-blue-500
+ * caret-gray-500
+ * caret-orange-500
+ * caret-emerald-500
+ * caret-sky-500
+ *
+ * border-purple-600
+ * border-red-600
+ * border-blue-600
+ * border-gray-600
+ * border-orange-600
+ * border-emerald-600
+ * border-sky-600
+ *
  **/
 
 export {};

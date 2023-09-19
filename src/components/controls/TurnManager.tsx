@@ -21,7 +21,7 @@ type Styles = {
 const TurnManager = (props: Props) => {
     const styles: Styles = {
         container:
-            'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
+            'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
         currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 mx-2 border-2 ',
         characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 ',
         loadingAnim: 'm-auto min-w-fit min-h-fit ',
@@ -77,7 +77,17 @@ const TurnManager = (props: Props) => {
         return charaListElem;
     };
 
-    if (!isLoading) return <div className={styles.container + `bg-${theme?.themeColor}-300`}>{sortCharaList()}</div>;
+    if (!isLoading)
+        return (
+            <div
+                className={
+                    styles.container +
+                    `bg-${theme?.themeColor}-300 scrollbar-thumb-${theme?.themeColor}-500 scrollbar-track-${theme?.themeColor}-300 hover:scrollbar-thumb-${theme?.themeColor}-400`
+                }
+            >
+                {sortCharaList()}
+            </div>
+        );
 
     return (
         <div className={styles.container + `bg-${theme?.themeColor}-300`}>

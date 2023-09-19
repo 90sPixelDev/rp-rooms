@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
+
+import { ThemeContext } from '../../context/ThemeContext';
 
 import useAddUserToRoom from '../../hooks/useAddUserToRoom';
 import { db } from '../../firebase.config';
@@ -16,6 +18,8 @@ const RoomsSearchOpened = (props: Props) => {
         bar: 'flex flex-row',
         inputBox: 'rounded-l-lg px-2 py-1 min-w-0',
     };
+
+    const theme = useContext(ThemeContext);
 
     const [searchedRooms, setSearchedRooms] = useState<string[] | null>(null);
     const [inputText, setInputText] = useState('');

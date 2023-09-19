@@ -20,7 +20,7 @@ type Styles = {
 
 const ChatBody = (props: Props) => {
     const styles: Styles = {
-        body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col ',
+        body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col min-w-0 ',
     };
     const [currentCh, setCurrentCh] = React.useState<object>({});
 
