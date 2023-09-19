@@ -16,7 +16,7 @@ interface Props {
 
 const ChatBox = (props: Props) => {
     const styles = {
-        container: 'flex flex-col mb-2 mr-4',
+        container: 'flex flex-col min-w-0 mb-2 mr-4',
         infoBoxContainer:
             'absolute flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
         topInfoBox: 'flex flex-row justify-between bg-gradient-to-r ',
@@ -33,7 +33,7 @@ const ChatBox = (props: Props) => {
         img: 'h-full w-full object-contain',
         mssgInfo: 'flex flex-col border-l-2 ',
         displayName: 'font-bold cursor-default hover:underline',
-        topOfMssg: 'flex flex-row justify-between bg-gradient-to-r pt-1 pl-2 pr-2 rounded-tr-xl w-full ',
+        topOfMssg: 'flex flex-row justify-between bg-gradient-to-r pt-1 pl-1 pr-1 rounded-tr-xl ',
         chatBoxText: 'mx-2 pb-1',
         timeText: 'italic text-[12px] ',
     };

@@ -27,7 +27,7 @@ const ChatRooms = () => {
         wrapperBOpen:
             'h-[100vh] w-[100vw] grid grid-cols-[minmax(100px,_250px)_1fr_minmax(150px,_250px)] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute ',
         wrapperClosed:
-            'h-[100vh] w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute ',
+            'h-[100vh] max-w-[100vw] grid grid-cols-[45px_1fr_45px] grid-rows-[minmax(50%,_85%)_minmax(170px,_20%)] absolute ',
     };
 
     const theme = useContext(ThemeContext);

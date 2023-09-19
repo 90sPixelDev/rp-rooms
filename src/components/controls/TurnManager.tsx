@@ -21,10 +21,10 @@ type Styles = {
 const TurnManager = (props: Props) => {
     const styles: Styles = {
         container:
-            'h-fit w-[100%] pb-2 rounded-full mt-2 flex flex-row gap-12 overflow-x-scroll scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
-        currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 m-auto border-2 ',
-        characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 m-auto ',
-        loadingAnim: 'm-auto w-6 h-6 ',
+            'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thumb-purple-500 scrollbar-track-purple-300 hover:scrollbar-thumb-purple-400 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
+        currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 mx-2 border-2 ',
+        characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 ',
+        loadingAnim: 'm-auto min-w-fit min-h-fit ',
     };
 
     const theme = useContext(ThemeContext);

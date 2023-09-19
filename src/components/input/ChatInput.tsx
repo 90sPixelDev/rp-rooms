@@ -21,10 +21,10 @@ type CharaInfo = {
 
 const ChatInput = (props: Props) => {
     const styles = {
-        container: 'rounded-lg flex flex-col justify-around px-1 ',
+        container: 'rounded-lg flex flex-col justify-around px-1 min-w-0 ',
         textArea:
             'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
-        bttnArea: ' ',
+        bttnArea: 'w-[100%] mx-auto ',
         mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[50%] h-fit ',
     };
 
