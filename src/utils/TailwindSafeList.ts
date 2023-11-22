@@ -302,6 +302,14 @@
  * scrollbar-thumb-emerald-400
  * scrollbar-thumb-sky-400
  *
+ * scrollbar-thumb-purple-500
+ * scrollbar-thumb-red-500
+ * scrollbar-thumb-blue-500
+ * scrollbar-thumb-gray-500
+ * scrollbar-thumb-orange-500
+ * scrollbar-thumb-emerald-500
+ * scrollbar-thumb-sky-500
+ *
  * scrollbar-track-purple-300
  * scrollbar-track-red-300
  * scrollbar-track-blue-300
