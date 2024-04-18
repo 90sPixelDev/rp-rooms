@@ -139,8 +139,7 @@ const SignUpForm = () => {
                         [uid]: {
                             charaPic: '',
                             charaName: 'New Character',
-                            turn: charaCount.toString(),
-                            currentTurn: false,
+                            turn: charaCount,
                             dateJoined: new Date(),
                         },
                     },
@@ -154,7 +153,7 @@ const SignUpForm = () => {
                 {
                     owner: [uid],
                     roomTitle: 'RP Rooms Community',
-                    currentTurn: '',
+                    currentTurn: 0,
                     currentChapter: {
                         num: '0',
                         desc: 'A New Beginning!',
@@ -164,7 +163,6 @@ const SignUpForm = () => {
                             charaPic: '',
                             charaName: 'New Character',
                             turn: '0',
-                            currentTurn: true,
                             dateJoined: new Date(),
                         },
                     },

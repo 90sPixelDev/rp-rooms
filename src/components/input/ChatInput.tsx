@@ -16,7 +16,7 @@ type CharaInfo = {
     charaName: string;
     charaPic: string;
     currentTurn: boolean;
-    turn: string;
+    turn: number;
 };
 
 const ChatInput = (props: Props) => {
@@ -31,8 +31,9 @@ const ChatInput = (props: Props) => {
     const theme = React.useContext(ThemeContext);
     const currentUser = React.useContext(UserContext);
 
-    const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
+    const [turnNum, setTurnNum] = useState<number | null>(null);
     const [charaMap, setCharaMap] = useState<CharaInfo[] | null>(null);
+    const [tempTypedMssg, setTempTypedMssg] = useState<string>('');
 
     const updateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const typedText = e.target.value;
@@ -52,11 +53,12 @@ const ChatInput = (props: Props) => {
         setTempTypedMssg('');
     };
 
-    const GetCharas = useCallback(async () => {
+    const GetCharasAndTurn = useCallback(async () => {
         const roomRef = doc(db, 'rooms', props.roomSelectedInfo);
         const roomDoc = await getDoc(roomRef);
 
         setCharaMap(roomDoc.data()?.characters);
+        setTurnNum(roomDoc.data()?.currentTurn);
     }, [props.roomSelectedInfo]);
 
     const checkCharacters = () => {
@@ -73,48 +75,56 @@ const ChatInput = (props: Props) => {
     };
 
     const placeHolderText = () => {
-        if (currentUser == null || charaMap === null) return;
+        if (currentUser == null || charaMap == null) return;
         type Chara = keyof typeof charaMap;
         const uid = currentUser.uid as Chara;
 
         const chara = charaMap[uid];
-        let currentTurnChara = {};
+        let currentTurnChara: CharaInfo = {
+            charaName: '',
+            charaPic: '',
+            currentTurn: false,
+            turn: -1,
+        };
+
         let numOfTurnsAway = 0;
 
         for (const val of Object.values(charaMap)) {
-            if (val.currentTurn === true) {
+            if (val.turn === turnNum) {
                 currentTurnChara = val;
             }
         }
 
-        const numChara = parseFloat((chara as CharaInfo).turn);
-        const numCurrentTurnChara = parseFloat((currentTurnChara as CharaInfo).turn);
+        const numChara = (chara as CharaInfo).turn;
 
-        if (numChara < numCurrentTurnChara) {
-            const top = charaMap.length - numCurrentTurnChara;
+        if (numChara < currentTurnChara.turn) {
+            const top = Object.keys(charaMap).length - currentTurnChara.turn;
+            console.log(top);
             numOfTurnsAway = top + numChara;
-        } else if (numChara < numCurrentTurnChara) {
-            const top = charaMap.length - numChara;
-            numOfTurnsAway = top + numCurrentTurnChara;
+            console.log(numOfTurnsAway);
+        } else if (numChara > currentTurnChara.turn) {
+            const top = Object.keys(charaMap).length - numChara;
+            console.log(top);
+            numOfTurnsAway = top + currentTurnChara.turn;
         }
 
         if (checkCharacters() && numOfTurnsAway === 0)
             return 'It is not your turn yet in the story.\n-> You are the next turn.';
         else if (checkCharacters() && numOfTurnsAway !== 0)
-            return `It is not your turn yet in the story.\n-> ${numOfTurnsAway} turn left.`;
+            return `It is not your turn yet in the story.\n-> ${numOfTurnsAway} turns left.`;
         else return '';
     };
 
     useEffect(() => {
         if (props.roomSelectedInfo != null && props.roomSelectedInfo != undefined && props.roomSelectedInfo != '') {
-            GetCharas();
+            GetCharasAndTurn();
         }
     }, [props.roomSelectedInfo]);
 
     return (
         <div className={styles.container + `bg-${theme?.themeColor}-200`}>
             <div className={styles.bttnArea + `bg-${theme?.themeColor}-200`}>
-                <TurnManager charaMap={charaMap} />
+                <TurnManager charaMap={charaMap} turnNum={turnNum as number} />
                 <ChatTypeButton />
             </div>
             <div className={styles.mssgArea + `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-400 `}>

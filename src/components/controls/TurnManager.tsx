@@ -3,13 +3,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 import { ThemeContext } from '../../context/ThemeContext';
 
-type chara = {
+type chara = [charaName: string, turn: number];
+
+type CharaInfo = {
     charaName: string;
+    charaPic: string;
     currentTurn: boolean;
-    turn: string;
+    turn: number;
 };
+
 interface Props {
-    charaMap: chara[] | null;
+    charaMap: CharaInfo[] | null;
+    turnNum: number;
 }
 type Styles = {
     container: string;
@@ -23,7 +28,7 @@ const TurnManager = (props: Props) => {
         container:
             'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
         currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 mx-2 border-2 ',
-        characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 ',
+        characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 border-2 ',
         loadingAnim: 'm-auto min-w-fit min-h-fit ',
     };
 
@@ -35,45 +40,45 @@ const TurnManager = (props: Props) => {
     useEffect(() => {
         setCharaList([]);
         if (props.charaMap != null && props.charaMap != undefined) {
-            setCharaList(Object.values(props.charaMap).map((uid) => uid));
+            setCharaList(Object.values(props.charaMap).map((uid) => [uid.charaName, uid.turn]));
             setIsLoading(false);
         }
     }, [props.charaMap]);
 
-    const renderRandomKey = (charaNameStr: string) => {
+    const renderRandomKey = (charaNameStr?: string) => {
         const randomNum = Math.random() * 3;
         const key = `${charaNameStr}-${randomNum}`;
         return key;
     };
 
-    const determineCharaNameStyle = (chara: (string | boolean)[]) => {
-        if (chara[2] as boolean) {
+    const determineCharaNameStyle = (chara: chara) => {
+        if (chara[1] === props.turnNum) {
             return (
                 <p
-                    className={styles.currentChara + `border-${theme?.themeColor}-400`}
-                    key={renderRandomKey(chara[1] as string)}
+                    className={styles.currentChara + `border-${theme?.themeColor}-400 `}
+                    key={renderRandomKey(chara[0] as string)}
                 >
-                    {chara[1]}
+                    {chara[0]}
                 </p>
             );
         } else
             return (
                 <p
-                    className={styles.characterName + `bg-${theme?.themeColor}-100`}
-                    key={renderRandomKey(chara[1] as string)}
+                    className={styles.characterName + `border-${theme?.themeColor}-300 bg-${theme?.themeColor}-100 `}
+                    key={renderRandomKey(chara[0] as string)}
                 >
-                    {chara[1]}
+                    {chara[0]}
                 </p>
             );
     };
 
     const sortCharaList = () => {
-        const charaArr = charaList.map((chara) => [chara.turn, chara.charaName, chara.currentTurn]);
-        const charaListSorted = charaArr.sort(
-            (a: (string | boolean)[], b: (string | boolean)[]) =>
-                parseFloat(a[0] as string) - parseFloat(b[0] as string),
-        );
-        const charaListElem = charaListSorted.map((chara) => determineCharaNameStyle(chara));
+        const charaArr = charaList.map((char) => [char[0], char[1]]);
+
+        const charaListSorted = charaArr.sort((a, b) => {
+            return (a[1] as number) - (b[1] as number);
+        });
+        const charaListElem = charaListSorted.map((chara) => determineCharaNameStyle(chara as chara));
         return charaListElem;
     };
 
