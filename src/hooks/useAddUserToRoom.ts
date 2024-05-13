@@ -23,6 +23,7 @@ export default function useAddUserToRoom() {
             const newRoomDoc = await getDoc(newRoomRef);
             if (newRoomDoc.exists()) {
                 if (newRoomDoc.data().characters[currentUser?.uid as string]) {
+                    console.log(currentUser?.uid);
                     console.warn(`You are already a part of Room \"${inputText}\"`);
                     return;
                 }
@@ -35,7 +36,7 @@ export default function useAddUserToRoom() {
                             [currentUser?.uid as string]: {
                                 charaPic: '',
                                 charaName: 'New Character',
-                                turn: charaCount.toString(),
+                                turn: charaCount,
                                 currentTurn: false,
                                 dateJoined: new Date(),
                             },
@@ -59,7 +60,7 @@ export default function useAddUserToRoom() {
                             [currentUser?.uid as string]: {
                                 charaPic: '',
                                 charaName: 'New Character',
-                                turn: '0',
+                                turn: 0,
                                 currentTurn: true,
                                 dateJoined: new Date(),
                             },

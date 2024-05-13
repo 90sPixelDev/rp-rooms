@@ -72,12 +72,26 @@ const TurnManager = (props: Props) => {
             );
     };
 
+    // Sort the character names in character bar to indicate who's turn is it currently and order of turns for each character.
     const sortCharaList = () => {
         const charaArr = charaList.map((char) => [char[0], char[1]]);
-
         const charaListSorted = charaArr.sort((a, b) => {
             return (a[1] as number) - (b[1] as number);
         });
+
+        // if current chara's turn is not 0 (first) we will need to reorder the chara turn array by putting in front who's current turn it is
+        if (charaList[0][1] != 0) {
+            for (let i = 0; i < charaArr.length; i++) {
+                if (charaListSorted[i][1] === props.turnNum) {
+                    const amtToRmv = i;
+                    const rmvItms = charaListSorted.splice(0, amtToRmv);
+                    rmvItms.forEach((itm) => {
+                        charaListSorted.push(itm);
+                    });
+                }
+            }
+        }
+
         const charaListElem = charaListSorted.map((chara) => determineCharaNameStyle(chara as chara));
         return charaListElem;
     };
