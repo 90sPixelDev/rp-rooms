@@ -17,7 +17,7 @@ export default function useAddUserToRoom() {
 
         try {
             if (inputText.length <= 3 || !inputText.replace(/\s/g, '').length) {
-                throw new Error(`\"${inputText}\" is an invalid search!`);
+                throw new Error(`"${inputText}" is an invalid search!`);
             }
             const newRoomRef = doc(db, 'rooms', inputText);
             const newRoomDoc = await getDoc(newRoomRef);

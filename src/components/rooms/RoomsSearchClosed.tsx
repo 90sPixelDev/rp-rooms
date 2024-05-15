@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { getDocs, collection, query, limit } from 'firebase/firestore';
 
-import { RoomsDropDown } from '../exporter';
+import { RoomsDropDown } from '..';
 import { db } from '../../firebase.config';
 import useAddUserToRoom from '../../hooks/useAddUserToRoom';
 import { ThemeContext } from '../../context/ThemeContext';

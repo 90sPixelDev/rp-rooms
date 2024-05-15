@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './context/AuthContext';
-import { SignUpForm, LogInForm, ChatRooms, WelcomeBG } from './components/exporter';
+import { SignUpForm, LogInForm, ChatRooms, WelcomeBG } from './components';
 
 type Props = {
     children: JSX.Element;

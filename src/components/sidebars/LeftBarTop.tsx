@@ -4,7 +4,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-router-dom';
 
 import RoomsSearchClosed from '../rooms/RoomsSearchClosed';
-import { RoomsSearchOpened } from '../exporter';
+import { RoomsSearchOpened } from '..';
 import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DropDownItem } from '../exporter';
+import { DropDownItem } from '..';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 

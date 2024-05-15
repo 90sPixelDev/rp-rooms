@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '../exporter';
+import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '..';
 import useRooms from '../../hooks/useRooms';
 import { refreshUtils } from '../../utils/refreshUtils';
 
@@ -47,8 +47,8 @@ const ChatRooms = () => {
     useEffect(() => {
         if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading && data.length > 0) {
             switchRoom(data?.[0].id as string);
-        } else if (selectedRoomTitle === '') {
-        } else switchRoom(selectedRoomTitle);
+        } /*else if (selectedRoomTitle === '') {
+        } */ else switchRoom(selectedRoomTitle);
     }, [data, isLoading]);
 
     const sideBarRenderHandler = () => {

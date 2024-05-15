@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { CharacterControls, RoomOptionsPeek } from '../exporter';
+import { CharacterControls, RoomOptionsPeek } from '..';
 import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {

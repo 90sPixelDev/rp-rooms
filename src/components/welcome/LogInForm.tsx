@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { LogInBtn } from '../exporter';
+import { LogInBtn } from '..';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase.config';
 import { ThemeContext } from '../../context/ThemeContext';

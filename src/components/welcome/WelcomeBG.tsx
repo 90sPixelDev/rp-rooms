@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { PreviewForm } from '../exporter';
+import { PreviewForm } from '..';
 
 type Styles = {
     body: string;

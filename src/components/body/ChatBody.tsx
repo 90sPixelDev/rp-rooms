@@ -5,7 +5,7 @@ import { db } from '../../firebase.config';
 import { MessageInfo } from '../../hooks/types';
 import useMessages from '../../hooks/useMessages';
 
-import { ChatBoxContainer, RoomTopTitle } from '../exporter';
+import { ChatBoxContainer, RoomTopTitle } from '..';
 
 interface Props {
     dataLoading: boolean;

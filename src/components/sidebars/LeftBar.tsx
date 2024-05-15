@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 
-import { LeftBarTop, RoomListContainer } from '../exporter';
+import { LeftBarTop, RoomListContainer } from '..';
 import { ThemeContext } from '../../context/ThemeContext';
 import { Transition } from '@headlessui/react';
 

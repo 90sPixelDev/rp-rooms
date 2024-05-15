@@ -3,7 +3,7 @@ import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 
-import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
+import { ChatTypeButton, TurnManager, ChatSend } from '..';
 import { sendMessage } from '../../utils/sendMessage';
 import { ThemeContext } from '../../context/ThemeContext';
 

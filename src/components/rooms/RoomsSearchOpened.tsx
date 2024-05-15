@@ -6,7 +6,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import useAddUserToRoom from '../../hooks/useAddUserToRoom';
 import { db } from '../../firebase.config';
 
-import { CreateRoomBtn, RoomsDropDown } from '../exporter';
+import { CreateRoomBtn, RoomsDropDown } from '..';
 
 type Props = {
     callRefreshMessages: (roomTitle: string) => void;

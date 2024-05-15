@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useState } from 'react';
-import { UserProfilePeek, LogOutControl, OptionsControl } from '../exporter';
+import { UserProfilePeek, LogOutControl, OptionsControl } from '..';
 import BaseModal from '../../modals/BaseModal';
 import { ThemeContext } from '../../context/ThemeContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,15 +21,15 @@ const UserControlsContainer = (props: Props) => {
     const modalStyles = {
         holder: 'mx-2',
         title: 'text-lg text-center font-bold mb-2',
-        colorGroup: 'px-2 pb-2 ',
-        purple: 'bg-purple-500 w-24 border-purple-700 hover:bg-purple-400 border-2 text-white',
-        red: 'bg-red-500 w-24 border-red-700 hover:bg-red-400 border-2 text-white',
-        blue: 'bg-blue-500 w-24 border-blue-700 hover:bg-blue-400 border-2 text-white',
-        gray: 'bg-gray-500 w-24 border-gray-700 hover:bg-gray-400 border-2 text-white',
-        orange: 'bg-orange-500 w-24 border-orange-700 hover:bg-orange-400 border-2 text-white',
-        emerald: 'bg-emerald-500 w-24 border-emerald-700 hover:bg-emerald-400 border-2 text-white',
-        sky: 'bg-sky-500 w-24 border-sky-700 hover:bg-sky-400 border-2 text-white',
-        rose: 'bg-rose-500 w-24 border-rose-700 hover:bg-rose-400 border-2 text-white',
+        colorGroup: 'px-1 py-1 flex flex-wrap justify-center gap-1 ',
+        purple: 'bg-purple-500 border-purple-700 hover:bg-purple-400 w-[70px] border-2 text-white',
+        red: 'bg-red-500 border-red-700 hover:bg-red-400 w-[70px] border-2 text-white',
+        blue: 'bg-blue-500 border-blue-700 hover:bg-blue-400 w-[70px] border-2 text-white',
+        gray: 'bg-gray-500 border-gray-700 hover:bg-gray-400 w-[70px] border-2 text-white',
+        orange: 'bg-orange-500 border-orange-700 hover:bg-orange-400 w-[70px] border-2 text-white',
+        emerald: 'bg-emerald-500 border-emerald-700 hover:bg-emerald-400 w-[70px] border-2 text-white',
+        sky: 'bg-sky-500 border-sky-700 hover:bg-sky-400 w-[70px] border-2 text-white',
+        rose: 'bg-rose-500 border-rose-700 hover:bg-rose-400 w-[70px] border-2 text-white',
     };
 
     const theme = useContext(ThemeContext);
@@ -92,7 +92,7 @@ const UserControlsContainer = (props: Props) => {
                             purple
                         </button>
                         <button onClick={() => theme?.themeSwitch('red')} className={modalStyles.red}>
-                            Red
+                            red
                         </button>
                         <button onClick={() => theme?.themeSwitch('blue')} className={modalStyles.blue}>
                             blue

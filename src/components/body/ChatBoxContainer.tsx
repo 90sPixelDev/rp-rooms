@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 
 import { ThemeContext } from '../../context/ThemeContext';
 
-import { ChatBox } from '../exporter';
+import { ChatBox } from '..';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 import { MessageInfo } from '../../hooks/types';
 import { Timestamp } from 'firebase/firestore';

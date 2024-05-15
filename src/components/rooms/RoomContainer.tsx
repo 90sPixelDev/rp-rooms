@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Room } from '../exporter';
+import { Room } from '..';
 import { ThemeContext } from '../../context/ThemeContext';
 
 type Styles = {
