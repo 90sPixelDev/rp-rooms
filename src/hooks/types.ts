@@ -1,7 +1,9 @@
 import { DocumentData, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 
+type CharaCount = number;
+
 export type DataResult = {
-    data: QueryDocumentSnapshot<DocumentData>[] | null;
+    userRoomsData: QueryDocumentSnapshot<DocumentData>[] | null;
     isLoading: boolean;
 };
 

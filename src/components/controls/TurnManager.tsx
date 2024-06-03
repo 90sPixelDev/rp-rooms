@@ -15,6 +15,7 @@ type CharaInfo = {
 interface Props {
     charaMap: CharaInfo[] | null;
     turnNum: number;
+    charaCount: number;
 }
 type Styles = {
     container: string;
@@ -26,7 +27,7 @@ type Styles = {
 const TurnManager = (props: Props) => {
     const styles: Styles = {
         container:
-            'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
+            'max-h-[35px] p-1 rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
         currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 mx-2 border-2 ',
         characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 border-2 ',
         loadingAnim: 'm-auto min-w-fit min-h-fit ',
