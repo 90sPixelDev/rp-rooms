@@ -1,12 +1,21 @@
 import * as React from 'react';
-import { collection, query, where, QueryDocumentSnapshot, DocumentData, onSnapshot, limit } from 'firebase/firestore';
+import {
+    collection,
+    query,
+    where,
+    QueryDocumentSnapshot,
+    DocumentData,
+    onSnapshot,
+    doc,
+    getDoc,
+} from 'firebase/firestore';
 
 import { db } from '../firebase.config';
 import { UserContext } from '../context/AuthContext';
 import { DataResult } from './types';
 
-export default function useRooms(): DataResult {
-    const [data, setData] = React.useState<QueryDocumentSnapshot<DocumentData>[] | null>(null);
+export default function useGetData(): DataResult {
+    const [userRoomsData, setUserRoomsData] = React.useState<QueryDocumentSnapshot<DocumentData>[] | null>(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
     const currentUser = React.useContext(UserContext);
@@ -20,7 +29,7 @@ export default function useRooms(): DataResult {
                     userRoomsQuery,
                     (roomsSnapshot) => {
                         console.log('%c◆ Refreshing Data...', 'color: pink');
-                        setData(roomsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc));
+                        setUserRoomsData(roomsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => doc));
                     },
 
                     (err) => console.log(err),
@@ -33,5 +42,5 @@ export default function useRooms(): DataResult {
         }, []);
     }
 
-    return { data, isLoading };
+    return { userRoomsData, isLoading };
 }

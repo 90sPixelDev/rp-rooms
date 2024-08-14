@@ -3,6 +3,9 @@ import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 
+import useCharaCount from '../../hooks/useCharaCount';
+import useGetData from '../../hooks/useGetData';
+
 import { ChatTypeButton, TurnManager, ChatSend } from '..';
 import { sendMessage } from '../../utils/sendMessage';
 import { ThemeContext } from '../../context/ThemeContext';
@@ -25,11 +28,14 @@ const ChatInput = (props: Props) => {
         textArea:
             'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
         bttnArea: 'w-[100%] mx-auto ',
-        mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[50%] h-fit ',
+        mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[10%] h-[100%] ',
     };
 
     const theme = React.useContext(ThemeContext);
     const currentUser = React.useContext(UserContext);
+
+    const { getUpdatedCharaCount, charaCount } = useCharaCount(props.roomSelectedInfo);
+    const { userRoomsData } = useGetData();
 
     const [turnNum, setTurnNum] = useState<number | null>(null);
     const [charaMap, setCharaMap] = useState<CharaInfo[] | null>(null);
@@ -113,8 +119,6 @@ const ChatInput = (props: Props) => {
             }
         }
 
-        console.log(numOfTurnsAway);
-
         if (checkCharacters() && numOfTurnsAway === 1)
             return 'It is not your turn yet in the story.\n-> You are the next turn.';
         else if (checkCharacters() && numOfTurnsAway > 0)
@@ -126,12 +130,12 @@ const ChatInput = (props: Props) => {
         if (props.roomSelectedInfo != null && props.roomSelectedInfo != undefined && props.roomSelectedInfo != '') {
             GetCharasAndTurn();
         }
-    }, [props.roomSelectedInfo]);
+    }, [props.roomSelectedInfo, userRoomsData, charaCount]);
 
     return (
         <div className={styles.container + `bg-${theme?.themeColor}-200`}>
             <div className={styles.bttnArea + `bg-${theme?.themeColor}-200`}>
-                <TurnManager charaMap={charaMap} turnNum={turnNum as number} />
+                <TurnManager charaMap={charaMap} turnNum={turnNum as number} charaCount={charaCount} />
                 <ChatTypeButton />
             </div>
             <div className={styles.mssgArea + `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-400 `}>

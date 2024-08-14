@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import { ChatBody, ChatInput, UserControlsContainer, LeftBar, RightBar, RoomControlsContainer } from '..';
-import useRooms from '../../hooks/useRooms';
+import useGetData from '../../hooks/useGetData';
 import { refreshUtils } from '../../utils/refreshUtils';
 
 import loadingAnim from '../../resources/ui/loading-anim.svg';
@@ -32,7 +32,7 @@ const ChatRooms = () => {
 
     const theme = useContext(ThemeContext);
 
-    const { data, isLoading } = useRooms();
+    const { userRoomsData, isLoading } = useGetData();
     const { currentTab, switchTab, selectedRoomTitle, switchRoom } = refreshUtils();
 
     const [isRBOpened, setRBIsOpened] = useState(false);
@@ -45,11 +45,16 @@ const ChatRooms = () => {
     };
 
     useEffect(() => {
-        if (selectedRoomTitle === '' && data !== null && data !== undefined && !isLoading && data.length > 0) {
-            switchRoom(data?.[0].id as string);
-        } /*else if (selectedRoomTitle === '') {
-        } */ else switchRoom(selectedRoomTitle);
-    }, [data, isLoading]);
+        if (
+            selectedRoomTitle === '' &&
+            userRoomsData !== null &&
+            userRoomsData !== undefined &&
+            !isLoading &&
+            userRoomsData.length > 0
+        ) {
+            switchRoom(userRoomsData?.[0].id as string);
+        } else switchRoom(selectedRoomTitle);
+    }, [userRoomsData, isLoading]);
 
     const sideBarRenderHandler = () => {
         switch (true) {
@@ -70,7 +75,7 @@ const ChatRooms = () => {
         <>
             <div className={sideBarRenderHandler() + `bg-${theme?.themeColor}-200`}>
                 <LeftBar
-                    listOfRooms={data?.map((room) => room.id) as string[]}
+                    listOfRooms={userRoomsData?.map((room) => room.id) as string[]}
                     callRefreshMessages={switchRoom}
                     toggleLeftBar={toggleLeftBar}
                     isOpened={isLBOpened}
