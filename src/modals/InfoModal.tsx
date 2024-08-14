@@ -12,22 +12,21 @@ interface ModalProps {
 
 const InfoModal = ({ children, isOpen, handleClose, coords }: ModalProps) => {
     const styles = {
-        // backdrop: 'absolute h-[100vh] w-[100vw]',
         backdrop: ' h-[100vh] w-[100vw] flex flex-row items-center z-3  ',
-        wrapperInside: 'rounded-lg z-5 ',
+        wrapperInside: 'absolute rounded-lg z-5 ',
         infoBoxX: 'absolute px-2 py-1 rounded-tr-lg border-2 text-white ',
         closeBtn: 'p-2 self-end rounded-tr-lg hover:bg-purple-400 border-purple-600 border-2 ',
     };
 
     const theme = useContext(ThemeContext);
 
-    if (!isOpen) return null;
-
-    const checkOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
-        // if (e.target.attributes[0].value === 'backdrop') {
-        handleClose();
-        // }
+    const calculatePos = () => {
+        const cords = ` top-${coords.y} left-${coords.x} `;
+        console.log(cords);
+        return cords;
     };
+
+    if (!isOpen) return null;
 
     return (
         <Portal wrapperId={'portal-root'}>
@@ -42,16 +41,9 @@ const InfoModal = ({ children, isOpen, handleClose, coords }: ModalProps) => {
                 leaveTo="opacity-0"
             >
                 <div itemRef="backdrop" className={styles.backdrop}>
-                    <div className={styles.wrapperInside + `bg-${theme?.themeColor}-300 `}>{children}</div>
-                    <button
-                        className={
-                            styles.infoBoxX +
-                            `bg-${theme?.themeColor}-700 hover:bg-${theme?.themeColor}-400 border-${theme?.themeColor}-700`
-                        }
-                        onClick={checkOutsideClick}
-                    >
-                        X
-                    </button>
+                    <div className={styles.wrapperInside + `bg-${theme?.themeColor}-300 ${calculatePos()}`}>
+                        {children}
+                    </div>
                 </div>
             </Transition>
         </Portal>
