@@ -4,6 +4,6 @@ import App from './App';
 
 test('Shows login screen if not signed in', () => {
     render(<App />);
-    const linkElement = screen.getByText(/login/i);
+    const linkElement = screen.getByText(/login/);
     expect(linkElement).toBeInTheDocument();
 });

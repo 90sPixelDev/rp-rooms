@@ -6,7 +6,6 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { Transition } from '@headlessui/react';
 
 import InfoBox from '../info/InfoBox';
-import InfoModal from '../../modals/InfoModal';
 
 interface Props {
     photoURL: string;
@@ -19,9 +18,8 @@ interface Props {
 
 const ChatBox = (props: Props) => {
     const styles = {
-        container: 'flex flex-col min-w-0 mb-2 mr-4',
-        infoBoxContainer:
-            'absolute flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
+        container: ' flex flex-col min-w-0 mb-2 mr-4',
+        infoBoxContainer: 'flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
         topInfoBox: 'flex flex-row justify-between bg-gradient-to-r ',
         userInfo: 'my-auto ml-2',
         infoBoxX: 'px-2 py-1 rounded-tr-lg border-2 text-white ',
@@ -45,7 +43,6 @@ const ChatBox = (props: Props) => {
     const mssgBoxRef = useRef(null);
 
     const [displayBoxVisible, setDisplayBoxVisible] = useState(false);
-    const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
     const [userInfo, setUserInfo] = useState<{ chatName: string; charaName: string; dateJoinedRoom: string | Date }>({
         chatName: 'chatName',
         charaName: 'charaName',
@@ -75,6 +72,10 @@ const ChatBox = (props: Props) => {
         return strTime;
     };
 
+    const infoBoxDisplayHandler = () => {
+        setDisplayBoxVisible((prevState) => !prevState);
+    };
+
     const getUserInfo = async (e: React.MouseEvent<HTMLElement>) => {
         const roomRef = doc(db, 'rooms', props.roomTitle);
         const roomDoc = await getDoc(roomRef);
@@ -86,12 +87,8 @@ const ChatBox = (props: Props) => {
             charaName: chara.charaName,
             dateJoinedRoom: chara.dateJoined.toDate().toDateString(),
         });
-        setDisplayBoxVisible(true);
-        setMouseCoords({ x: e.pageX, y: e.pageY });
-    };
 
-    const infoBoxDisplayHandler = () => {
-        setDisplayBoxVisible((prevState) => !prevState);
+        infoBoxDisplayHandler();
     };
 
     return (
@@ -127,8 +124,6 @@ const ChatBox = (props: Props) => {
                                     isOpen={displayBoxVisible}
                                     userInfo={userInfo}
                                     handleClose={infoBoxDisplayHandler}
-                                    coords={mouseCoords}
-                                    // displayToggler={infoBoxDisplayHandler}
                                 />
                             </div>
                         </div>
