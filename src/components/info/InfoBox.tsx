@@ -28,11 +28,24 @@ const InfoBox = (props: Props) => {
 
     const theme = useContext(ThemeContext);
 
+    const checkOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
+        props.handleClose();
+    };
+
     return (
         <InfoModal isOpen={props.isOpen} handleClose={props.handleClose} coords={props.coords}>
             <div className={styles.infoBoxContainer + `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`}>
                 <div className={styles.topInfoBox + `from-${theme?.themeColor}-300`}>
                     <p className={styles.userInfo}>User Info</p>
+                    <button
+                        className={
+                            styles.infoBoxX +
+                            `bg-${theme?.themeColor}-700 hover:bg-${theme?.themeColor}-400 border-${theme?.themeColor}-700`
+                        }
+                        onClick={checkOutsideClick}
+                    >
+                        X
+                    </button>
                 </div>
                 <div className={styles.infoBoxBody}>
                     <div className={styles.userSide}>

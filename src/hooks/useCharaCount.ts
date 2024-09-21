@@ -7,8 +7,6 @@ export default function useCharaCount(roomTitle: string) {
     const [charaCount, setCharaCount] = useState(0);
     const [refreshCharaCount, setRefreshCharaCount] = useState(false);
 
-    console.log('Checking for inifinite loop');
-
     const callCharaCountRefresh = () => {
         setRefreshCharaCount((prevState) => !prevState);
     };
