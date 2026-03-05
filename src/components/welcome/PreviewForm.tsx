@@ -6,7 +6,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 
 const PreviewForm = () => {
     const styles = {
-        container: 'absolute left-[50%] top-[3vh] translate-x-[-50%]',
+        container: 'absolute z-20 left-[50%] top-[3vh] translate-x-[-50%]',
         body: 'px-4 py-2 rounded-lg shadow-lg ',
         text: 'text-center text-white',
         button: 'py-1 px-2 rounded-lg my-2 flow-root mx-auto text-white ',

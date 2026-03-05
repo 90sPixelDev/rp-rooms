@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { PreviewForm } from '..';
+import NoticeDisclaimer from './NoticeDisclaimer';
 
 type Styles = {
     body: string;
@@ -16,6 +17,7 @@ const WelcomeBG = () => {
         <div className={styles.body}>
             <PreviewForm />
             <Outlet />
+            <NoticeDisclaimer />
         </div>
     );
 };
