@@ -1,27 +1,27 @@
 import React from 'react';
-import { StoryEvent } from '../exporter';
+import { StoryEvent } from '..';
 
 interface Props {
-	isOpened: boolean;
+    isOpened: boolean;
 }
 type Styles = {
-	container: string;
+    container: string;
 };
 
 const EventsList = (props: Props) => {
-	const styles: Styles = {
-		container: 'flex flex-col gap-4 m-2',
-	};
+    const styles: Styles = {
+        container: 'flex flex-col gap-4 m-2',
+    };
 
-	return (
-		<div className={styles.container}>
-			<StoryEvent isOpened={props.isOpened} />
-			<StoryEvent isOpened={props.isOpened} />
-			<StoryEvent isOpened={props.isOpened} />
-			<StoryEvent isOpened={props.isOpened} />
-			<StoryEvent isOpened={props.isOpened} />
-		</div>
-	);
+    return (
+        <div className={styles.container}>
+            <StoryEvent isOpened={props.isOpened} />
+            <StoryEvent isOpened={props.isOpened} />
+            <StoryEvent isOpened={props.isOpened} />
+            <StoryEvent isOpened={props.isOpened} />
+            <StoryEvent isOpened={props.isOpened} />
+        </div>
+    );
 };
 
 export default EventsList;

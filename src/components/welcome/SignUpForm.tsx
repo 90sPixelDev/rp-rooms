@@ -5,7 +5,7 @@ import { doc, setDoc, arrayUnion, getDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db, storage } from '../../firebase.config';
-import { SignUpBtn } from '../exporter';
+import { SignUpBtn } from '..';
 import { useNavigate, Link } from 'react-router-dom';
 
 type Styles = {

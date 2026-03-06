@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import loadingAnim from '../../resources/ui/loading-anim.svg';
 
-import { ChattingTab, StoryTimeTab } from '../exporter';
+import { ChattingTab, StoryTimeTab } from '..';
 import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {

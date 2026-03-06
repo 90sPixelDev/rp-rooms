@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { EventsList } from '../exporter';
+import { EventsList } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { ThemeContext } from '../../context/ThemeContext';

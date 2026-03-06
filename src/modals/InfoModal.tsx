@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import Portal from '../portals/Portal';
-import { ThemeContext } from '../context/ThemeContext';
 
 interface ModalProps {
     children: React.ReactNode;
@@ -10,19 +9,34 @@ interface ModalProps {
 
 const InfoModal = ({ children, isOpen, handleClose }: ModalProps) => {
     const styles = {
-        backdrop: 'absolute h-[20vh] w-[30vw]',
-        wrapperInside: 'absolute rounded-lg flex flex-col z-3 ',
+        wrapper: ' flex justify-center items-center h-[100vh] rounded-lg z-5 ',
         closeBtn: 'p-2 self-end rounded-tr-lg hover:bg-purple-400 border-purple-600 border-2 ',
     };
 
-    const theme = useContext(ThemeContext);
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    const checkOutsideClick = (e: MouseEvent) => {
+        if (modalRef.current && !modalRef.current?.contains(e.target as Node)) {
+            handleClose();
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('mousedown', checkOutsideClick);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', checkOutsideClick);
+        };
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
     return (
         <Portal wrapperId={'portal-root'}>
-            <div className={styles.backdrop}>
-                <div className={styles.wrapperInside + `bg-${theme?.themeColor}-300`}>{children}</div>
+            <div className={styles.wrapper} ref={modalRef}>
+                {children}
             </div>
         </Portal>
     );

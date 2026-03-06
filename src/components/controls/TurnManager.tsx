@@ -15,6 +15,7 @@ type CharaInfo = {
 interface Props {
     charaMap: CharaInfo[] | null;
     turnNum: number;
+    charaCount: number;
 }
 type Styles = {
     container: string;
@@ -26,9 +27,9 @@ type Styles = {
 const TurnManager = (props: Props) => {
     const styles: Styles = {
         container:
-            'max-h-[35px] rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
-        currentChara: 'flow-root min-w-fit min-h-fit bg-white rounded-full px-2 mx-2 border-2 ',
-        characterName: 'flow-root min-w-fit min-h-fit rounded-full px-2 mx-2 border-2 ',
+            'max-h-[35px] p-1 rounded-full mx-auto overflow-x-scroll flex-row flex scrollbar scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full ',
+        currentChara: 'flow-root min-w-fit h-full bg-white rounded-full px-2 mx-2 border-2 ',
+        characterName: 'flow-root min-w-fit h-full rounded-full px-2 mx-2 border-2 ',
         loadingAnim: 'm-auto min-w-fit min-h-fit ',
     };
 
@@ -72,12 +73,26 @@ const TurnManager = (props: Props) => {
             );
     };
 
+    // Sort the character names in character bar to indicate who's turn is it currently and order of turns for each character.
     const sortCharaList = () => {
         const charaArr = charaList.map((char) => [char[0], char[1]]);
-
         const charaListSorted = charaArr.sort((a, b) => {
             return (a[1] as number) - (b[1] as number);
         });
+
+        // if current chara's turn is not 0 (first) we will need to reorder the chara turn array by putting in front who's current turn it is
+        if (charaList[0][1] != 0) {
+            for (let i = 0; i < charaArr.length; i++) {
+                if (charaListSorted[i][1] === props.turnNum) {
+                    const amtToRmv = i;
+                    const rmvItms = charaListSorted.splice(0, amtToRmv);
+                    rmvItms.forEach((itm) => {
+                        charaListSorted.push(itm);
+                    });
+                }
+            }
+        }
+
         const charaListElem = charaListSorted.map((chara) => determineCharaNameStyle(chara as chara));
         return charaListElem;
     };

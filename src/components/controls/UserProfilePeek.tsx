@@ -87,6 +87,7 @@ const UserProfilePeek = (props: Props) => {
         // await updateProfile(userInfo, {
         // photoURL: downloadURL,
         // }
+        console.log(currentUser?.photoURL);
     };
 
     if (props.isOpened)
@@ -98,6 +99,7 @@ const UserProfilePeek = (props: Props) => {
                         src={currentUser?.photoURL as string}
                         onError={(e) => (e.currentTarget.src = currentUser?.displayName?.slice(0) as string)}
                         alt=""
+                        onClick={updateProfilePic}
                     />
                 </div>
                 <div className={styles.names}>

@@ -4,7 +4,7 @@
         "outDir": "build",
         "noImplicitReturns": true,
         "noImplicitAny": true,
-        "target": "es2021",
+        "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
@@ -18,8 +18,8 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react"
     },
-    "include": ["src/**/*", "react-chat-engine.d.ts"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules", "build"]
 }

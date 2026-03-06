@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { MessageInfo } from '../../hooks/types';
 import useMessages from '../../hooks/useMessages';
 
-import { ChatBoxContainer, RoomTopTitle } from '../exporter';
+import { ChatBoxContainer, RoomTopTitle } from '..';
+import { ThemeContext } from '../../context/ThemeContext';
 
 interface Props {
     dataLoading: boolean;
@@ -20,10 +21,12 @@ type Styles = {
 
 const ChatBody = (props: Props) => {
     const styles: Styles = {
-        body: 'bg-purple-100 rounded-b-2xl h-full flex flex-col min-w-0 ',
+        body: 'rounded-b-2xl h-full flex flex-col min-w-0 ',
     };
-    const [currentCh, setCurrentCh] = React.useState<object>({});
 
+    const theme = useContext(ThemeContext);
+
+    const [currentCh, setCurrentCh] = React.useState<object>({});
     const { isLoading, messagesArray, getUpdatedMessages } = useMessages();
 
     const UpdateRoomChapter = async (defaultInfo = '') => {
@@ -50,7 +53,7 @@ const ChatBody = (props: Props) => {
     }, [props.roomTitle, props.currentTab, props.callRefreshMessages]);
 
     return (
-        <div className={styles.body}>
+        <div className={styles.body + `bg-${theme?.themeColor}-100 `}>
             <RoomTopTitle
                 currentChInfo={currentCh}
                 changeTab={props.switchTab}

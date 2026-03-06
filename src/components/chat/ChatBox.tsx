@@ -5,6 +5,8 @@ import { db } from '../../firebase.config';
 import { ThemeContext } from '../../context/ThemeContext';
 import { Transition } from '@headlessui/react';
 
+import InfoBox from '../info/InfoBox';
+
 interface Props {
     photoURL: string;
     displayName: string;
@@ -16,9 +18,8 @@ interface Props {
 
 const ChatBox = (props: Props) => {
     const styles = {
-        container: 'flex flex-col min-w-0 mb-2 mr-4',
-        infoBoxContainer:
-            'absolute flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
+        container: ' flex flex-col min-w-0 mb-2 mr-4',
+        infoBoxContainer: 'flex flex-col z-20 sm:w-[30vw] sm:h-[15vh] rounded-r-lg rounded-bl-lg shadow-md border-2 ',
         topInfoBox: 'flex flex-row justify-between bg-gradient-to-r ',
         userInfo: 'my-auto ml-2',
         infoBoxX: 'px-2 py-1 rounded-tr-lg border-2 text-white ',
@@ -71,7 +72,11 @@ const ChatBox = (props: Props) => {
         return strTime;
     };
 
-    const getUserInfo = async () => {
+    const infoBoxDisplayHandler = () => {
+        setDisplayBoxVisible((prevState) => !prevState);
+    };
+
+    const getUserInfo = async (e: React.MouseEvent<HTMLElement>) => {
         const roomRef = doc(db, 'rooms', props.roomTitle);
         const roomDoc = await getDoc(roomRef);
 
@@ -82,55 +87,9 @@ const ChatBox = (props: Props) => {
             charaName: chara.charaName,
             dateJoinedRoom: chara.dateJoined.toDate().toDateString(),
         });
-        setDisplayBoxVisible(true);
-    };
 
-    const infoBox = (
-        <Transition
-            show={displayBoxVisible}
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-        >
-            <div className={styles.infoBoxContainer + `bg-${theme?.themeColor}-500 shadow-${theme?.themeColor}-900`}>
-                <div className={styles.topInfoBox + `from-${theme?.themeColor}-300`}>
-                    <p className={styles.userInfo}>User Info</p>
-                    <button
-                        className={
-                            styles.infoBoxX +
-                            `bg-${theme?.themeColor}-700 hover:bg-${theme?.themeColor}-400 border-${theme?.themeColor}-700`
-                        }
-                        onClick={() => setDisplayBoxVisible(false)}
-                    >
-                        X
-                    </button>
-                </div>
-                <div className={styles.infoBoxBody}>
-                    <div className={styles.userSide}>
-                        <p className={`ml-1 font-bold border-b-2 border-${theme?.themeColor}-700`}>
-                            {userInfo.chatName}
-                        </p>
-                    </div>
-                    <div
-                        className={`mx-1 h-full w-1 bg-gradient-to-b from-${theme?.themeColor}-400 via-${theme?.themeColor}-300 to-${theme?.themeColor}-400`}
-                    />
-                    <div className={styles.charaSide}>
-                        <p className={`ml-1 font-bold border-b-2 border-${theme?.themeColor}-700`}>
-                            {userInfo.charaName}
-                        </p>
-                        <div>
-                            <p className={`ml-1 font-bold border-t-2 border-${theme?.themeColor}-700`}>Joined Room:</p>
-                            <p className={'ml-1'}>{userInfo.dateJoinedRoom as string}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Transition>
-    );
+        infoBoxDisplayHandler();
+    };
 
     return (
         <Transition
@@ -158,10 +117,14 @@ const ChatBox = (props: Props) => {
                     <div className={styles.mssgInfo + `border-${theme?.themeColor}-400`}>
                         <div className={styles.topOfMssg + `from-${theme?.themeColor}-400`}>
                             <div>
-                                <p className={styles.displayName} onClick={(e) => getUserInfo()}>
+                                <p className={styles.displayName} onClick={(e) => getUserInfo(e)}>
                                     {props.displayName}:
                                 </p>
-                                {infoBox}
+                                <InfoBox
+                                    isOpen={displayBoxVisible}
+                                    userInfo={userInfo}
+                                    handleClose={infoBoxDisplayHandler}
+                                />
                             </div>
                         </div>
                         <p className={styles.chatBoxText}>{props.mssgText}</p>

@@ -3,7 +3,10 @@ import { db } from '../../firebase.config';
 import { UserContext } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 
-import { ChatTypeButton, TurnManager, ChatSend } from '../exporter';
+import useCharaCount from '../../hooks/useCharaCount';
+import useGetData from '../../hooks/useGetData';
+
+import { ChatTypeButton, TurnManager, ChatSend } from '..';
 import { sendMessage } from '../../utils/sendMessage';
 import { ThemeContext } from '../../context/ThemeContext';
 
@@ -25,11 +28,14 @@ const ChatInput = (props: Props) => {
         textArea:
             'h-[90%] w-[90%] resize-none sd mx-1 my-auto rounded-lg grow-0 scrollbar-thin scrollbar scrollbar-thumb-purple-600 scrollbar-track-purple-400 scrollbar-track-rounded-full scrollbar-thumb-rounded-full p-1 ',
         bttnArea: 'w-[100%] mx-auto ',
-        mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[50%] h-fit ',
+        mssgArea: 'flex flex-row rounded-tr-xl rounded-tl-lg border-2 min-h-[10%] h-[100%] ',
     };
 
     const theme = React.useContext(ThemeContext);
     const currentUser = React.useContext(UserContext);
+
+    const { getUpdatedCharaCount, charaCount } = useCharaCount(props.roomSelectedInfo);
+    const { userRoomsData } = useGetData();
 
     const [turnNum, setTurnNum] = useState<number | null>(null);
     const [charaMap, setCharaMap] = useState<CharaInfo[] | null>(null);
@@ -71,46 +77,51 @@ const ChatInput = (props: Props) => {
             if (!(chara as CharaInfo).currentTurn && props.currentTab === 'story') return true;
             else return false;
         }
-        return true;
+        return false;
+    };
+
+    const sortCharactersByTurn = () => {
+        if (currentUser == null || charaMap == null || turnNum == null) return;
+
+        const charaArrySorted = Object.entries(charaMap).map((chara) => chara);
+
+        charaArrySorted.sort((a, b) => {
+            return (a[1].turn as number) - (b[1].turn as number);
+        });
+
+        // if current chara's turn is not 0 (first) we will need to reorder the chara turn array by putting in front who's current turn it is
+        for (let i = 0; i < charaArrySorted.length; i++) {
+            if (charaArrySorted[i][1].turn === turnNum) {
+                const amtToRmv = i;
+                const rmvItms = charaArrySorted.splice(0, amtToRmv);
+                rmvItms.forEach((itm) => {
+                    charaArrySorted.push(itm);
+                });
+            }
+        }
+
+        return charaArrySorted;
     };
 
     const placeHolderText = () => {
         if (currentUser == null || charaMap == null) return;
         type Chara = keyof typeof charaMap;
         const uid = currentUser.uid as Chara;
+        const userChara = charaMap[uid];
 
-        const chara = charaMap[uid];
-        let currentTurnChara: CharaInfo = {
-            charaName: '',
-            charaPic: '',
-            currentTurn: false,
-            turn: -1,
-        };
+        const sortedCharaListByTurn = sortCharactersByTurn();
+        let numOfTurnsAway = -1;
 
-        let numOfTurnsAway = 0;
-
-        for (const val of Object.values(charaMap)) {
-            if (val.turn === turnNum) {
-                currentTurnChara = val;
+        if (sortedCharaListByTurn != undefined && sortedCharaListByTurn != null) {
+            // Calculates the turns left from user to current chara's turn by the difference in the index between current turn (0) and user -> sortedCharaListByTurn[i][1].turn
+            for (let i = 0; i < sortedCharaListByTurn.length; i++) {
+                if (sortedCharaListByTurn[i][1].turn === (userChara as CharaInfo).turn) numOfTurnsAway = i;
             }
         }
 
-        const numChara = (chara as CharaInfo).turn;
-
-        if (numChara < currentTurnChara.turn) {
-            const top = Object.keys(charaMap).length - currentTurnChara.turn;
-            console.log(top);
-            numOfTurnsAway = top + numChara;
-            console.log(numOfTurnsAway);
-        } else if (numChara > currentTurnChara.turn) {
-            const top = Object.keys(charaMap).length - numChara;
-            console.log(top);
-            numOfTurnsAway = top + currentTurnChara.turn;
-        }
-
-        if (checkCharacters() && numOfTurnsAway === 0)
+        if (checkCharacters() && numOfTurnsAway === 1)
             return 'It is not your turn yet in the story.\n-> You are the next turn.';
-        else if (checkCharacters() && numOfTurnsAway !== 0)
+        else if (checkCharacters() && numOfTurnsAway > 0)
             return `It is not your turn yet in the story.\n-> ${numOfTurnsAway} turns left.`;
         else return '';
     };
@@ -119,12 +130,12 @@ const ChatInput = (props: Props) => {
         if (props.roomSelectedInfo != null && props.roomSelectedInfo != undefined && props.roomSelectedInfo != '') {
             GetCharasAndTurn();
         }
-    }, [props.roomSelectedInfo]);
+    }, [props.roomSelectedInfo, userRoomsData, charaCount]);
 
     return (
         <div className={styles.container + `bg-${theme?.themeColor}-200`}>
             <div className={styles.bttnArea + `bg-${theme?.themeColor}-200`}>
-                <TurnManager charaMap={charaMap} turnNum={turnNum as number} />
+                <TurnManager charaMap={charaMap} turnNum={turnNum as number} charaCount={charaCount} />
                 <ChatTypeButton />
             </div>
             <div className={styles.mssgArea + `bg-${theme?.themeColor}-300 border-${theme?.themeColor}-400 `}>
