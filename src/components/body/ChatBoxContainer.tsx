@@ -53,11 +53,13 @@ const ChatBoxContainer = (props: Props) => {
                     .map((mssg) => (
                         <ChatBox
                             key={mssg.id}
+                            id={mssg.id}
                             photoURL={mssg.photoURL}
                             displayName={mssg.userName}
                             mssgText={mssg.message}
                             uid={mssg.uid}
                             roomTitle={props.roomTitle}
+                            currentTab={props.currentTab}
                             timeSent={(mssg.timeSent as Timestamp).toDate().toString()}
                         />
                     ))

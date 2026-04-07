@@ -1,19 +1,26 @@
 import React, { Fragment, useContext, useRef, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { ThemeContext } from '../../context/ThemeContext';
 import { Transition } from '@headlessui/react';
 
+import { UserContext } from '../../context/AuthContext';
+
 import InfoBox from '../info/InfoBox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { debug } from 'console';
 
 interface Props {
     photoURL: string;
     displayName: string;
     mssgText: string;
     uid: string;
+    id: string;
     roomTitle: string;
     timeSent: string;
+    currentTab: string;
 }
 
 const ChatBox = (props: Props) => {
@@ -33,14 +40,19 @@ const ChatBox = (props: Props) => {
             'flex flex-row lg:min-w-[60px] lg:max-w-[60px] lg:min-h-[60px] lg:max-h-[60px] min-w-[45px] max-w-[45px] min-h-[45px] max-h-[45px] m-2 items-center rounded-xl overflow-hidden ',
         img: 'h-full w-full object-contain',
         mssgInfo: 'flex flex-col border-l-2 ',
-        displayName: 'font-bold cursor-default hover:underline',
-        topOfMssg: 'flex flex-row justify-between bg-gradient-to-r pt-1 pl-1 pr-1 rounded-tr-xl ',
+        displayName: 'font-bold cursor-default hover:underline pt-1 pr-1 ',
+        topOfMssg: 'flex flex-row justify-between bg-gradient-to-r pt-0 pl-1 pr-0 rounded-tr-xl ',
         chatBoxText: 'mx-2 pb-1',
+        deleteButton: 'px-2 rounded-tr-lg ',
+        icon: 'm-auto h-[10px] w-[10px] ',
         timeText: 'italic text-[12px] ',
     };
 
     const theme = useContext(ThemeContext);
     const mssgBoxRef = useRef(null);
+
+    const currentUser = useContext(UserContext);
+    const adminUidConfigVal: string = process.env.REACT_APP_ADMIN_USER as string;
 
     const [displayBoxVisible, setDisplayBoxVisible] = useState(false);
     const [userInfo, setUserInfo] = useState<{ chatName: string; charaName: string; dateJoinedRoom: string | Date }>({
@@ -91,6 +103,26 @@ const ChatBox = (props: Props) => {
         infoBoxDisplayHandler();
     };
 
+    const deleteMessage = async () => {
+        const roomRef = doc(db, 'rooms', props.roomTitle);
+
+        try {
+            updateDoc(roomRef, {
+                [`${props.currentTab}.${props.id}`]: deleteField(),
+            });
+
+            console.log(props.id);
+            console.log('Did supposed delete!');
+        } catch (e) {
+            console.log(e);
+            console.log('Something went wrong!');
+        }
+    };
+
+    const trashIcon = (
+        <FontAwesomeIcon icon={solid('trash')} size="sm" className={styles.icon + `text-${theme?.themeColor}-100`} />
+    );
+
     return (
         <Transition
             show={true}
@@ -126,6 +158,17 @@ const ChatBox = (props: Props) => {
                                     handleClose={infoBoxDisplayHandler}
                                 />
                             </div>
+                            {currentUser?.uid == adminUidConfigVal ? (
+                                <button
+                                    className={
+                                        styles.deleteButton +
+                                        `bg-${theme?.themeColor}-500 hover:bg-${theme?.themeColor}-600 `
+                                    }
+                                    onClick={deleteMessage}
+                                >
+                                    {trashIcon}
+                                </button>
+                            ) : null}
                         </div>
                         <p className={styles.chatBoxText}>{props.mssgText}</p>
                     </div>

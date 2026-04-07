@@ -90,7 +90,7 @@ const SignUpForm = () => {
     const setUserInfo = async (userInfo: any, file: File) => {
         const uid = userInfo.uid;
 
-        const storageRef = ref(storage, `users/${uid}/avatar`);
+        const storageRef = ref(storage, `users/${uid}/avatar.jpg`);
 
         console.log(file);
 

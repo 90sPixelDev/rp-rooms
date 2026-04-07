@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { User } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
+import { storage } from '../../firebase.config';
 
 import { UserContext } from '../../context/AuthContext';
 import { ThemeContext } from '../../context/ThemeContext';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 interface Props {
     isOpened: boolean;
@@ -21,6 +23,7 @@ type Styles = {
     charaPicContainer: string;
     charaPic: string;
     charaPicClosed: string;
+    charaUpdateInput: string;
     charaPicContainerClosed: string;
 };
 
@@ -39,6 +42,7 @@ const UserProfilePeek = (props: Props) => {
             'flex flex-row min-w-[50px] max-w-[50px] min-h-[50px] max-h-[50px] rounded-lg ml-2 mt-2 transition overflow-hidden ',
         charaPic: 'h-full w-full object-contain',
         charaPicClosed: 'h-full w-full object-contain',
+        charaUpdateInput: 'absolute z-[2] opacity-0',
         charaPicContainerClosed:
             'flex flex-row min-w-[35px] max-w-[35px] min-h-[35px] max-h-[35px] rounded-lg mt-2 mx-auto transition overflow-hidden items-center ',
     };
@@ -46,6 +50,7 @@ const UserProfilePeek = (props: Props) => {
     const theme = useContext(ThemeContext);
     const currentUser = useContext(UserContext);
 
+    const [err, setErr] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isPTag, setPTag] = useState(true);
 
@@ -80,14 +85,46 @@ const UserProfilePeek = (props: Props) => {
             {currentUser.email}
         </p>
     ) : (
-        <p className={styles.userName}>user undefined</p>
+        <p className={styles.userName}>User undefined</p>
     );
 
-    const updateProfilePic = () => {
-        // await updateProfile(userInfo, {
-        // photoURL: downloadURL,
-        // }
-        console.log(currentUser?.photoURL);
+    const updateProfilePic = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const uid = currentUser?.uid;
+        if (!uid) return;
+
+        const file = e.currentTarget.files![0];
+        const storageRef = ref(storage, `users/${uid}/avatar.jpg`);
+
+        console.log(file);
+
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                console.log(err);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                    await updateProfile(currentUser, {
+                        photoURL: downloadURL,
+                    });
+                    console.log('Uploaded!');
+                });
+            },
+        );
     };
 
     if (props.isOpened)
@@ -99,14 +136,13 @@ const UserProfilePeek = (props: Props) => {
                         src={currentUser?.photoURL as string}
                         onError={(e) => (e.currentTarget.src = currentUser?.displayName?.slice(0) as string)}
                         alt=""
-                        onClick={updateProfilePic}
                     />
                 </div>
                 <div className={styles.names}>
                     {showUserName}
                     {isPTag ? (
                         <p className={styles.nickName} onClick={() => setPTag(false)}>
-                            {currentUser?.displayName}
+                            {currentUser?.displayName ?? 'Unknown Username'}
                         </p>
                     ) : (
                         <input
@@ -131,7 +167,17 @@ const UserProfilePeek = (props: Props) => {
                     src={currentUser?.photoURL as string}
                     onError={(e) => (e.currentTarget.src = currentUser?.displayName?.slice(0) as string)}
                     alt=""
-                    onClick={updateProfilePic}
+                />
+                <input
+                    className={styles.charaUpdateInput}
+                    type="file"
+                    name="avatar"
+                    id="image-file"
+                    accept="image/png,image/jpeg,image/gif"
+                    onChange={(e) => {
+                        updateProfilePic(e);
+                    }}
+                    required
                 />
             </div>
         </div>
