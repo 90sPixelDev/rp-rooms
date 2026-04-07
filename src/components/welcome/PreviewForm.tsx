@@ -18,7 +18,7 @@ const PreviewForm = () => {
     const handlePreviewLogIn = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        signInWithEmailAndPassword(auth, 'testing123@gmail.com', 'testingrprooms')
+        signInWithEmailAndPassword(auth, 'testing123@email.com', 'testing1!')
             .then(() => {
                 navigate('/');
             })

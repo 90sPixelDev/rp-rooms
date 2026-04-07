@@ -6,8 +6,8 @@ const NoticeDisclaimer = () => {
     const styles: Styles = {
         container: 'place-content-end min-w-full rounded-lg shadow-lg font-bold ',
         holder: 'border-4 border-red-500 bg-red-100 ',
-        h3Text: 'text-lg text-center p-2 rounded-t-lg mb-1 text-red-700 ',
-        pText: 'text-center text-sm p-2 ',
+        h3Text: 'text-xl text-center p-2 rounded-t-lg mb-1 text-red-700 ',
+        pText: 'text-center text-lg p-2 ',
     };
     const theme = useContext(ThemeContext);
 
